@@ -1,0 +1,39 @@
+<div class="session-authentication">
+<div class="position-relative">
+    <div class="header header-logged-out width-full pt-5 pb-4">
+        <div class="container clearfix width-full text-center">
+            <span class="header-logo">
+              <fa-icon [icon]="faCoins" size="3x"></fa-icon>
+            </span>
+          </div>
+    </div>
+</div>
+<div class="application-main ">
+    <main>
+        <div class="auth-form px-3">
+                <div class="auth-form-header p-0">
+                        <h1></h1>
+                </div>
+                <ngb-alert *ngIf="fail" type="danger" (close)="closeAlert()">登录失败！请检查用户名和密码！</ngb-alert>
+
+                <div class="auth-form-body mt-3">
+
+                        <label for="login_field">
+                          用户名
+                        </label>
+                        <input type="text" [(ngModel)]="loginData.username" class="form-control input-block" tabindex="1" autocapitalize="off" autocorrect="off" autofocus="autofocus">
+                
+                        <label for="password">
+                            密码
+                        </label>
+                        <input type="password" [(ngModel)]="loginData.password" class="form-control form-control input-block" tabindex="2">
+                        <button (click)="login()" type="button" tabindex="3" [disabled]="loadding" class="btn btn-success btn-block">
+                          <span *ngIf="loadding" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                          <span *ngIf="loadding">正在登录...</span>
+                          <span *ngIf="!loadding">登录</span>
+                        </button>
+                </div>
+        </div>
+    </main>
+</div>
+</div>

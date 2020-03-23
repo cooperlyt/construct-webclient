@@ -1,0 +1,27 @@
+<nav class="navbar navbar-dark fixed-top bg-dark navbar-expand-lg">
+        <a class="navbar-brand" routerLink="/">
+            <img src="../../../assets/images/home.png" width="30" height="30" alt="">
+        </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse show" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
+      
+        <!-- <form class="form-inline">
+            <input [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" (keyup.enter)="search()" class="form-control mr-sm-2 header-search-input input-sm" size="60" type="search" placeholder="业务查询" aria-label="Search">
+        </form> -->
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item " routerLinkActive="active" >
+                <a class="nav-link" routerLink=""  ></a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav  my-2 my-lg-0">
+            <a (click)="logout()" class="nav-link">注销 {{user.user_name}}</a> 
+        </ul>
+
+    </div>
+</nav>    
+
+
