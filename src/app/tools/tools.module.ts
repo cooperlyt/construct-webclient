@@ -1,9 +1,7 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OcticonDirective } from './octicon.directive';
-import { DateTimePickerComponent } from './date-time-picker/date-time-picker.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library as fontLibrary } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -25,15 +23,14 @@ fontLibrary.add(
 
 
 @NgModule({
-  declarations: [OcticonDirective,DateTimePickerComponent],
+  declarations: [OcticonDirective],
   imports: [
     CommonModule,
     FontAwesomeModule,
-    FormsModule,
-    NgbModule
+    FormsModule
   ],
   exports: [
-    OcticonDirective, DateTimePickerComponent
+    OcticonDirective
   ]
 })
 export class ToolsModule {}

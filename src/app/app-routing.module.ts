@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
 import { AuthGuard } from './auth/auth.guard';
 import { HomeComponent } from './home/home.component';
-import { HomeResolver } from './home/home.resolver';
 import { FunctionLayoutComponent } from './layouts/function-layout/function-layout.component';
 import { LoginLayoutComponent } from './layouts/login-layout/login-layout.component';
 import { LoginComponent } from './login/login.component';
@@ -18,7 +17,6 @@ const routes: Routes = [
       {
         path: '',
         component: HomeComponent,   // {3}
-        resolve: {projects: HomeResolver}
       },
       {
         path: '',

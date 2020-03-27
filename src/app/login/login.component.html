@@ -1,39 +1,65 @@
-<div class="session-authentication">
-<div class="position-relative">
-    <div class="header header-logged-out width-full pt-5 pb-4">
-        <div class="container clearfix width-full text-center">
-            <span class="header-logo">
-              <fa-icon [icon]="faCoins" size="3x"></fa-icon>
-            </span>
-          </div>
-    </div>
-</div>
-<div class="application-main ">
-    <main>
-        <div class="auth-form px-3">
-                <div class="auth-form-header p-0">
-                        <h1></h1>
-                </div>
-                <ngb-alert *ngIf="fail" type="danger" (close)="closeAlert()">登录失败！请检查用户名和密码！</ngb-alert>
 
-                <div class="auth-form-body mt-3">
+<main>
+  <section class="view intro intro-2 ">
+    <div class="full-bg-img rgba-stylish-strong mask flex-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-5 col-lg-6 col-md-10 col-sm-12 mx-auto mt-lg-5">
 
-                        <label for="login_field">
-                          用户名
-                        </label>
-                        <input type="text" [(ngModel)]="loginData.username" class="form-control input-block" tabindex="1" autocapitalize="off" autocorrect="off" autofocus="autofocus">
+            <div  *ngIf="fail" class="alert alert-warning alert-dismissible fade show" role="alert">
+              <button type="button" class="close" aria-label="Close" (click)="closeAlert()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <strong>登录失败！</strong> 请检查用户名和密码.
+            </div>
+            
+
+            <mat-card class="mdb">
+              <mat-card-title class="primary-color white-text text-center py-4">
+                <h5>
+                  <strong>登录</strong>
+                </h5>
+              </mat-card-title>
+            
+              <mat-card-content class="px-lg-5 pt-0">
+                <div class="text-center" style="color: #757575;">
+                  <!-- <div class="md-form">
+                    <input type="text" id="materialLoginFormEmail" tabindex="1" [(ngModel)]="loginData.username" tabindex="1" autocapitalize="off" autocorrect="off" autofocus="autofocus" id="materialLoginFormEmail" class="form-control" mdbInput>
+                    <label for="materialLoginFormEmail">用户名</label>
+                  </div> -->
+
+                  <mat-form-field class="form-control">
+                    <mat-label>用户名</mat-label>
+                    <input matInput type="text" placeholder="用户名" [(ngModel)]="loginData.username" autocapitalize="off" autocorrect="off" autofocus="autofocus" >
+                  </mat-form-field>
                 
-                        <label for="password">
-                            密码
-                        </label>
-                        <input type="password" [(ngModel)]="loginData.password" class="form-control form-control input-block" tabindex="2">
-                        <button (click)="login()" type="button" tabindex="3" [disabled]="loadding" class="btn btn-success btn-block">
-                          <span *ngIf="loadding" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                          <span *ngIf="loadding">正在登录...</span>
-                          <span *ngIf="!loadding">登录</span>
-                        </button>
+                  <mat-form-field class="form-control">
+                    <mat-label>密码</mat-label>
+                    <input matInput type="password" [(ngModel)]="loginData.password" >
+                  </mat-form-field>
+                  
+
+                  <button mat-raised-button color="primary" class="my-4 btn-block"
+                    (click)="login()" type="button" [attr.disabled]="loadding ? '' : null">
+                    <mat-icon *ngIf="loadding">
+                      <mat-progress-spinner color="primary" diameter="20" mode="indeterminate"></mat-progress-spinner> 
+                    </mat-icon>
+                   
+                    
+                   <span>登录</span><span *ngIf="loadding">中...</span>
+                  </button>
                 </div>
+            
+              </mat-card-content>
+            </mat-card>
+
+            
+            
+          </div>
         </div>
-    </main>
-</div>
-</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+

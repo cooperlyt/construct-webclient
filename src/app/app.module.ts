@@ -4,15 +4,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ResolveStart, ResolveEnd } from '@angular/router';
+import { CommonModule } from "@angular/common";
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { ToastrModule } from 'ngx-toastr';
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressRouterModule } from '@ngx-progressbar/router';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { QRCodeModule } from 'angularx-qrcode';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {MatCardModule} from '@angular/material/card';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button'
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
+import {MatIconModule} from '@angular/material/icon'
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +34,7 @@ import { LoginLayoutComponent } from './layouts/login-layout/login-layout.compon
 import { FunctionLayoutComponent } from './layouts/function-layout/function-layout.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { ToolsModule } from './tools/tools.module';
+
 
 
 
@@ -46,7 +54,14 @@ import { ToolsModule } from './tools/tools.module';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-  
+    CommonModule,
+
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatInputModule,
+    MatCardModule,
+    FlexLayoutModule,
     QRCodeModule,
     NgxUiLoaderModule,
     ToastrModule.forRoot(),
@@ -62,16 +77,13 @@ import { ToolsModule } from './tools/tools.module';
       }
     ),
     FontAwesomeModule,
-    NgbModule,
-
     ToolsModule,
     AppRoutingModule,
   ],
   providers: [Title,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: GeneralErrorInterceptor, multi: true},
-    JwtHelperService,
-    NgbModal],
+    JwtHelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
