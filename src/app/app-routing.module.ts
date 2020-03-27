@@ -1,26 +1,33 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
+import { MasterLayoutComponent } from './layouts/master-layout/master-layout.component';
 import { AuthGuard } from './auth/auth.guard';
 import { HomeComponent } from './home/home.component';
-import { FunctionLayoutComponent } from './layouts/function-layout/function-layout.component';
-import { LoginLayoutComponent } from './layouts/login-layout/login-layout.component';
+import { PaperLayoutComponent } from './layouts/paper-layout/paper-layout.component';
+import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
 import { LoginComponent } from './login/login.component';
+import { SidenavLayoutComponent } from './layouts/sidenav-layout/sidenav-layout.component';
 
 
 const routes: Routes = [
   {
     path: '',                       // {1}
-    component: HomeLayoutComponent,
+    component: MasterLayoutComponent,
     canActivate: [AuthGuard],       // {2}
     children:[
       {
         path: '',
-        component: HomeComponent,   // {3}
+        component: SidenavLayoutComponent,   
+        children:[
+          {
+            path: '',
+            component: HomeComponent
+          }
+        ]
       },
       {
         path: '',
-        component: FunctionLayoutComponent,
+        component: PaperLayoutComponent,
         children:[
         ]
       }      
@@ -28,7 +35,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: LoginLayoutComponent, // {4}
+    component: PublicLayoutComponent, // {4}
     children: [
       {
         path: 'login',

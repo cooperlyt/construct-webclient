@@ -1,0 +1,48 @@
+
+app-master-layout {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 53.3px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  app-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+  }
+
+
+  app-master-layout > app-sidenav-layout {
+    flex: 1;
+  }
+  
+//   .app-master-layout > app-homepage {
+//     overflow-y: auto;
+//   }
+  
+  @media (max-width: 720px) {
+    app-master-layout {
+      top: 92px;
+    }
+  
+    // .app-master-layout > app-homepage {
+    //   overflow-y: visible;
+    // }
+  }
+  
+
+.mat-elevation-z6 {
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+app-navbar {
+    color: #fff;
+}
+
+

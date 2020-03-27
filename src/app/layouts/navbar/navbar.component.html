@@ -1,28 +1,31 @@
-<!-- <nav class="navbar navbar-dark fixed-top bg-dark navbar-expand-lg">
-        <a class="navbar-brand" routerLink="/">
-            <img src="../../../assets/images/home.png" width="30" height="30" alt="">
-        </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<ng-progress></ng-progress>
+<nav class="docs-navbar-header" aria-label="Top Toolbar">
+  <a mat-button class="docs-button" routerLink="/" aria-label="建设工程审批系统">
+    <img class="docs-home-logo"
+         src="../../assets/img/home.png"
+         alt="angular">
+    <span>建设工程审批系统</span>
+  </a>
 
-    <div class="collapse navbar-collapse show" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
-      
-         <form class="form-inline">
-            <input [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" (keyup.enter)="search()" class="form-control mr-sm-2 header-search-input input-sm" size="60" type="search" placeholder="业务查询" aria-label="Search">
-        </form> 
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item " routerLinkActive="active" >
-                <a class="nav-link" routerLink=""  ></a>
-            </li>
-        </ul>
-
-        <ul class="navbar-nav  my-2 my-lg-0">
-            <a (click)="logout()" class="nav-link">注销 {{user.user_name}}</a> 
-        </ul>
-
-    </div>
-</nav>     -->
+  <a mat-button class="docs-navbar-hide-small docs-button" routerLink="fire">工程备案</a>
+  
+  <a mat-button class="docs-navbar-hide-small docs-button" routerLink="fire">质量监督</a>
+  <a mat-button class="docs-navbar-hide-small docs-button" routerLink="fire">消防验收</a>
+  
+  <div class="flex-spacer"></div>
 
 
-<a (click)="logout()" class="nav-link">注销 {{user.user_name}}</a> 
+  <a mat-button class="docs-button docs-navbar-hide-small"
+  (click)="logout()" aria-label="注销">
+  <span class="docs-github-logo" color="white" octicon="sign-out" ></span> {{user.user_name}}
+</a>
+  <a mat-icon-button class="docs-button docs-navbar-show-small"
+    (click)="logout()" aria-label="注销">
+    <span octicon="sign-out" class="docs-github-logo" color="white" ></span> 
+  </a>
+</nav>
+<nav class="docs-navbar docs-navbar-show-small" aria-label="Section Nav Bar">
+  <a mat-button class="docs-navbar-link" routerLink="fire">工程备案</a>
+  <a mat-button class="docs-navbar-link" routerLink="fire">质量监督</a>
+  <a mat-button class="docs-navbar-link" routerLink="fire">消防验收</a>
+</nav>

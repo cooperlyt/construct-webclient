@@ -17,9 +17,13 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button'
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
-import {MatIconModule} from '@angular/material/icon'
+import {MatButtonModule} from '@angular/material/button';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import {CdkAccordionModule} from '@angular/cdk/accordion';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -29,11 +33,14 @@ import { AuthInterceptor } from "./auth/interceptors/auth.interceptor";
 
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
-import { LoginLayoutComponent } from './layouts/login-layout/login-layout.component';
-import { FunctionLayoutComponent } from './layouts/function-layout/function-layout.component';
+import { MasterLayoutComponent } from './layouts/master-layout/master-layout.component';
+import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
+import { PaperLayoutComponent } from './layouts/paper-layout/paper-layout.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { ToolsModule } from './tools/tools.module';
+import { SidenavLayoutComponent, ComponentNav } from './layouts/sidenav-layout/sidenav-layout.component';
+import { FunctionPageHeaderComponent } from './layouts/function-page-header/function-page-header.component';
+import { FooterComponent } from './layouts/footer/footer.component';
 
 
 
@@ -43,10 +50,17 @@ import { ToolsModule } from './tools/tools.module';
     AppComponent,
     LoginComponent,
     HomeComponent,
-    HomeLayoutComponent,
-    LoginLayoutComponent,
-    FunctionLayoutComponent,
+    MasterLayoutComponent,
+    PublicLayoutComponent,
+    PaperLayoutComponent,
     NavbarComponent,
+    SidenavLayoutComponent,
+
+    ComponentNav,
+
+    FunctionPageHeaderComponent,
+
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -56,6 +70,10 @@ import { ToolsModule } from './tools/tools.module';
     BrowserAnimationsModule,
     CommonModule,
 
+    CdkAccordionModule,
+    MatListModule,
+    MatSidenavModule,
+    MatToolbarModule,
     MatIconModule,
     MatProgressSpinnerModule,
     MatButtonModule,
