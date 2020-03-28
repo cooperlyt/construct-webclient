@@ -18,7 +18,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 import {MatDrawerToggleResult} from '@angular/material/sidenav/drawer';
 
 
-import {DocumentationItems} from '../../shared/documentation-items/documentation-items';
+import {FunctionItems} from '../../shared/function-items/function-items';
 
 
 const EXTRA_SMALL_WIDTH_BREAKPOINT = 720;
@@ -38,7 +38,7 @@ export class SidenavLayoutComponent implements OnInit {
   isExtraScreenSmall: Observable<boolean>;
   isScreenSmall: Observable<boolean>;
 
-  constructor(public docItems: DocumentationItems,
+  constructor(public docItems: FunctionItems,
               private _route: ActivatedRoute,
               private _router: Router,
               zone: NgZone,
@@ -85,19 +85,19 @@ export class SidenavLayoutComponent implements OnInit {
   ],
 })
 export class ComponentNav implements OnInit, OnDestroy {
-  @Input() params: Observable<Params>;
+  // @Input() params: Observable<Params>;
   expansions: {[key: string]: boolean} = {};
   currentItemId: string;
   private _onDestroy = new Subject<void>();
 
-  constructor(public docItems: DocumentationItems, private _router: Router) {}
+  constructor(public docItems: FunctionItems, private _router: Router) {}
 
   ngOnInit() {
     this._router.events.pipe(
       startWith(null),
-      switchMap(() => this.params),
+      // switchMap(() => this.params),
       takeUntil(this._onDestroy)
-    ).subscribe(params => this.setExpansions(params));
+    ).subscribe(params => this.setExpansions());
   }
 
   ngOnDestroy() {
@@ -105,9 +105,9 @@ export class ComponentNav implements OnInit, OnDestroy {
     this._onDestroy.complete();
   }
 
-  /** Set the expansions based on the route url */
-  setExpansions(params: Params) {
-    const categories = this.docItems.getCategories(params.section);
+  /** Set the expansions based on the route url -- params: Params params.section */
+  setExpansions() {
+    const categories = this.docItems.getCategories();
     for (const category of (categories || [])) {
 
       let match = false;

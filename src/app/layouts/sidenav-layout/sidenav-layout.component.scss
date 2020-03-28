@@ -27,6 +27,8 @@ app-sidenav-layout {
   }
 }
 
+
+
 .mat-drawer {
   &::-webkit-scrollbar {
     height: 4px;
@@ -143,5 +145,66 @@ app-sidenav-layout {
 
   .docs-component-sidenav-body-content {
     flex-direction: column;
+  }
+}
+
+
+
+.docs-component-viewer-nav .docs-component-viewer-nav-content a {
+  display: block;
+  text-decoration: none;
+}
+
+.docs-component-viewer-nav .docs-component-viewer-nav-content button:focus {
+  outline: none;
+}
+
+.docs-component-viewer-nav-content {
+  background: rgba(0, 0, 0, .03);
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, .26);
+  }
+
+  .docs-nav-content-btn {
+    color: rgba(0,0,0, 0.7);
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+
+    &:focus {
+      // override the default background
+      background: rgba(0, 0, 0, .08);
+    }
+  }
+
+  hr {
+    border: none;
+    border-top: solid 1px rgba(0,0,0, .1)
+  }
+
+  a {
+    color: rgba(0,0,0,.54);
+
+    &.docs-component-viewer-sidenav-item-selected,
+    &:hover {
+      color: #3f51b5;
+    }
+
+    &.docs-component-viewer-sidenav-item-selected {
+      background: rgba(0,0,0,.08);
+    }
+  }
+}
+
+@media (max-width: $small-breakpoint-width) {
+  .docs-component-viewer-sidenav {
+    .docs-component-viewer-nav-content {
+      background: none;
+    }
+  }
+
+  .mat-drawer {
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, .26);
+    }
   }
 }
