@@ -22,6 +22,10 @@ const routes: Routes = [
           {
             path: '',
             component: HomeComponent
+          },
+          {
+            path: 'project-corp',
+            loadChildren: './functions/corp/corp.module#CorpModule'
           }
         ]
       },
