@@ -4,59 +4,48 @@
 @import 'typeface-roboto/index.css';
 
 @import './styles/mdb';
+@import './styles/github';
 
 
-
-
-body {
-  font-family: "Roboto","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-  margin: 0;
-}
-
-.docs-button[md-button], .docs-button[md-raised-button] {
-  text-transform: uppercase;
-}
-
-h1, h2 {
-  font-weight: 400;
-}
-
-.docs-primary-header {
-  padding-left: 20px;
-
-  h1 {
-    font-weight: 300;
-    margin: 0;
-    padding: 28px 8px;
-    font-size: 20px;
-  }
-}
-
-.docs-primary-header {
-  background: #3f51b5;;
-
-  h1 {
-    color: #fff;
-  }
-}
-
-// These styles are for controlling SVGs without using the /deep/ selector
-
-.docs-component-category-list-card-image svg {
-  width: 100%;
-}
-
-.docs-footer-angular-logo svg {
-  height: 50px;
-}
 
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
-.octicon {
-    display: inline-block; 
-   vertical-align: text-top; 
-   fill: currentColor;
+summary {
+  outline: none;           
+  user-select: none;  
+  cursor: pointer;      
+}
+
+details summary::-webkit-details-marker {
+  display: none; 
+}
+
+h3, h4 {
+  font-weight: 600;
+  line-height: 1.5;
+}
+h3 {
+  font-size: 20px;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 0;
+  margin-top: 0;
+  line-height: 1.5;
+}
+
+label {
+  font-weight: 600;
+}
+
+ol, ul {
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-left: 0;
+}
+
+dl.form-group{
+  margin-bottom: 0;
 }
