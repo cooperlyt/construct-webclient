@@ -8,6 +8,7 @@ import { PublicLayoutComponent } from './layouts/public-layout/public-layout.com
 import { LoginComponent } from './login/login.component';
 import { SidenavLayoutComponent } from './layouts/sidenav-layout/sidenav-layout.component';
 
+import {CorpModule} from './functions/corp/corp.module'
 
 const routes: Routes = [
   {
