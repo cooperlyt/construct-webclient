@@ -4,64 +4,10 @@
     fill: currentColor;
 }
 
-.f4 {
-    font-size: 16px!important;
-}
 
-.f5 {
-    font-size: 14px!important;
-}
-
-.f6 {
-    font-size: 12px!important;
-}
-
-.rounded-1 {
-    border-radius: 3px!important;
-}
-
-.v-align-middle {
-    vertical-align: middle!important;
-}
-.text-white {
-    color: #fff!important;
-}
-.text-gray {
-    color: #586069!important;
-}
 
 .muted-link {
     color: #586069!important;
-}
-
-.flex-auto {
-    flex: 1 1 auto!important;
-}
-
-.flex-items-center {
-    align-items: center!important;
-}
-
-.flex-justify-between {
-    justify-content: space-between!important;
-}
-
-.flex-items-baseline {
-    align-items: baseline!important;
-}
-.d-inline-block {
-    display: inline-block!important;
-}
-
-.bg-gray {
-    background-color: #f6f8fa!important;
-}
-.width-full {
-    width: 100%!important;
-}
-
-.width-fit {
-    max-width: 100%!important;
 }
 
 .UnderlineNav-actions {
@@ -136,41 +82,7 @@ dd {
     vertical-align: middle;
 }
 
-.form-control.focus, .form-control:focus, .form-select.focus, .form-select:focus {
-    border-color: #2188ff;
-    box-shadow: inset 0 1px 2px rgba(27,31,35,.075), 0 0 0 0.2em rgba(3,102,214,.3);
-    outline: none;
-}
 
-.form-group .form-control {
-    background-color: #fafbfc;
-    max-width: 100%;
-}
-
-.form-group .ng-select-container{
-    background-color: #fafbfc; 
-}
-
-
-.form-group .form-control:focus {
-    background-color: #fff;
-}
-
-.form-control, .form-select {
-    background-color: #fff;
-    background-position: right 8px center;
-    background-repeat: no-repeat;
-    border: 1px solid #d1d5da;
-    border-radius: 3px;
-    box-shadow: inset 0 1px 2px rgba(27,31,35,.075);
-    color: #495057;
-
-    line-height: 20px;
-    min-height: 34px;
-    outline: none;
-    padding: 6px 8px;
-    vertical-align: middle;
-}
 
 .select-menu-button-gravatar {
     float: left;
