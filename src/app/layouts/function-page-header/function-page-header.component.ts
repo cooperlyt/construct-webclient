@@ -1,10 +1,6 @@
 import {Component, EventEmitter, NgModule, Output} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
 
-import {Injectable} from '@angular/core';
-import {Title} from '@angular/platform-browser';
-import { environment } from 'src/environments/environment';
+import { FunctionPageBar, FunctionHeaderInfo } from 'src/app/shared/function-items/function-items';
 
 @Component({
   selector: 'app-function-page-header',
@@ -13,40 +9,25 @@ import { environment } from 'src/environments/environment';
 })
 export class FunctionPageHeaderComponent{
 
-  constructor(public _functionPageTitle: FunctionPageTitle) {}
+  func: FunctionHeaderInfo;
+
+  constructor(private _func: FunctionPageBar) {
+
+    _func.getLoad().subscribe(info => {
+      this.func = info;
+
+    })
+
+  }
+
+  search(key: string){
+    this._func.doSearch(key);
+  }
+
 
   @Output() toggleSidenav = new EventEmitter<void>();
 
-  getTitle() {
-    return this._functionPageTitle.title;
-  }
-
 }
 
 
-@Injectable({providedIn: 'root'})
-export class FunctionPageTitle {
-  _title = '';
-  _originalTitle = environment.title;
 
-  get title(): string { 
-    if (this._title == ''){
-      return this._originalTitle;
-    } else {
-      return this._title; 
-    }
-    
-  }
-
-  set title(title: string) {
-    this._title = title;
-    if (title !== '') {
-      title = `${title} | ${this._originalTitle}`;
-    } else {
-      title = this._originalTitle;
-    }
-    this.bodyTitle.setTitle(title);
-  }
-
-  constructor(private bodyTitle: Title) {}
-}

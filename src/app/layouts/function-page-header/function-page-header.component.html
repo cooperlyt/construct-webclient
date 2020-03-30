@@ -3,6 +3,16 @@
       <mat-icon>menu</mat-icon>
     </button>
   
-    <h1 focusOnNavigation>{{getTitle()}} </h1>
+    <h1 focusOnNavigation>{{func.item.name}} </h1>
+
+
+    <div *ngIf="func.search">
+ 
+
+        <input #searchInput id="search-input" (keydown.enter)="search(searchInput.value)"/>
+
+        <button (click)="search(searchInput.value)">search</button>
+    </div>
+
 </header>
   

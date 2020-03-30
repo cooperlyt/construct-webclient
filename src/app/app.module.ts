@@ -43,8 +43,6 @@ import { FunctionPageHeaderComponent } from './layouts/function-page-header/func
 import { FooterComponent } from './layouts/footer/footer.component';
 
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
