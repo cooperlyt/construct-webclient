@@ -37,10 +37,11 @@ import { MasterLayoutComponent } from './layouts/master-layout/master-layout.com
 import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
 import { PaperLayoutComponent } from './layouts/paper-layout/paper-layout.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
-import { ToolsModule } from './tools/tools.module';
 import { SidenavLayoutComponent, ComponentNav } from './layouts/sidenav-layout/sidenav-layout.component';
 import { FunctionPageHeaderComponent } from './layouts/function-page-header/function-page-header.component';
 import { FooterComponent } from './layouts/footer/footer.component';
+import { OcticonModule } from './tools/octicon/octicon.directive';
+import { NavigationFocusModule } from './tools/navigation-focus/navigation-focus';
 
 
 @NgModule({
@@ -93,7 +94,8 @@ import { FooterComponent } from './layouts/footer/footer.component';
       }
     ),
     FontAwesomeModule,
-    ToolsModule,
+    OcticonModule,
+    NavigationFocusModule,
     AppRoutingModule,
   ],
   providers: [Title,
