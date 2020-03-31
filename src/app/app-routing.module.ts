@@ -8,8 +8,6 @@ import { PublicLayoutComponent } from './layouts/public-layout/public-layout.com
 import { LoginComponent } from './login/login.component';
 import { SidenavLayoutComponent } from './layouts/sidenav-layout/sidenav-layout.component';
 
-import {CorpModule} from './functions/corp/corp.module'
-
 const routes: Routes = [
   {
     path: '',                       // {1}
@@ -26,7 +24,7 @@ const routes: Routes = [
           },
           {
             path: 'project-corp',
-            loadChildren: './functions/corp/corp.module#CorpModule'
+            loadChildren: () => import('./functions/corp/corp.module').then(m => m.CorpModule)
           }
         ]
       },
@@ -51,7 +49,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{
+    scrollPositionRestoration: 'enabled',
+    anchorScrolling: 'enabled',
+    relativeLinkResolution: 'corrected'
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
