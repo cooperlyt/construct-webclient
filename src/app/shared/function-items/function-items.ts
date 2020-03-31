@@ -26,7 +26,7 @@ export interface FunctionCategory {
 }
 
 export interface FunctionHeaderInfo {
-  item: FunctionItem;
+  title: string;
   search: boolean;
 }
 
@@ -147,65 +147,71 @@ export class FunctionItems {
 
 @Injectable({providedIn: 'root'})
 export class FunctionPageBar {
-  _title = '';
-  _originalTitle = environment.title;
+
+  private _originalTitle = environment.title;
+  private _info: FunctionHeaderInfo = {title: '', search: false};
 
   private search$ = new Subject<string>();
 
-  private load$ = new Subject<FunctionHeaderInfo>();
+  private loading$ = new Subject<FunctionHeaderInfo>();
 
-  loading(info: FunctionHeaderInfo){
-    this.title = info.item.name;
-    this.load$.next(info);
-  }
-
-  getLoad():Observable<FunctionHeaderInfo>{
-    return this.load$.asObservable();
-  }
 
   doSearch(key: string){
     this.search$.next(key);
   }
 
-  getSearch(): Observable<string> {
+  loadTitle(title: string){
+    this.info = {title: title, search: false};
+    this.loading$.next(this.info);
+  } 
+
+  loadSearch(info: FunctionHeaderInfo): Observable<string>{
+    this.info = info;
+    this.loading$.next(this.info)
     return this.search$.asObservable();
   }
 
-  get title(): string { 
-    return this._title; 
+  loadSearchFunction(id: string): Observable<string>{
+    return this.loadSearch({title: this._functionItems.getItemById(id).name, search: true});
   }
 
-  set title(title: string) {
-    this._title = title;
-    if (title !== '') {
-      title = `${title} | ${this._originalTitle}`;
+  get info(): FunctionHeaderInfo { 
+    return this._info; 
+  }
+
+  getLoad(): Observable<FunctionHeaderInfo>{
+    return this.loading$.asObservable();
+  }
+
+  set info(info: FunctionHeaderInfo) {
+
+    this._info = info;
+
+    let _title = '';
+    if (info.title !== '') {
+      _title = `${info.title} | ${this._originalTitle}`;
     } else {
-      title = this._originalTitle;
+      _title = this._originalTitle;
     }
-    this.bodyTitle.setTitle(title);
+    this.bodyTitle.setTitle(_title);
   }
 
-  constructor(private bodyTitle: Title) {}
+  constructor(private bodyTitle: Title, private _functionItems: FunctionItems) {}
 }
 
-export abstract class FunctionBaseComponent implements OnDestroy{
-
-  abstract get search() : boolean;
+export abstract class SearchFunctionBase implements OnDestroy{
 
   abstract doSearch(key: string);
 
   private _destroyed = new Subject();
 
-  constructor(_route: ActivatedRoute, _docItems: FunctionItems,_func: FunctionPageBar){
+  constructor(_route: ActivatedRoute, _func: FunctionPageBar){
 
     // parent awaly is function ?
     _route.parent.url.pipe(takeUntil(this._destroyed)).subscribe(url => {
         console.log(url);
         if (url.length > 0){    
-           _func.loading({item: _docItems.getItemById(url[0].path) ,search: this.search})
-          if (this.search){
-            _func.getSearch().pipe(takeUntil(this._destroyed)).subscribe(key => this.doSearch(key))
-          }
+          _func.loadSearchFunction(url[0].path).pipe(takeUntil(this._destroyed)).subscribe(key => this.doSearch(key));
         }else{
           throw new Error("path not found: " + url);
         }     
