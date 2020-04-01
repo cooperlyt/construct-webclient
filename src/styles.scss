@@ -7,6 +7,8 @@
 @import './styles/github';
 @import './styles/define';
 
+@import './styles/constants';
+
 
 
 
@@ -49,4 +51,24 @@ ol, ul {
 
 dl.form-group{
   margin-bottom: 0;
+}
+
+
+.function-body{
+  font-weight: 400;
+  padding: 20px 50px 50px 20px;
+}
+
+.function-view{
+  width: 80%;
+  display: -webkit-inline-box;
+  display: inline-flex;
+
+
+  @media (max-width: $small-breakpoint-width){
+    width: 100%;
+    margin-right: 0;
+  }
+
+
 }
