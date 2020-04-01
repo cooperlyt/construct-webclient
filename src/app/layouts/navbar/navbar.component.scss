@@ -1,3 +1,5 @@
+@import '../../../styles/constants';
+
 .docs-navbar-header {
     display: flex;
     flex-wrap: wrap;
@@ -44,7 +46,7 @@
     * Rules for when the device is detected to be a small screen.
     * Moves content two rows instead of one.
     */
-  @media (max-width: 720px) {
+  @media (max-width: $small-breakpoint-width) {
     .docs-navbar-hide-small {
       display: none;
     }

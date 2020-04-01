@@ -1,3 +1,5 @@
+@import '../../../styles/constants';
+
 
 app-master-layout {
     display: flex;
@@ -26,7 +28,7 @@ app-master-layout {
 //     overflow-y: auto;
 //   }
   
-  @media (max-width: 720px) {
+  @media (max-width: $small-breakpoint-width) {
     app-master-layout {
       top: 92px;
     }
