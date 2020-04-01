@@ -23,6 +23,37 @@ export class FunctionPageHeaderComponent{
 
   padding: number = MAX_PADDING;
 
+  searchKey: string = "";
+
+  get haveKey():boolean{
+    if (this.search){
+      return this.searchKey.trim() !== ''
+    }else {
+      return false;
+    }
+  }
+
+  
+
+  search(){
+    if (this.info.search){
+      this.func.doSearch({key:this.searchKey.trim(),now: true});
+    }
+  }
+
+  clearKey(){
+    if (this.info.search){
+      this.searchKey = "";
+      this.func.doSearch({key:'',now: true});
+    }
+  }
+
+  inputChange(){
+    if (this.info.search){
+      this.func.doSearch({key:this.searchKey.trim(),now: false});
+    }
+  }
+
   ngAfterViewInit() {
     const content = document.querySelector('.mat-sidenav-content');
     fromEvent(content, 'scroll').pipe(
@@ -73,12 +104,7 @@ export class FunctionPageHeaderComponent{
     });
   }
 
-  search(key: string){
-    if (this.search){
-      this.func.doSearch(key.trim());
-    }
-    
-  }
+
 
 
   @Output() toggleSidenav = new EventEmitter<void>();

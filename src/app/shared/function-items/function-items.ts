@@ -144,6 +144,10 @@ export class FunctionItems {
   }
 }
 
+export class SearchCondition{
+  key: string;
+  now: boolean;
+}
 
 @Injectable({providedIn: 'root'})
 export class FunctionPageBar {
@@ -151,12 +155,12 @@ export class FunctionPageBar {
   private _originalTitle = environment.title;
   private _info: FunctionHeaderInfo = {title: '', search: false};
 
-  private search$ = new Subject<string>();
+  private search$ = new Subject<SearchCondition>();
 
   private loading$ = new Subject<FunctionHeaderInfo>();
 
 
-  doSearch(key: string){
+  doSearch(key: SearchCondition){
     this.search$.next(key);
   }
 
@@ -165,13 +169,13 @@ export class FunctionPageBar {
     this.loading$.next(this.info);
   } 
 
-  loadSearch(info: FunctionHeaderInfo): Observable<string>{
+  loadSearch(info: FunctionHeaderInfo): Observable<SearchCondition>{
     this.info = info;
     this.loading$.next(this.info)
     return this.search$.asObservable();
   }
 
-  loadSearchFunction(id: string): Observable<string>{
+  loadSearchFunction(id: string): Observable<SearchCondition>{
     return this.loadSearch({title: this._functionItems.getItemById(id).name, search: true});
   }
 
@@ -201,7 +205,7 @@ export class FunctionPageBar {
 
 export abstract class SearchFunctionBase implements OnDestroy{
 
-  abstract doSearch(key: string);
+  abstract doSearch(key: SearchCondition):void;
 
   private _destroyed = new Subject();
 
