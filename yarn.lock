@@ -1371,13 +1371,6 @@ alphanum-sort@^1.0.0:
   resolved "https://registry.npm.taobao.org/alphanum-sort/download/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
   integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
 
-angular-router-loader@^0.8.5:
-  version "0.8.5"
-  resolved "https://registry.npm.taobao.org/angular-router-loader/download/angular-router-loader-0.8.5.tgz#42b378d0914c1ce412b851c1d92b80dbbe4f2fc5"
-  integrity sha1-QrN40JFMHOQSuFHB2SuA275PL8U=
-  dependencies:
-    loader-utils "^1.0.2"
-
 angularx-qrcode@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/angularx-qrcode/download/angularx-qrcode-2.1.0.tgz#94ba30647f851305c58b6365ec9eb8fb91bb97dc"
