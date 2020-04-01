@@ -1,8 +1,30 @@
-<header class="docs-primary-header component-page-header">
+<header class="docs-primary-header component-page-header" [class.search]= "info.search">
     <button mat-button class="sidenav-toggle" (click)="toggleSidenav.emit()">
       <mat-icon>menu</mat-icon>
     </button>
   
-    <h1 focusOnNavigation>{{getTitle()}} </h1>
+    <div class="function-title">
+      <h1  focusOnNavigation
+      [style.padding-top.px] = "padding" 
+      [style.padding-bottom.px] = "padding">{{info.title}} </h1>
+    </div>
+
+  
+    <div *ngIf="info.search" class="func-tools">
+      <div class="search-box">
+        <button mat-icon-button aria-hidden="true"  class="search-btn"
+        tabindex="-1" title="Search settings" aria-disabled="false" role="button"
+        (click)="search()"><mat-icon>search</mat-icon></button>
+
+        <input  #searchInput id="search-input" [(ngModel)]="searchKey" 
+          (keydown.enter)="search()" (input)="inputChange()"/>
+      
+        <button *ngIf="haveKey" (click)="clearKey()" mat-icon-button title="Clear search" aria-disabled="false" role="button" tabindex="0">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      
+      </div>
+    </div>
 </header>
+
   

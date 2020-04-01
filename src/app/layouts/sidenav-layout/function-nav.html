@@ -11,7 +11,7 @@
       <mat-nav-list dense [@bodyExpansion]="panel.expanded ? 'expanded' : 'collapsed'"
                     id="panel-{{category.id}}" [attr.aria-label]="category.name">
         <a mat-list-item *ngFor="let component of category.items"
-           [routerLink]="'/' + category.id + '-' + component.id"
+           [routerLink]="'/function/' + component.id"
            routerLinkActive="docs-component-viewer-sidenav-item-selected"
            [attr.aria-current]="currentItemId === component.id ? 'page': 'false'">
           {{component.name}}

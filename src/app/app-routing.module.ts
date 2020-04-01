@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, UrlSegment, UrlSegmentGroup } from '@angular/router';
 import { MasterLayoutComponent } from './layouts/master-layout/master-layout.component';
 import { AuthGuard } from './auth/auth.guard';
 import { HomeComponent } from './home/home.component';
@@ -7,6 +7,7 @@ import { PaperLayoutComponent } from './layouts/paper-layout/paper-layout.compon
 import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
 import { LoginComponent } from './login/login.component';
 import { SidenavLayoutComponent } from './layouts/sidenav-layout/sidenav-layout.component';
+import { FunctionGuard } from './auth/function.guard';
 
 const routes: Routes = [
   {
@@ -23,8 +24,19 @@ const routes: Routes = [
             component: HomeComponent
           },
           {
-            path: 'project-corp',
-            loadChildren: () => import('./functions/corp/corp.module').then(m => m.CorpModule)
+            path: 'function',
+            canActivateChild: [FunctionGuard],
+            children:[
+              {
+                path: 'employee',
+                canLoad: [FunctionGuard],
+                loadChildren: () => import('./functions/employee/employee.module').then(m => m.EmployeeModule)
+              },
+              {
+                path: 'project-corp',
+                loadChildren: () => import('./functions/corp/corp.module').then(m => m.CorpModule)
+              },
+            ]
           }
         ]
       },
@@ -32,6 +44,7 @@ const routes: Routes = [
         path: '',
         component: PaperLayoutComponent,
         children:[
+
         ]
       }      
     ]
@@ -50,10 +63,10 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes,{
-    scrollPositionRestoration: 'enabled',
-    anchorScrolling: 'enabled',
-    relativeLinkResolution: 'corrected'
-  })],
+      scrollPositionRestoration: 'enabled',
+      anchorScrolling: 'enabled',
+      relativeLinkResolution: 'corrected'
+    })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

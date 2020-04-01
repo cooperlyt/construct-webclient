@@ -6,19 +6,21 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  HostListener,
+  ElementRef
 } from '@angular/core';
 import {MatSidenav} from '@angular/material/sidenav';
 import {ActivatedRoute, NavigationEnd, Params, Router} from '@angular/router';
 
-import {combineLatest, Observable, Subject} from 'rxjs';
-import {filter, map, startWith, switchMap, takeUntil} from 'rxjs/operators';
+import {combineLatest, Observable, Subject, fromEvent} from 'rxjs';
+import {filter, map, startWith, switchMap, takeUntil, throttleTime, pairwise, distinctUntilChanged, share} from 'rxjs/operators';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {MatDrawerToggleResult} from '@angular/material/sidenav/drawer';
 
 
-import {FunctionItems} from '../../shared/function-items/function-items';
+import {FunctionItems, FunctionPageBar} from '../../shared/function-items/function-items';
 
 
 const EXTRA_SMALL_WIDTH_BREAKPOINT = 720;
@@ -38,6 +40,8 @@ export class SidenavLayoutComponent implements OnInit {
   isExtraScreenSmall: Observable<boolean>;
   isScreenSmall: Observable<boolean>;
 
+  padding: number = 0;
+
   constructor(public docItems: FunctionItems,
               private _route: ActivatedRoute,
               private _router: Router,
@@ -49,6 +53,13 @@ export class SidenavLayoutComponent implements OnInit {
     this.isScreenSmall = breakpoints.observe(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`)
     .pipe(map(breakpoint => breakpoint.matches));
   }
+
+
+  heightChange(padding: number){
+    this.padding = padding;
+  }
+
+
 
   ngOnInit() {
     // Combine params from all of the path into a single object.

@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, Renderer2, OnInit } from '@angular/core';
+import { Directive, Input, ElementRef, Renderer2, OnInit, NgModule } from '@angular/core';
 import * as octicons from 'octicons';
 
 @Directive({
@@ -27,3 +27,10 @@ export class OcticonDirective implements OnInit{
 }
 
 }
+
+
+@NgModule({
+  declarations: [OcticonDirective],
+  exports: [OcticonDirective],
+})
+export class OcticonModule {}

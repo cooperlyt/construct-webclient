@@ -3,6 +3,8 @@ import { AuthenticationService } from '../auth/authentication.service';
 
 import { faUser, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';
+import { FunctionPageBar } from '../shared/function-items/function-items';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -18,7 +20,9 @@ export class HomeComponent implements OnInit {
 
  
 
-  constructor(private _authService: AuthenticationService, private route: ActivatedRoute) { }
+  constructor(private _authService: AuthenticationService, private route: ActivatedRoute, _func: FunctionPageBar) { 
+    _func.loadTitle(environment.title);
+  }
 
   ngOnInit() {
       this._authService.getUserInfo().subscribe(data => {this.user = data;   console.log(" user data is: ", data); });
