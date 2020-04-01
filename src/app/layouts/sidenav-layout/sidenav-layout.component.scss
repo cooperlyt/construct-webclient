@@ -23,6 +23,7 @@ app-sidenav-layout {
 
   // The rule will match the element following the router-outlet which will be the routed component.
   router-outlet + * {
+    -webkit-box-flex: 1;
     flex-grow: 1;
   }
 }
@@ -205,5 +206,20 @@ app-sidenav-layout {
     &::-webkit-scrollbar-thumb {
       background: rgba(0, 0, 0, .26);
     }
+  }
+}
+
+.function-body{
+  font-weight: 400;
+  padding: 20px 50px 50px 20px;
+  display: flex;
+  flex-direction: column;
+
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+
+  @media ($mat-xsmall){
+    padding-left: $content-padding-side-xs;
+    padding-right: $content-padding-side-xs;
   }
 }
