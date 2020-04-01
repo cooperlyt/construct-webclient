@@ -1,4 +1,9 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Component, OnDestroy} from '@angular/core';
+import { Subject, Observable, combineLatest } from 'rxjs';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
+import { takeUntil } from 'rxjs/operators';
 
 export interface FunctionItem {
   /** Id of the doc item. Used in the URL for linking to the doc. */
@@ -20,7 +25,10 @@ export interface FunctionCategory {
   roles?: string[];
 }
 
-
+export interface FunctionHeaderInfo {
+  title: string;
+  search: boolean;
+}
 
 const CDK = 'cdk';
 const COMPONENTS = 'components';
@@ -52,12 +60,12 @@ const FUNCTIONS:  FunctionCategory[] =
       summary: '消防质检.',
       items: [
         {
-          id: 'templete',
+          id: 'fire-templete',
           name: '质检模版',
           summary: '质检模版.'
         },
         {
-          id: 'business',
+          id: 'fire-business',
           name: '检测业务',
           summary: '检测业务.',
         }
@@ -69,12 +77,12 @@ const FUNCTIONS:  FunctionCategory[] =
       summary: '工程质检.',
       items: [
         {
-          id: 'params',
+          id: 'quality-params',
           name: '质检参数',
           summary: '质检参数.'
         },
         {
-          id: 'business',
+          id: 'quality-business',
           name: '质检业务',
           summary: '质检业务.'
         }
@@ -86,11 +94,11 @@ const FUNCTIONS:  FunctionCategory[] =
       summary: '档案管理.',
       items: [
         {
-          id: 'room',
+          id: 'files-room',
           name: '档案室'
         },
         {
-          id: 'business',
+          id: 'files-business',
           name: '档案业务'
         }
       ]
@@ -123,7 +131,7 @@ export class FunctionItems {
     return FUNCTIONS;
   }
 
-  getItems(section: string): FunctionItem[] {
+  getItems(): FunctionItem[] {
     return ALL_FUNCTIONS_ITEM;
   }
 
@@ -135,3 +143,91 @@ export class FunctionItems {
     return FUNCTIONS.find(c => c.id === id);
   }
 }
+
+export class SearchCondition{
+  key: string;
+  now: boolean;
+}
+
+@Injectable({providedIn: 'root'})
+export class FunctionPageBar {
+
+  private _originalTitle = environment.title;
+  private _info: FunctionHeaderInfo = {title: '', search: false};
+
+  private search$ = new Subject<SearchCondition>();
+
+  private loading$ = new Subject<FunctionHeaderInfo>();
+
+
+  doSearch(key: SearchCondition){
+    this.search$.next(key);
+  }
+
+  loadTitle(title: string){
+    this.info = {title: title, search: false};
+    this.loading$.next(this.info);
+  } 
+
+  loadSearch(info: FunctionHeaderInfo): Observable<SearchCondition>{
+    this.info = info;
+    this.loading$.next(this.info)
+    return this.search$.asObservable();
+  }
+
+  loadSearchFunction(id: string): Observable<SearchCondition>{
+    return this.loadSearch({title: this._functionItems.getItemById(id).name, search: true});
+  }
+
+  get info(): FunctionHeaderInfo { 
+    return this._info; 
+  }
+
+  getLoad(): Observable<FunctionHeaderInfo>{
+    return this.loading$.asObservable();
+  }
+
+  set info(info: FunctionHeaderInfo) {
+
+    this._info = info;
+
+    let _title = '';
+    if (info.title !== '') {
+      _title = `${info.title} | ${this._originalTitle}`;
+    } else {
+      _title = this._originalTitle;
+    }
+    this.bodyTitle.setTitle(_title);
+  }
+
+  constructor(private bodyTitle: Title, private _functionItems: FunctionItems) {}
+}
+
+export abstract class SearchFunctionBase implements OnDestroy{
+
+  abstract doSearch(key: SearchCondition):void;
+
+  private _destroyed = new Subject();
+
+  constructor(_route: ActivatedRoute, _func: FunctionPageBar){
+
+    // parent awaly is function ?
+    _route.parent.url.pipe(takeUntil(this._destroyed)).subscribe(url => {
+        console.log(url);
+        if (url.length > 0){    
+          _func.loadSearchFunction(url[0].path).pipe(takeUntil(this._destroyed)).subscribe(key => this.doSearch(key));
+        }else{
+          throw new Error("path not found: " + url);
+        }     
+      });
+  }
+  
+  ngOnDestroy(): void {
+    this._destroyed.next();
+    this._destroyed.complete();
+  }
+
+
+
+
+} 
