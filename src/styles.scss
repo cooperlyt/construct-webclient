@@ -57,12 +57,15 @@ dl.form-group{
 .function-body{
   font-weight: 400;
   padding: 20px 50px 50px 20px;
+
+  @media (max-width: 599px){
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
 
 .function-view{
   width: 80%;
-  display: -webkit-inline-box;
-  display: inline-flex;
 
 
   @media (max-width: $small-breakpoint-width){

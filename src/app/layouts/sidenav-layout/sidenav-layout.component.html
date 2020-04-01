@@ -23,7 +23,10 @@
             *ngIf="(isScreenSmall | async) === false"
             >
           </app-function-nav>
-          <router-outlet></router-outlet>
+          <div class="function-body">
+            <router-outlet></router-outlet>
+          </div>
+          
         </main>
         <app-footer></app-footer>
       </div>
