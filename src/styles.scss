@@ -53,25 +53,60 @@ dl.form-group{
   margin-bottom: 0;
 }
 
+.function-context{
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: start;
+  align-items: flex-start;
 
-.function-body{
-  font-weight: 400;
-  padding: 20px 50px 50px 20px;
-
-  @media (max-width: 599px){
-    padding-left: 15px;
-    padding-right: 15px;
-  }
 }
 
-.function-view{
+
+.function-view-master{
   width: 80%;
 
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: start;
+  align-items: flex-start;
+
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+
+  .view-context{
+    width: 100%;
+  }
 
   @media (max-width: $small-breakpoint-width){
     width: 100%;
     margin-right: 0;
   }
 
+}
 
+.function-view-details{
+  top: 35px;
+  position: -webkit-sticky;
+  position: sticky;
+
+  font-size: 13px;
+  width: 19%;
+  padding-left: 25px;
+  box-sizing: border-box;
+  display: -webkit-inline-box;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+
+  .details-context{
+      width: 100%;
+      padding: 5px 0 10px 10px;
+      border-left: 4px solid #3f51b5;
+  }
+
+  @media (max-width: 1140px) {
+      display: none;
+
+  }
 }
