@@ -3,6 +3,7 @@ import { faRegistered } from '@fortawesome/free-regular-svg-icons';
 import { SearchFunctionBase, SearchCondition, FunctionPageBar } from 'src/app/shared/function-items/function-items';
 import { ActivatedRoute } from '@angular/router';
 
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
