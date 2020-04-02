@@ -53,16 +53,48 @@ dl.form-group{
   margin-bottom: 0;
 }
 
-.function-context{
+.context-view-head{
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+
+  .head-nav{
+    display: flex;
+    width: 80%;
+
+    display: -webkit-flex;
+    -webkit-flex-direction: row;
+
+    display: flex;
+    flex-direction: row;
+
+    .flex-spacer{
+      -webkit-box-flex: 1;
+      flex-grow: 1;
+      max-width: 40px;
+    }
+
+    @media (max-width: 1140px){
+      width: 100%;
+      margin-right: 0;
+    }
+
+  }
+} 
+
+.context-view-body{
   display: -webkit-box;
   display: flex;
   -webkit-box-align: start;
   align-items: flex-start;
-
 }
 
 
-.function-view-master{
+
+.context-view-master{
   width: 80%;
 
   display: -webkit-box;
@@ -84,7 +116,7 @@ dl.form-group{
 
 }
 
-.function-view-details{
+.context-view-details{
   top: 35px;
   position: -webkit-sticky;
   position: sticky;
