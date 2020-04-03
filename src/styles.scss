@@ -142,3 +142,12 @@ dl.form-group{
 
   }
 }
+
+.paper-page {
+
+  width: 700px;
+
+  @media (max-width: 1010px) {
+    width: 100%;
+  }
+}
