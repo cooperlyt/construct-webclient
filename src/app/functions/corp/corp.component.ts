@@ -10,8 +10,13 @@ import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 
 import { Component, OnInit } from '@angular/core';
 import { faRegistered } from '@fortawesome/free-regular-svg-icons';
-import { SearchFunctionBase, SearchCondition, FunctionPageBar } from 'src/app/shared/function-items/function-items';
+import { SearchFunctionBase, SearchCondition, FunctionPageBar, PageFunctionBase } from 'src/app/shared/function-items/function-items';
 import { ActivatedRoute } from '@angular/router';
+import { CorpBusiness, Corp } from 'src/app/shared/data/corp';
+import { CorpResolver } from './corp.resolver';
+import {MatCardModule} from '@angular/material/card';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatInputModule} from '@angular/material/input';
 
 
 @Component({
@@ -40,22 +45,33 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
   templateUrl: './corp-edit.component.html',
   styleUrls: []
 })
-export class CorpEditComponent implements OnInit{
+export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
-  constructor(_func: FunctionPageBar){
-    
+
+  business: CorpBusiness;
+  corp: Corp;
+
+  constructor(private _route: ActivatedRoute,_func: FunctionPageBar) {
+    super(_route,_func);
   }
 
   ngOnInit(): void {
-    throw new Error("Method not implemented.");
+    this._route.data.subscribe(data => {
+      
+      this.corp = data.corp;
+      this.business = new CorpBusiness();
+
+      
+    })
   }
   
 }
 
 
 const routes: Routes =[
-  {path: '' , component: CorpComponent},
-  {path: 'edit', component: CorpEditComponent}
+  {path: '' , component: CorpComponent },
+  {path: 'edit', component: CorpEditComponent},
+  {path: 'edit/:id', component: CorpEditComponent, resolve: {business: CorpResolver}}
 ]
 
 @NgModule({
@@ -63,11 +79,11 @@ const routes: Routes =[
   imports: [
     CommonModule,
     FontAwesomeModule,
-    FlexLayoutModule,
     MatButtonModule,
     MatIconModule,
-    MatMenuModule,
-    OcticonModule,
+    MatCardModule,
+    MatExpansionModule,
+    MatInputModule,
     RouterModule.forChild(routes)
   ]
 })
