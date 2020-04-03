@@ -110,7 +110,7 @@ const FUNCTIONS:  FunctionCategory[] =
       items: [
         {
           id: 'employee',
-          name: '员工管理',
+          name: '用户管理',
           summary: '员工管理.'
         },
         {
@@ -169,6 +169,10 @@ export class FunctionPageBar {
     this.loading$.next(this.info);
   } 
 
+  loadTitleFunction(id: string){
+    return this.loadTitle(this._functionItems.getItemById(id).name);
+  }
+
   loadSearch(info: FunctionHeaderInfo): Observable<SearchCondition>{
     this.info = info;
     this.loading$.next(this.info)
@@ -201,6 +205,30 @@ export class FunctionPageBar {
   }
 
   constructor(private bodyTitle: Title, private _functionItems: FunctionItems) {}
+}
+
+export abstract class PageFunctionBase implements OnDestroy{
+
+  constructor(_route: ActivatedRoute, _func: FunctionPageBar){
+
+    // parent awaly is function ?
+    _route.parent.url.pipe(takeUntil(this._destroyed)).subscribe(url => {
+        console.log(url);
+        if (url.length > 0){    
+          _func.loadTitleFunction(url[0].path);
+        }else{
+          throw new Error("path not found: " + url);
+        }     
+      });
+  }
+
+  private _destroyed = new Subject();
+
+  ngOnDestroy(): void {
+    this._destroyed.next();
+    this._destroyed.complete();
+  }
+
 }
 
 export abstract class SearchFunctionBase implements OnDestroy{
