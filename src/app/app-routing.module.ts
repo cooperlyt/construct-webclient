@@ -34,7 +34,7 @@ const routes: Routes = [
               },
               {
                 path: 'corp',
-                loadChildren: () => import('./functions/corp/corp.module').then(m => m.CorpModule)
+                loadChildren: () => import('./functions/corp/corp.component').then(m => m.CorpModule)
               },
             ]
           }
