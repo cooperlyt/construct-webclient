@@ -22,16 +22,16 @@
                 <mat-label>名称</mat-label>
                 <input matInput formControlName="name" required>
             
-                <mat-error *ngIf="businessForm.controls['corpInfo'].controls['name'].hasError('required')">
+                <mat-error *ngIf="businessForm.get('corpInfo').get('name').hasError('required')">
                     企业名称 <strong>不能为空</strong>
                 </mat-error>
-                <mat-error *ngIf="businessForm.controls['corpInfo'].controls['name'].hasError('maxlength')">
+                <mat-error *ngIf="businessForm.get('corpInfo').get('name').hasError('maxlength')">
                     名称长度不能超过 <strong>128</strong>
                 </mat-error>
             </mat-form-field>
 
-            <div class="certificate">
-                <mat-form-field class="type">
+            <div class="row">
+                <mat-form-field class="col-sm-4">
                     <mat-label>证件类型</mat-label>
     
                     <mat-select formControlName="groupIdType" required>
@@ -40,29 +40,39 @@
                             {{type.name}}
                           </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="businessForm.controls['corpInfo'].controls['groupIdType'].hasError('required')">请选择证件类型</mat-error>
+                    <mat-error *ngIf="businessForm.get('corpInfo').get('groupIdType').hasError('required')">请选择证件类型</mat-error>
                 </mat-form-field>
 
 
-                <mat-form-field class="number">
+                <mat-form-field class="col-sm-8">
                     <mat-label>证件编号</mat-label>
                     <input matInput formControlName="groupId" required>
-                    <mat-error *ngIf="businessForm.controls['corpInfo'].controls['groupId'].hasError('required')">请填写证件编号</mat-error>
+                    <mat-error *ngIf="businessForm.get('corpInfo').get('groupId').hasError('required')">
+                        编号 <strong>不能为空</strong>
+                    </mat-error>
+                    <mat-error *ngIf="businessForm.get('corpInfo').get('groupId').hasError('maxlength')">
+                        编号长度不能超过 <strong>32</strong>
+                    </mat-error>
                 </mat-form-field>
             </div>
 
 
 
+            <div class="row">
 
-            <mat-form-field>
-                <mat-label>法人姓名</mat-label>
-                <input matInput formControlName="ownerName" required>
-            </mat-form-field>
+                <mat-form-field class="col-md-3">
+                    <mat-label>法人姓名</mat-label>
+                    <input matInput formControlName="ownerName" required>
+                    <mat-error *ngIf="businessForm.get('corpInfo').get('ownerName').hasError('required')">
+                        姓名 <strong>不能为空</strong>
+                    </mat-error>
+                    <mat-error *ngIf="businessForm.get('corpInfo').get('ownerName').hasError('maxlength')">
+                        姓名 <strong>32</strong>
+                    </mat-error>
 
-            <div class="certificate">
+                </mat-form-field>
 
-
-                <mat-form-field class="type">
+                <mat-form-field class="col-md-3 col-sm-4">
                     <mat-label>法人证件类型</mat-label>
     
                     <mat-select formControlName="ownerIdType" required>
@@ -71,24 +81,48 @@
                             {{type.name}}
                           </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="businessForm.controls['corpInfo'].controls['ownerIdType'].hasError('required')">请选择证件类型</mat-error>
+
+                    <mat-error *ngIf="businessForm.get('corpInfo').get('ownerIdType').hasError('required')">请选择证件类型</mat-error>
+
                 </mat-form-field>
 
-                <mat-form-field class="number">
+                <mat-form-field class="col-md-6 col-sm-8" required>
                     <mat-label>法人证件编号</mat-label>
                     <input matInput formControlName="ownerId" required>
+                    <mat-error *ngIf="businessForm.get('corpInfo').get('ownerId').hasError('required')">
+                        编号 <strong>不能为空</strong>
+                    </mat-error>
+                    <mat-error *ngIf="businessForm.get('corpInfo').get('ownerId').hasError('maxlength')">
+                        编号长度不能超过 <strong>32</strong>
+                    </mat-error>
                 </mat-form-field>
-
             </div>
-            <mat-form-field>
-                <mat-label>地址</mat-label>
-                <input matInput formControlName="address">
-            </mat-form-field>
 
-            <mat-form-field>
-                <mat-label>联系电话</mat-label>
-                <input matInput formControlName="tel">
-            </mat-form-field>
+          
+
+           
+            <div class="row">
+               
+                <mat-form-field class="col-sm-4">
+                    <mat-label>联系电话</mat-label>
+                    <input matInput formControlName="tel">
+                    <mat-error *ngIf="businessForm.get('corpInfo').get('tel').hasError('maxlength')">
+                        电话长度不能超过 <strong>16</strong>
+                    </mat-error>
+                </mat-form-field>
+     
+
+                <mat-form-field class="col-sm-8">
+                    <mat-label>地址</mat-label>
+                    <input matInput formControlName="address">
+                    <mat-error *ngIf="businessForm.get('corpInfo').get('address').hasError('maxlength')">
+                        地址长度不能超过 <strong>256</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+      
+ 
         </mat-card-content>
     </mat-card>
 

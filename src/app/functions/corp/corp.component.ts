@@ -71,7 +71,6 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
       })
 
 
-
       if (!this.corp){
         this.businessForm.addControl('corpInfo' , this._fb.group({
           name: ['', [Validators.required,Validators.maxLength(128)]],
