@@ -42,6 +42,7 @@ import { FunctionPageHeaderComponent } from './layouts/function-page-header/func
 import { FooterComponent } from './layouts/footer/footer.component';
 import { OcticonModule } from './tools/octicon/octicon.directive';
 import { NavigationFocusModule } from './tools/navigation-focus/navigation-focus';
+import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 
 
 @NgModule({
@@ -101,6 +102,7 @@ import { NavigationFocusModule } from './tools/navigation-focus/navigation-focus
   providers: [Title,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: GeneralErrorInterceptor, multi: true},
+    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
     JwtHelperService],
   bootstrap: [AppComponent]
 })

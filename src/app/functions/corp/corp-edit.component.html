@@ -8,9 +8,11 @@
 
 <div class="paper-page">
 
+<form [formGroup]="businessForm">
 
 
-    <mat-card >
+
+    <mat-card formGroupName="corpInfo">
         <mat-card-header>
             <mat-card-title>基本信息</mat-card-title>
         </mat-card-header>
@@ -18,23 +20,90 @@
         <mat-card-content>
             <mat-form-field>
                 <mat-label>名称</mat-label>
-                <input matInput>
+                <input matInput formControlName="name" required>
+            
+                <mat-error *ngIf="businessForm.controls['corpInfo'].controls['name'].hasError('required')">
+                    企业名称 <strong>不能为空</strong>
+                </mat-error>
+                <mat-error *ngIf="businessForm.controls['corpInfo'].controls['name'].hasError('maxlength')">
+                    名称长度不能超过 <strong>128</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="certificate">
+                <mat-form-field class="type">
+                    <mat-label>证件类型</mat-label>
+    
+                    <mat-select formControlName="groupIdType" required>
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let type of groupIdTypes" [value]="type.id">
+                            {{type.name}}
+                          </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="businessForm.controls['corpInfo'].controls['groupIdType'].hasError('required')">请选择证件类型</mat-error>
+                </mat-form-field>
+
+
+                <mat-form-field class="number">
+                    <mat-label>证件编号</mat-label>
+                    <input matInput formControlName="groupId" required>
+                    <mat-error *ngIf="businessForm.controls['corpInfo'].controls['groupId'].hasError('required')">请填写证件编号</mat-error>
+                </mat-form-field>
+            </div>
+
+
+
+
+            <mat-form-field>
+                <mat-label>法人姓名</mat-label>
+                <input matInput formControlName="ownerName" required>
+            </mat-form-field>
+
+            <div class="certificate">
+
+
+                <mat-form-field class="type">
+                    <mat-label>法人证件类型</mat-label>
+    
+                    <mat-select formControlName="ownerIdType" required>
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let type of personIdType" [value]="type.id">
+                            {{type.name}}
+                          </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="businessForm.controls['corpInfo'].controls['ownerIdType'].hasError('required')">请选择证件类型</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="number">
+                    <mat-label>法人证件编号</mat-label>
+                    <input matInput formControlName="ownerId" required>
+                </mat-form-field>
+
+            </div>
+            <mat-form-field>
+                <mat-label>地址</mat-label>
+                <input matInput formControlName="address">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>联系电话</mat-label>
+                <input matInput formControlName="tel">
             </mat-form-field>
         </mat-card-content>
     </mat-card>
 
 
-    <div>
-        <mat-form-field>
-            <mat-label>名称</mat-label>
-            <input matInput>
-        </mat-form-field>
+    <mat-card >
+        <h2>请添加至少一个参建角色</h2>
+
 
         <button mat-raised-button color="primary">
             添加
 
         </button>
-    </div>
+    </mat-card>
+
+
 
 
 
@@ -61,5 +130,5 @@
 
 
     </mat-accordion>
-
+</form>
 </div>
