@@ -23,8 +23,8 @@ import {MatDrawerToggleResult} from '@angular/material/sidenav/drawer';
 import {FunctionItems, FunctionPageBar} from '../../shared/function-items/function-items';
 
 
-const EXTRA_SMALL_WIDTH_BREAKPOINT = 720;
-const SMALL_WIDTH_BREAKPOINT = 959;
+const EXTRA_SMALL_WIDTH_BREAKPOINT = 768;
+const SMALL_WIDTH_BREAKPOINT = 992;
 
 @Component({
   selector: 'app-sidenav-layout',
