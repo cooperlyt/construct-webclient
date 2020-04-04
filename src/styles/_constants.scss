@@ -5,10 +5,10 @@
 // These breakpoint values need to stay in sync with the related constants in
 // src/app/pages/component-sidenav/component-sidenav.ts.
 // The extra small breakpoint is used for styling the guides and certain aspects of the tables.
-$extra-small-breakpoint-width: 720px;
+$extra-small-breakpoint-width: 768px;
 // The small breakpoint is used for the component category and component list pages, the component
 // pages, the component sidenav, and certain aspects of the tables.
-$small-breakpoint-width: 959px;
+$small-breakpoint-width: 992px;
 
 /* For desktop, the content should be aligned with the page title. */
 $content-padding-side: 70px;
