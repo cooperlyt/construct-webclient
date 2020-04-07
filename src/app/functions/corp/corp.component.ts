@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -13,11 +13,16 @@ import { SearchFunctionBase, SearchCondition, FunctionPageBar, PageFunctionBase 
 import { ActivatedRoute } from '@angular/router';
 import { CorpResolver } from './corp.resolver';
 import {MatCardModule} from '@angular/material/card';
-import {MatExpansionModule} from '@angular/material/expansion';
 import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select'
+import {MatSelectModule} from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
+
 import { Corp } from 'src/app/shared/data/corp';
-import { GroupIdType, PersonIdType } from 'src/app/shared/data/define';
+import { GroupIdType, PersonIdType, ConstructJoinType } from 'src/app/shared/data/define';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent, ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 
 
 @Component({
@@ -57,8 +62,70 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
   personIdType = Object.keys(PersonIdType).map(key => ({id: key, name: PersonIdType[key]}));
 
-  constructor(private _fb: FormBuilder,private _route: ActivatedRoute,_func: FunctionPageBar) {
+  joinTypes:{id: string, name: string}[];
+
+
+
+  getJoinTypeLabel(type: ConstructJoinType){
+    return ConstructJoinType[type]
+  }
+
+  get regsForm(): FormArray{
+    return this.businessForm.get('regs') as FormArray;
+  }
+
+  constructor(public dialog: MatDialog,
+    private _fb: FormBuilder,
+    private _route: ActivatedRoute,
+    _func: FunctionPageBar) {
     super(_route,_func);
+  }
+
+  private calcJoinTypes():void{
+    this.joinTypes = Object.keys(ConstructJoinType).filter(key => {
+   
+      if ((!this.corp ||  !this.corp.regs.find(reg => reg.id.type == key) )&&
+        !this.businessForm.value.regs.find(reg => reg.id.type == key))
+      return true;
+    }).map(key => ({id: key, name: ConstructJoinType[key]}));
+  }
+
+  addJoinType(type: ConstructJoinType):void{
+    console.log(type);
+    this.regsForm.push(this._fb.group({
+      id: this._fb.group({type: [type,Validators.required]}),
+      operateType: ["CREATE",Validators.required],
+      info: this._fb.group({     
+        regTo: [,Validators.required],
+        level: [,Validators.required],
+        levelNumber: ['',Validators.maxLength(32)]
+      })
+    }));
+    this.calcJoinTypes();
+  }
+
+  onDeleteClick(type: ConstructJoinType):void{
+    const dialogRef = this.dialog.open(ConfirmDialogComponent,{width:'400px',role:'alertdialog',data:{title:'移除确认', description: '确认要移除此角色？' , result: type }});
+    dialogRef.afterClosed().subscribe(result => {
+      if (result){
+        if (this.corp){
+
+        }else{
+          for(let i = 0; i< this.regsForm.length; i++) {
+            if (this.regsForm.value[i].id.type == result){
+              this.regsForm.removeAt(i);
+              this.calcJoinTypes();
+            }
+          }
+        }
+      }
+
+    });
+  }
+
+  onSubmit() {
+    // TODO: Use EventEmitter with form value
+    console.warn(this.businessForm.value);
   }
 
   ngOnInit(): void {
@@ -68,6 +135,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
  
       this.businessForm = this._fb.group({
         applyTime: [Date.now()],
+        regs: this._fb.array([])
       })
 
 
@@ -75,15 +143,16 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
         this.businessForm.addControl('corpInfo' , this._fb.group({
           name: ['', [Validators.required,Validators.maxLength(128)]],
           groupIdType: ['', Validators.required],
-          groupId: ['', Validators.required, Validators.maxLength(32)],
-          ownerName: ['', Validators.required, Validators.maxLength(32)],
+          groupId: ['', [Validators.required,Validators.maxLength(128)]],
+          ownerName: ['', [Validators.required, Validators.maxLength(32)]],
           ownerIdType: ['', Validators.required],
-          ownerId: ['', Validators.required, Validators.maxLength(32)],
+          ownerId: ['', [Validators.required, Validators.maxLength(32)]],
           address: ['',Validators.maxLength(256)],
           tel: ['',Validators.maxLength(16)],
         }));
       }
 
+      this.calcJoinTypes();
       
     })
   }
@@ -106,9 +175,12 @@ const routes: Routes =[
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatExpansionModule,
     MatInputModule,
     MatSelectModule,
+    MatMenuModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    ConfirmDialogModule,
     RouterModule.forChild(routes)
   ]
 

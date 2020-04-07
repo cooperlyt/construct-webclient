@@ -1,3 +1,5 @@
+import { Injectable } from '@angular/core';
+
 export enum GroupIdType{
     COMPANY_CODE = "营业执照",
     CORP_CODE = "机构代码证",
@@ -33,4 +35,43 @@ export enum BusinessStatus{
     running = "运行中",
     valid = "生效",
     invalid = "无效"
+}
+
+export enum OperateType{
+    DELETE = "移除",
+    MODIFY = "修改",
+    CREATE = "创建",
+    QUOTED = "引用"
+}
+
+enum DeveloperLevel{
+    一级 = 1,
+    二级 = 2,
+    三级 = 3,
+    四级 = 4
+}
+
+
+@Injectable()
+export class DataUtilsService{
+
+    
+
+    groupIdTypes = Object.keys(GroupIdType).map(key => ({key: key, label:GroupIdType[key]}));
+
+    personIdType = Object.keys(PersonIdType).map(key => ({key: key, label: PersonIdType[key]}));
+
+    getLevel(joinType: ConstructJoinType){
+        switch (joinType){
+            case ConstructJoinType.Developer: {
+
+                break;
+            }
+            case ConstructJoinType.Design:{
+
+                break;
+            }
+        }
+    }
+
 }

@@ -1,11 +1,5 @@
-import { GroupIdType, PersonIdType, ConstructJoinType, BusinessSource, BusinessStatus } from './define';
+import { GroupIdType, PersonIdType, ConstructJoinType, BusinessSource, BusinessStatus, OperateType } from './define';
 
-enum OperateType{
-    DELETE = "移除",
-    MODIFY = "修改",
-    CREATE = "创建",
-    QUOTED = "引用"
-}
 
 export class CorpInfo{
     corpCode: string;

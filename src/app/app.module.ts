@@ -24,6 +24,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {CdkAccordionModule} from '@angular/cdk/accordion';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -42,7 +43,8 @@ import { FunctionPageHeaderComponent } from './layouts/function-page-header/func
 import { FooterComponent } from './layouts/footer/footer.component';
 import { OcticonModule } from './tools/octicon/octicon.directive';
 import { NavigationFocusModule } from './tools/navigation-focus/navigation-focus';
-import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
+import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher, MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 
 @NgModule({
@@ -79,6 +81,7 @@ import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/materi
     MatButtonModule,
     MatInputModule,
     MatCardModule,
+    MatDialogModule,
     FlexLayoutModule,
     QRCodeModule,
     NgxUiLoaderModule,
@@ -102,6 +105,12 @@ import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/materi
   providers: [Title,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: GeneralErrorInterceptor, multi: true},
+    { provide: MAT_DATE_LOCALE, useValue: "zh-cn" },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
     JwtHelperService],
   bootstrap: [AppComponent]

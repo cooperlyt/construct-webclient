@@ -155,3 +155,15 @@ dl.form-group{
 .mat-card {
   margin: 10px 0;
 }
+
+.mat-form-field {
+  line-height: 1.5;
+}
+
+.tools-card-header .mat-card-header-text{
+  flex: 1 1 auto;
+}
+
+.tools-card-header .actions{
+  margin-top: -12px;
+}

@@ -8,7 +8,7 @@
 
 <div class="paper-page">
 
-<form [formGroup]="businessForm">
+<form id="corp-form" [formGroup]="businessForm"  (ngSubmit)="onSubmit()">
 
 
 
@@ -127,42 +127,94 @@
     </mat-card>
 
 
-    <mat-card >
-        <h2>请添加至少一个参建角色</h2>
 
 
-        <button mat-raised-button color="primary">
-            添加
 
+
+
+    <ng-container formArrayName="regs" >
+   
+
+        <mat-card *ngFor="let reg of regsForm.controls; let i=index">
+            <mat-card-header class="tools-card-header">
+                <mat-card-title>{{getJoinTypeLabel(regsForm.value[i].id.type)}} 备案信息</mat-card-title>
+                
+                <div class="actions">
+                    <button type="button" (click)="onDeleteClick(regsForm.value[i].id.type)" mat-icon-button color="warn" aria-label="Example icon-button with a heart icon">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+
+         
+            
+            </mat-card-header>
+
+
+
+
+            <mat-card-content [formGroupName]="i">
+            
+                <div formGroupName="info" class="row">
+                    <mat-form-field class="col-md-2">
+                        <mat-label>资质等级</mat-label>
+                        <input matInput formControlName="level" required>
+                        <mat-error *ngIf="reg.get('info').get('level').hasError('required')">
+                            请选择资质等级
+                        </mat-error>
+                    </mat-form-field>
+        
+                    <mat-form-field class="col-md-6">
+                        <mat-label>资质证书编号</mat-label>
+                        <input matInput formControlName="levelNumber">
+                        <mat-error *ngIf="reg.get('info').get('levelNumber').hasError('maxlength')">
+                            编号长度不能超过 <strong>32</strong>
+                        </mat-error>
+    
+                    </mat-form-field>
+        
+                    <mat-form-field class="col-md-4">
+                        <mat-label>资质证书期限</mat-label>
+                        <input matInput  [matDatepicker]="picker" formControlName="regTo" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker  #picker></mat-datepicker>
+                        <mat-error *ngIf="reg.get('info').get('regTo').hasError('required')">
+                            请填写证书期限
+                        </mat-error>
+                    </mat-form-field>    
+                </div>
+            </mat-card-content>
+
+
+
+        </mat-card>
+
+    </ng-container>
+
+
+</form>
+    <mat-card class="d-flex" *ngIf="joinTypes.length > 0">
+
+
+   
+        <h2>参建角色</h2>
+
+        <div class="flex-auto"></div>
+        
+        <button mat-raised-button color="primary"  [matMenuTriggerFor]="typeMenu">
+            添加参建角色
         </button>
+        <mat-menu #typeMenu="matMenu">
+            <button type="button" mat-menu-item (click)="addJoinType(type.id)"  *ngFor="let type of joinTypes">{{type.name}}</button>
+        </mat-menu>
     </mat-card>
 
 
 
-
-
-
-
-    <mat-accordion>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    基本信息
-                </mat-panel-title>
-
-                <mat-panel-description>
-             
-                </mat-panel-description>
-
-            </mat-expansion-panel-header>
-
-
-        </mat-expansion-panel>
-
-
-
-
-
-    </mat-accordion>
-</form>
 </div>
+
+<hr/>
+
+<!--  -->
+<button mat-raised-button color="primary" [disabled]="!businessForm.valid" form="corp-form"  type="submit" >
+    建立参建单位
+</button>
