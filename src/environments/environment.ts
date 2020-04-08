@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://192.168.1.21:5555/api',
-  clientId: 'register',
+  clientId: 'archives',
   clientPassword: 'thisissecret',
   regApiUrl: 'http://192.168.1.21:9901/api',
 

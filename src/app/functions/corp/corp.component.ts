@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, Router } from '@angular/router';
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -18,11 +18,17 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
+import {MatSlideToggleModule, MatSlideToggleChange} from '@angular/material/slide-toggle';
 
 import { Corp } from 'src/app/shared/data/corp';
 import { GroupIdType, PersonIdType, ConstructJoinType } from 'src/app/shared/data/define';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent, ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
+import { CorpService } from './corp.service';
+import { NgxUiLoaderModule, NgxUiLoaderService } from 'ngx-ui-loader';
+import { catchError } from 'rxjs/operators';
+import { empty } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -43,7 +49,54 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
 
   ngOnInit(): void {
   }
+}
 
+
+@Component({
+  selector: 'corp-details',
+  templateUrl: './corp-details.component.html'
+})
+export class CorpDetailsComponent extends PageFunctionBase implements OnInit{
+
+  constructor(
+    private _service: CorpService, 
+    private _route: ActivatedRoute,
+    private _router: Router,
+    _func: FunctionPageBar){
+    super(_route,_func);
+  }
+
+  corp:Corp;
+
+  enable:boolean;
+
+  statusWaiting: boolean = false;
+
+  edit():void{
+    this._router.navigate(['edit',{id: this.corp.corpCode}]);
+  }
+
+  enableToggleChange(){
+    if (this.enable !== this.corp.enable){
+      this.statusWaiting = true;
+      this._service.changeCorpStatus(this.corp.corpCode,this.enable).subscribe(result => {
+        if (this.corp.corpCode === result.code){
+          if (result.enable === this.enable){
+            this.corp.enable = result.enable;
+            this.statusWaiting = false;
+          }
+        }
+      })
+    }
+  }
+
+
+  ngOnInit(): void {
+    this._route.data.subscribe(data => {
+      this.corp = data.corp;
+      this.enable = data.corp.enable;
+    })
+  }
 }
 
 @Component({
@@ -77,6 +130,9 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
   constructor(public dialog: MatDialog,
     private _fb: FormBuilder,
     private _route: ActivatedRoute,
+    private _service: CorpService,
+    private _ngxService: NgxUiLoaderService,
+    private _toastr: ToastrService,
     _func: FunctionPageBar) {
     super(_route,_func);
   }
@@ -123,9 +179,28 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
     });
   }
 
+
+  get joinTypeVaild(): boolean{
+    if (this.corp){
+
+    }
+    return this.regsForm.length > 0 ;
+  }
+
+  get valid(): boolean{
+    return this.businessForm.valid && this.joinTypeVaild;
+  }
+
   onSubmit() {
-    // TODO: Use EventEmitter with form value
+    this._ngxService.start();
     console.warn(this.businessForm.value);
+    this._service.patchCreateCorp(this.businessForm.value).pipe(catchError(err=>{
+      this._ngxService.stop();
+      this._toastr.error("请联系管理员或请稍后再试！","存储数据失败");
+      return empty();
+    })).subscribe(id => {
+      this._ngxService.stop();
+    });
   }
 
   ngOnInit(): void {
@@ -163,11 +238,12 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
 const routes: Routes =[
   {path: '' , component: CorpComponent },
   {path: 'edit', component: CorpEditComponent},
-  {path: 'edit/:id', component: CorpEditComponent, resolve: {business: CorpResolver}}
+  {path: 'edit/:id', component: CorpEditComponent, resolve: {corp: CorpResolver}},
+  {path: 'details/:id', component: CorpDetailsComponent, resolve: {corp: CorpResolver}}
 ]
 
 @NgModule({
-  declarations: [CorpComponent,CorpEditComponent],
+  declarations: [CorpComponent,CorpEditComponent,CorpDetailsComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -180,7 +256,9 @@ const routes: Routes =[
     MatMenuModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    NgxUiLoaderModule,
     ConfirmDialogModule,
+    MatSlideToggleModule,
     RouterModule.forChild(routes)
   ]
 

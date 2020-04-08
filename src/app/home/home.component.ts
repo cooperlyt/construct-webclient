@@ -5,6 +5,7 @@ import { faUser, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';
 import { FunctionPageBar } from '../shared/function-items/function-items';
 import { environment } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -18,9 +19,16 @@ export class HomeComponent implements OnInit {
   user: any;
   faBuilding = faBuilding;
 
+
+  test(){
+      this._toastr.error("test");
+  }
  
 
-  constructor(private _authService: AuthenticationService, private route: ActivatedRoute, _func: FunctionPageBar) { 
+  constructor(private _authService: AuthenticationService,   
+    private _toastr: ToastrService, 
+    private route: ActivatedRoute, 
+    _func: FunctionPageBar) { 
     _func.loadTitle(environment.title);
   }
 

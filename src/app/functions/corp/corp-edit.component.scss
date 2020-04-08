@@ -7,3 +7,25 @@
 .reg-card-header .actions{
     color: blue($color: #000000)
 }
+
+.type-select-label h2{
+    font-size: 20px;
+}
+
+.type-select-card {
+    display: flex;
+    align-items: flex-start;
+}
+
+.type-select-label .mat-error{
+    display: none;
+    font-size: 12px;
+}
+
+.invalid .mat-error{
+    display: block;
+}
+
+.invalid .type-select-label h2{
+    color: #f44336;
+}
