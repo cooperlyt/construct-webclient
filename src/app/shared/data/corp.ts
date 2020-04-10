@@ -2,7 +2,6 @@ import { GroupIdType, PersonIdType, ConstructJoinType, BusinessSource, BusinessS
 
 
 export class CorpInfo{
-    corpCode: string;
     name: string;
     groupIdType: GroupIdType;
     groupId: string;
@@ -40,7 +39,6 @@ export class BusinessReg{
     id: {type: ConstructJoinType, business: CorpBusiness}
     operateType: OperateType;
     info: RegInfo;
-
 }
 
 export class CorpBusiness{
@@ -52,4 +50,5 @@ export class CorpBusiness{
     info: boolean;
     corpInfo: CorpInfo;
     regs: BusinessReg[];
+    corpCode: string;
 }

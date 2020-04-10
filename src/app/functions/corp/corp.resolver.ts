@@ -4,7 +4,7 @@ import { CorpService } from './corp.service';
 import { Injectable } from '@angular/core';
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class CorpResolver implements Resolve<Corp>{
 
     constructor(private _service: CorpService){}

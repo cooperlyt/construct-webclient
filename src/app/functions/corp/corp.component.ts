@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Routes, RouterModule, Router } from '@angular/router';
+import { Routes, RouterModule, Router, Params, ParamMap } from '@angular/router';
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -18,10 +18,13 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
+import {MatChipsModule} from '@angular/material/chips';
+import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSlideToggleModule, MatSlideToggleChange} from '@angular/material/slide-toggle';
 
 import { Corp } from 'src/app/shared/data/corp';
-import { GroupIdType, PersonIdType, ConstructJoinType } from 'src/app/shared/data/define';
+import { GroupIdType, PersonIdType, ConstructJoinType, DataUtilsService } from 'src/app/shared/data/define';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent, ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { CorpService } from './corp.service';
@@ -29,6 +32,10 @@ import { NgxUiLoaderModule, NgxUiLoaderService } from 'ngx-ui-loader';
 import { catchError } from 'rxjs/operators';
 import { empty } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { CorpListResolver } from './corp-list.resolver';
+import { PageResult } from 'src/app/shared/page-result';
+import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
+
 
 
 @Component({
@@ -37,18 +44,62 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./corp.component.scss']
 })
 export class CorpComponent extends SearchFunctionBase implements OnInit {
-  doSearch(key: SearchCondition): void {
-    throw new Error("Method not implemented.");
-  }
 
   faRegistered = faRegistered;
+  dataPage: PageResult<Corp>;
 
-  constructor(_route: ActivatedRoute,_func: FunctionPageBar) {
+  params: {showDisabled : boolean, type: string};
+
+  constructor(
+    public dataUtil: DataUtilsService,
+    private _router: Router,
+    private _route: ActivatedRoute,
+    _func: FunctionPageBar) {
     super(_route,_func);
   }
 
-  ngOnInit(): void {
+  doSearch(condition: SearchCondition): void {
+    if (condition.now){
+      let params: Params = {page:0};
+      if (condition.key){
+        params['key'] = condition.key;
+      }
+      this._router.navigate([],{relativeTo: this._route, queryParams: params })
+    }
   }
+
+  onShowDisabledChange(){
+    this._router.navigate([],{relativeTo: this._route,queryParams: {valid: !this.params.showDisabled}, queryParamsHandling: 'merge'})
+  }
+
+  onTypeChange(type: string){
+
+    console.log("change :" + type);
+
+    if (type === this.params.type){
+      this._router.navigate([],{relativeTo: this._route,queryParams: {type: null}, queryParamsHandling: 'merge'})
+    }else{
+      this._router.navigate([],{relativeTo: this._route,queryParams: {type: type}, queryParamsHandling: 'merge'})
+    }
+
+
+  }
+
+  onPageChange(pageEvent: PageEvent){
+    console.log("chang page:" , pageEvent.pageIndex);
+
+    if ((pageEvent.pageIndex) !== this.dataPage.number){
+
+      this._router.navigate([], {relativeTo: this._route, queryParams: {page: pageEvent.pageIndex} ,queryParamsHandling: 'merge'});
+    }
+  }
+
+  ngOnInit(): void {
+    this._route.queryParamMap.subscribe(params => this.params = {showDisabled: JSON.parse(params.get('valid')) ,type : params.get('type')})
+    this._route.data.subscribe(data => this.dataPage = data.dataPage)
+  }
+
+  
 }
 
 
@@ -236,7 +287,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
 
 const routes: Routes =[
-  {path: '' , component: CorpComponent },
+  {path: '' , component: CorpComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange', resolve:{dataPage: CorpListResolver}},
   {path: 'edit', component: CorpEditComponent},
   {path: 'edit/:id', component: CorpEditComponent, resolve: {corp: CorpResolver}},
   {path: 'details/:id', component: CorpDetailsComponent, resolve: {corp: CorpResolver}}
@@ -256,9 +307,13 @@ const routes: Routes =[
     MatMenuModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    MatPaginatorModule,
+    MatChipsModule,
+    MatTooltipModule,
     NgxUiLoaderModule,
     ConfirmDialogModule,
     MatSlideToggleModule,
+    OcticonModule,
     RouterModule.forChild(routes)
   ]
 

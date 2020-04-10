@@ -1,8 +1,9 @@
-import {Component, EventEmitter, NgModule, Output, ElementRef, ViewChild, HostListener} from '@angular/core';
+import {Component, EventEmitter, NgModule, Output, ElementRef, ViewChild, HostListener, OnInit} from '@angular/core';
 
 import { FunctionPageBar, FunctionHeaderInfo } from 'src/app/shared/function-items/function-items';
 import { fromEvent } from 'rxjs';
-import { throttleTime, map, pairwise, distinctUntilChanged, share } from 'rxjs/operators';
+import { throttleTime, map, pairwise, distinctUntilChanged, share, switchMap, mergeMap, combineAll } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 
 const MAX_PADDING = 28;
@@ -14,7 +15,7 @@ const MIN_HEIGHT = 20;
   templateUrl: './function-page-header.component.html',
   styleUrls: ['./function-page-header.component.scss']
 })
-export class FunctionPageHeaderComponent{
+export class FunctionPageHeaderComponent implements OnInit{
 
 
   @Output() private heightChange = new EventEmitter();
@@ -57,37 +58,52 @@ export class FunctionPageHeaderComponent{
   ngAfterViewInit() {
     const content = document.querySelector('.mat-sidenav-content');
     fromEvent(content, 'scroll').pipe(
-      // throttleTime(10), // only emit every 10 ms
+      throttleTime(10), // only emit every 10 ms
+
       map(() => content.scrollTop), // get vertical scroll position
-      // pairwise(), // look at this and the last emitted element
-      // //map(([y1, y2]): Direction => (y2 < y1 ? Direction.Up : Direction.Down)), // compare this and the last element to figure out scrolling direction
-      // distinctUntilChanged(), // only emit when scrolling direction changed
-      // share(), // share a single subscription to the underlying sequence in case of multiple subscribers
-    ).subscribe(
-      (y) => {
+      pairwise(), // look at this and the last emitted element
 
-        if (this.func.info.search){
+      map(([y0,y]):number => {
+        console.log("scroll Top is: " + y0 + "-" + y)
 
-          let newPadding: number = MAX_PADDING - y / 2;
-
-          console.log("set padding:" + newPadding)
-          if (newPadding > MAX_PADDING){
-            this.padding = MAX_PADDING;
-          }else if (newPadding < MIN_PADDING){
-            this.padding = MIN_PADDING
-          }else{
-            this.padding = newPadding;
-          }
-          console.log("set padding:" + this.padding)
-          this.heightChange.emit(this.padding * 2 + MIN_HEIGHT);
-          console.log(y)
+        if (y0 < (MIN_HEIGHT + MAX_PADDING) ){
+          return  MAX_PADDING - (y + y0) / 2 / 2;
+        }else{
+          return  MAX_PADDING - y / 2;
         }
+        
+
+      } ),
+      // //map(([y1, y2]): Direction => (y2 < y1 ? Direction.Up : Direction.Down)), // compare this and the last element to figure out scrolling direction
+      distinctUntilChanged(), // only emit when scrolling direction changed
+      share(), // share a single subscription to the underlying sequence in case of multiple subscribers
+    ).subscribe(
+      (padding) => {
+
+        // if (y2 !== this.pp[0] && y1 !== this.pp[1]){
+     
+
+          if (this.func.info.search ){
+
+            console.log("set padding:" + padding)
+            if (padding > MAX_PADDING){
+              this.padding = MAX_PADDING;
+            }else if (padding < MIN_PADDING){
+              this.padding = MIN_PADDING
+            }else{
+              this.padding = padding;
+            }
+         
+            this.heightChange.emit(this.padding * 2 + MIN_HEIGHT);
+           
+          }
+        //}
       }
     );
 
 }
   
-  constructor(private func: FunctionPageBar) {
+  constructor(private _route: ActivatedRoute, private func: FunctionPageBar) {
     func.getLoad().subscribe(info => {
  
 
@@ -102,6 +118,11 @@ export class FunctionPageHeaderComponent{
       this.padding = MAX_PADDING;
       this.heightChange.emit(height);
     });
+  }
+
+
+  ngOnInit(): void {
+    this._route.queryParamMap.subscribe(paramMap => this.searchKey = paramMap.get('key') || '');
   }
 
 

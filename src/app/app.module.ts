@@ -25,11 +25,12 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {CdkAccordionModule} from '@angular/cdk/accordion';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatPaginatorModule, MatPaginatorIntl} from '@angular/material/paginator';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { GeneralErrorInterceptor } from './general-error.interceptor';
+import { GeneralErrorInterceptor } from './shared/general-error.interceptor';
 import { AuthInterceptor } from "./auth/interceptors/auth.interceptor";
 
 import { LoginComponent } from './login/login.component';
@@ -45,6 +46,7 @@ import { OcticonModule } from './tools/octicon/octicon.directive';
 import { NavigationFocusModule } from './tools/navigation-focus/navigation-focus';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher, MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { paginatorCN } from './tools/paginator-cn/paginator-cn';
 
 
 @NgModule({
@@ -83,6 +85,7 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/mat
     MatCardModule,
     MatDialogModule,
     FlexLayoutModule,
+    MatPaginatorModule,
     QRCodeModule,
     NgxUiLoaderModule,
     ToastrModule.forRoot(),
@@ -111,6 +114,7 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/mat
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
     },
+    { provide: MatPaginatorIntl , useValue: paginatorCN() },
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
     JwtHelperService],
   bootstrap: [AppComponent]

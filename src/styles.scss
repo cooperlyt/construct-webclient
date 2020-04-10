@@ -17,7 +17,7 @@
 
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
 
 
 summary {
@@ -43,6 +43,15 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.5;
 }
 
+a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+a {
+  background-color: initial;
+}
+
 label {
   font-weight: 600;
 }
@@ -66,14 +75,13 @@ dl.form-group{
   border-bottom: 1px solid rgba(0,0,0,.12);
 
   .head-nav{
+    display: -webkit-flex;
     display: flex;
     width: 80%;
-
-    display: -webkit-flex;
     -webkit-flex-direction: row;
-
-    display: flex;
     flex-direction: row;
+    justify-content:center;
+    align-items: center;
 
     .flex-spacer{
       -webkit-box-flex: 1;

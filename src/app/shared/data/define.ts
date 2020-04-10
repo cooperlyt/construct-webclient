@@ -52,7 +52,7 @@ enum DeveloperLevel{
 }
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DataUtilsService{
 
     
@@ -60,6 +60,12 @@ export class DataUtilsService{
     groupIdTypes = Object.keys(GroupIdType).map(key => ({key: key, label:GroupIdType[key]}));
 
     personIdType = Object.keys(PersonIdType).map(key => ({key: key, label: PersonIdType[key]}));
+
+    joinType = Object.keys(ConstructJoinType).map(key => ({key: key, label: ConstructJoinType[key]}));
+
+    splitTypeLabel(types: string): string[]{
+        return types.split(" ").filter(key => key.trim() != '').map(key => ConstructJoinType[key]);
+    }
 
     getLevel(joinType: ConstructJoinType){
         switch (joinType){

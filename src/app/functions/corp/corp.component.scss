@@ -2,7 +2,35 @@
     margin-top: -16px
 }
 
+.valid-toggle{
+    padding-left: 10px;
+}
 
 .context-view-head h3{
-    padding: 6px 0;
+
+    padding: 10px 0 10px 10px;
+
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.context-view-head .actions{
+    padding-bottom: 10px;
+}
+
+
+.mat-drawer-container , .mat-paginator{
+    background-color: inherit;
+}
+
+.repo-list-item mat-chip{
+    font-size: 12px;
+    // color: #0366d6;
+
+    // background-color: #f1f8ff;
+    min-height:20px;
+    padding: 2px 4px;
+    margin: 0 .5em .5em 0;
+    white-space: nowrap;    
+    border-radius: 4px;
 }
