@@ -34,3 +34,12 @@
     white-space: nowrap;    
     border-radius: 4px;
 }
+
+.head-filter-bar{
+    display: none;
+  
+    @media (max-width: 1140px) {
+      display: flex;
+  
+    }
+  }

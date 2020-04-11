@@ -185,6 +185,14 @@ button.close {
 
 
 // mdb 组件适配
+.mat-card {
+    margin: 10px 0;
+  }
+  
+.mat-form-field {
+    line-height: 1.5;
+}
+  
 
 .mdb.mat-card{
     padding: 0;

@@ -76,7 +76,7 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
 
     console.log("change :" + type);
 
-    if (type === this.params.type){
+    if (!type || type === '' || type === this.params.type){
       this._router.navigate([],{relativeTo: this._route,queryParams: {type: null}, queryParamsHandling: 'merge'})
     }else{
       this._router.navigate([],{relativeTo: this._route,queryParams: {type: type}, queryParamsHandling: 'merge'})
