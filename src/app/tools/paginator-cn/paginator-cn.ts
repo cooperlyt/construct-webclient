@@ -21,5 +21,6 @@ const getRangeLabel = (page: number, pageSize: number, length: number): string =
     p.previousPageLabel = '上一页';
     p.firstPageLabel = '第一页';
     p.lastPageLabel = '最后一页';
+    p.getRangeLabel = getRangeLabel; 
     return p;
 }

@@ -3,10 +3,16 @@
 <ngx-ui-loader></ngx-ui-loader>
 
 <div class="Subhead">
-    <h2 *ngIf="!corp" class="Subhead-heading">创建参建单位</h2>
-    <p class="Subhead-description">
+    <h2 class="Subhead-heading">{{!!corp ? '编辑' : '创建'}}参建单位</h2>
+
+    <p *ngIf="!corp" class="Subhead-description">
         每个参建单位可以有多种参建角色，如果只是想新增一种参建角色，请修改原参建单位.
     </p>
+
+    <p *ngIf="!!corp" class="Subhead-description">
+        请不要试图用更改名称的方式来达到成为其它单位的目地! 更改单位信息并不会更改曾经参与的历史业务数据中的单位信息,它们会保持业务建立时的单位情况.如需更改业务中的信息还需要运行相应的更正或变更业务! 
+    </p>
+
 </div>
 
 
@@ -14,9 +20,37 @@
 
 <form id="corp-form" [formGroup]="businessForm"  (ngSubmit)="onSubmit()">
 
+    <mat-card *ngIf="!businessForm.get('corpInfo')">
+        <mat-card-header>
+            <mat-card-title>{{corp.info.name}}</mat-card-title>
+            
+        </mat-card-header>
+
+        <mat-card-content>
+            
+            <ul class="striped list-unstyled">
+
+                
+   
+                <li>
+                    <strong>法    人：</strong>{{corp.info.ownerName}}
+                </li>
+                <li>
+                    <strong>{{corp.info.ownerIdType | personCardLabel}}：</strong>{{corp.info.ownerId}}
+                </li>
+                <li>
+                    <strong>地    址：</strong>{{corp.info.address}}
+                </li>
+                <li>
+                    <strong>联系电话：</strong>{{corp.info.tel}}
+                </li>
+            </ul>
+        </mat-card-content>
+
+    </mat-card>
 
 
-    <mat-card formGroupName="corpInfo">
+    <mat-card *ngIf="businessForm.get('corpInfo')"  formGroupName="corpInfo">
         <mat-card-header>
             <mat-card-title>基本信息</mat-card-title>
         </mat-card-header>

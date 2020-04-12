@@ -76,6 +76,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }
   
         if (!authReq.headers.has('Accept')) {
+          console.log("add accept json to http headers!")
           authReq = authReq.clone({ headers: authReq.headers.set('Accept', 'application/json') });
         }
         return next.handle(authReq)

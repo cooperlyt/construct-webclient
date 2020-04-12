@@ -7,7 +7,7 @@ import { PageResult } from 'src/app/shared/page-result';
 import { CustomEncoder } from 'src/app/shared/custom-encoder';
 
 export declare class CorpStautsResult {
-    code:string;
+    code:number;
     enable:boolean;
 }
 
@@ -20,16 +20,16 @@ export class CorpService{
         return null;
     }
 
-    corp(id: string):Observable<Corp>{
-        return null;
+    corp(id: number):Observable<Corp>{
+        return this._http.get<Corp>(`${environment.apiUrl}/construct-attach-corp/view/corp/${id}`);
     }
 
-    patchCreateCorp(business: CorpBusiness): Observable<string>{
-        return this._http.post<string>(`${environment.apiUrl}/construct-attach-corp/mgr/path/create`,business, {headers: {"Accept" : "text/plain"}});
+    patchCreateCorp(business: CorpBusiness): Observable<number>{
+        return this._http.post<number>(`${environment.apiUrl}/construct-attach-corp/mgr/path/create`,business, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
     }
     
 
-    changeCorpStatus(code: string,enable: boolean): Observable<CorpStautsResult>{
+    changeCorpStatus(code: number,enable: boolean): Observable<CorpStautsResult>{
         return this._http.delete<CorpStautsResult>(`${environment.apiUrl}/construct-attach-corp/mgr/${enable ? 'enable' : 'disable'}/${code}`)
     }
 

@@ -1,40 +1,28 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Routes, RouterModule, Router, Params, ParamMap } from '@angular/router';
 
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+
+import { Router, Params } from '@angular/router';
+
+
 
 import { Component, OnInit } from '@angular/core';
 import { faRegistered } from '@fortawesome/free-regular-svg-icons';
 import { SearchFunctionBase, SearchCondition, FunctionPageBar, PageFunctionBase } from 'src/app/shared/function-items/function-items';
 import { ActivatedRoute } from '@angular/router';
-import { CorpResolver } from './corp.resolver';
-import {MatCardModule} from '@angular/material/card';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatMomentDateModule } from "@angular/material-moment-adapter";
-import {MatChipsModule} from '@angular/material/chips';
-import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatSlideToggleModule, MatSlideToggleChange} from '@angular/material/slide-toggle';
+
 
 import { Corp } from 'src/app/shared/data/corp';
-import { GroupIdType, PersonIdType, ConstructJoinType, DataUtilsService } from 'src/app/shared/data/define';
+import { GroupIdType, PersonIdType, DataUtilsService, JoinType } from 'src/app/shared/data/define';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent, ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { CorpService } from './corp.service';
-import { NgxUiLoaderModule, NgxUiLoaderService } from 'ngx-ui-loader';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { catchError } from 'rxjs/operators';
 import { empty } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { CorpListResolver } from './corp-list.resolver';
+
 import { PageResult } from 'src/app/shared/page-result';
-import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
+import { PageEvent } from '@angular/material/paginator';
 
 
 
@@ -99,56 +87,8 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
     this._route.data.subscribe(data => this.dataPage = data.dataPage)
   }
 
-  
 }
 
-
-@Component({
-  selector: 'corp-details',
-  templateUrl: './corp-details.component.html'
-})
-export class CorpDetailsComponent extends PageFunctionBase implements OnInit{
-
-  constructor(
-    private _service: CorpService, 
-    private _route: ActivatedRoute,
-    private _router: Router,
-    _func: FunctionPageBar){
-    super(_route,_func);
-  }
-
-  corp:Corp;
-
-  enable:boolean;
-
-  statusWaiting: boolean = false;
-
-  edit():void{
-    this._router.navigate(['edit',{id: this.corp.corpCode}]);
-  }
-
-  enableToggleChange(){
-    if (this.enable !== this.corp.enable){
-      this.statusWaiting = true;
-      this._service.changeCorpStatus(this.corp.corpCode,this.enable).subscribe(result => {
-        if (this.corp.corpCode === result.code){
-          if (result.enable === this.enable){
-            this.corp.enable = result.enable;
-            this.statusWaiting = false;
-          }
-        }
-      })
-    }
-  }
-
-
-  ngOnInit(): void {
-    this._route.data.subscribe(data => {
-      this.corp = data.corp;
-      this.enable = data.corp.enable;
-    })
-  }
-}
 
 @Component({
   selector: 'corp-edit',
@@ -170,8 +110,8 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
 
 
-  getJoinTypeLabel(type: ConstructJoinType){
-    return ConstructJoinType[type]
+  getJoinTypeLabel(type: JoinType){
+    return JoinType[type]
   }
 
   get regsForm(): FormArray{
@@ -189,15 +129,15 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
   }
 
   private calcJoinTypes():void{
-    this.joinTypes = Object.keys(ConstructJoinType).filter(key => {
+    this.joinTypes = Object.keys(JoinType).filter(key => {
    
       if ((!this.corp ||  !this.corp.regs.find(reg => reg.id.type == key) )&&
         !this.businessForm.value.regs.find(reg => reg.id.type == key))
       return true;
-    }).map(key => ({id: key, name: ConstructJoinType[key]}));
+    }).map(key => ({id: key, name: JoinType[key]}));
   }
 
-  addJoinType(type: ConstructJoinType):void{
+  addJoinType(type: JoinType):void{
     console.log(type);
     this.regsForm.push(this._fb.group({
       id: this._fb.group({type: [type,Validators.required]}),
@@ -211,7 +151,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
     this.calcJoinTypes();
   }
 
-  onDeleteClick(type: ConstructJoinType):void{
+  onDeleteClick(type: JoinType):void{
     const dialogRef = this.dialog.open(ConfirmDialogComponent,{width:'400px',role:'alertdialog',data:{title:'移除确认', description: '确认要移除此角色？' , result: type }});
     dialogRef.afterClosed().subscribe(result => {
       if (result){
@@ -286,36 +226,4 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
 }
 
 
-const routes: Routes =[
-  {path: '' , component: CorpComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange', resolve:{dataPage: CorpListResolver}},
-  {path: 'edit', component: CorpEditComponent},
-  {path: 'edit/:id', component: CorpEditComponent, resolve: {corp: CorpResolver}},
-  {path: 'details/:id', component: CorpDetailsComponent, resolve: {corp: CorpResolver}}
-]
 
-@NgModule({
-  declarations: [CorpComponent,CorpEditComponent,CorpDetailsComponent],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FontAwesomeModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatInputModule,
-    MatSelectModule,
-    MatMenuModule,
-    MatDatepickerModule,
-    MatMomentDateModule,
-    MatPaginatorModule,
-    MatChipsModule,
-    MatTooltipModule,
-    NgxUiLoaderModule,
-    ConfirmDialogModule,
-    MatSlideToggleModule,
-    OcticonModule,
-    RouterModule.forChild(routes)
-  ]
-
-})
-export class CorpModule { }

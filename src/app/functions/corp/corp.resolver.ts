@@ -10,7 +10,9 @@ export class CorpResolver implements Resolve<Corp>{
     constructor(private _service: CorpService){}
     
     resolve(route: import("@angular/router").ActivatedRouteSnapshot, state: import("@angular/router").RouterStateSnapshot): Corp | import("rxjs").Observable<Corp> | Promise<Corp> {
-       return this._service.corp(route.params['id']);
+       
+        const id = route.params['id'] || route.parent.params['id']
+        return this._service.corp(id);
     }
 
 }

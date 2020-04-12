@@ -1,4 +1,4 @@
-import { GroupIdType, PersonIdType, ConstructJoinType, BusinessSource, BusinessStatus, OperateType } from './define';
+import { GroupIdType, PersonIdType, BusinessSource, BusinessStatus, OperateType, JoinType } from './define';
 
 
 export class CorpInfo{
@@ -22,12 +22,12 @@ export class RegInfo{
 
 export class CorpReg{
 
-    id: {type: ConstructJoinType, corp: Corp}
+    id: {type: JoinType, corp: Corp}
     info: RegInfo;
 }
 
 export class Corp{
-    corpCode: string;
+    corpCode: number;
     enable: boolean;
     info: CorpInfo;
     types: string;
@@ -36,7 +36,7 @@ export class Corp{
 }
 
 export class BusinessReg{
-    id: {type: ConstructJoinType, business: CorpBusiness}
+    id: {type: JoinType, business: CorpBusiness}
     operateType: OperateType;
     info: RegInfo;
 }
@@ -48,7 +48,7 @@ export class CorpBusiness{
     source: BusinessSource;
     status: BusinessStatus;
     info: boolean;
-    corpInfo: CorpInfo;
+    corpInfo: number;
     regs: BusinessReg[];
     corpCode: string;
 }

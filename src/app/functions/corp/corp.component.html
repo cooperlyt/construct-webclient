@@ -8,8 +8,6 @@
                 </mat-slide-toggle>
             </div>
                 <h3>
-       
-              
                     共 {{dataPage.totalElements | number}} 个{{params.showDisabled ? '' : '生效'}}备案单位
                 </h3>  
         
@@ -79,8 +77,8 @@
 
             <div class="mt-n1">
                 <div class="f4 text-normal">
-                    <a class="v-align-middle" [routerLink]="'details/' + item.corpCode">
-                      {{item.corpCode}} / {{item.info.name}}
+                    <a class="v-align-middle"  [routerLink]="'details/' + item.corpCode + '/info'">
+                      {{item.corpCode}} / <span [class.line-through]="!item.enable">{{item.info.name}}</span> 
                     </a>
          
                 </div>

@@ -1,0 +1,81 @@
+
+<div class="row">
+    <div class="col-md-7">
+    
+        <mat-card >
+            <mat-card-header>
+                <mat-card-title [class.line-through]="!corp.enable" >{{corp.info.name}}</mat-card-title>
+                <mat-card-subtitle>{{corp.corpCode}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+
+                <table mat-table [dataSource]="corp.regs">
+
+                    <ng-container matColumnDef="type">
+                        <th mat-header-cell *matHeaderCellDef> 类型 </th>
+                        <td mat-cell *matCellDef="let element">  {{element.id.type | joinTypeLabel}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="level">
+                        <th mat-header-cell *matHeaderCellDef> 资质等级 </th>
+                        <td mat-cell *matCellDef="let element">  {{element.info.level | levelLabel : element.id.type}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="number">
+                        <th mat-header-cell *matHeaderCellDef>资质证书号</th>
+                        <td mat-cell *matCellDef="let element"> {{element.info.levelNumber}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="limit">
+                        <th mat-header-cell *matHeaderCellDef>到期时间</th>
+                        <td mat-cell *matCellDef="let element">{{element.info.regTo | date: 'yyyy年MM月dd日'}}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="['type','level','number','limit']"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['type','level','number','limit'];"></tr>
+                </table>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-md-5 mb-1">
+
+        <mat-card>
+
+            <mat-card-header>
+                <mat-card-title>企业信息</mat-card-title>
+                <mat-card-subtitle>                        <strong>{{corp.info.groupIdType | groupCardLabel}}：</strong>{{corp.info.groupId}}</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content>
+            
+                <ul class="striped list-unstyled">
+       
+                    <li>
+                        <strong>法    人：</strong>{{corp.info.ownerName}}
+                    </li>
+                    <li>
+                        <strong>{{corp.info.ownerIdType | personCardLabel}}：</strong>{{corp.info.ownerId}}
+                    </li>
+                    <li>
+                        <strong>地    址：</strong>{{corp.info.address}}
+                    </li>
+                    <li>
+                        <strong>联系电话：</strong>{{corp.info.tel}}
+                    </li>
+                </ul>
+            </mat-card-content>
+
+            <mat-card-actions>
+                <button mat-button (click)="edit()" >编辑</button>
+                <button mat-button [color]="corp.enable ? 'warn' : 'primary' " (click)="changeStatus()">
+                    <mat-icon *ngIf="statusWaiting">
+                        <mat-progress-spinner color="primary" diameter="20" mode="indeterminate"></mat-progress-spinner> 
+                    </mat-icon>
+                    {{corp.enable ? '禁用' : '启用'}}
+                    </button>
+            </mat-card-actions>
+
+
+        </mat-card>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 
 export enum GroupIdType{
     COMPANY_CODE = "营业执照",
@@ -15,13 +15,13 @@ export enum PersonIdType{
     GA_ID = "港澳通行证"
 }
 
-export enum ConstructJoinType{
+export enum JoinType{
     Developer = "开发单位",
     Design = "设计单位",
-    Construct = "建设单位",
-    Supervisor = "监理单位",
-    FireCheck = "防火监理单位",
-    LandExploration = "土地勘查单位"
+    Construct = "施工单位",
+    Supervisor = "工程监理", 
+    FireCheck = "消防质检",
+    LandExploration = "土地勘查",
 }
 
 export enum BusinessSource{
@@ -44,12 +44,16 @@ export enum OperateType{
     QUOTED = "引用"
 }
 
-enum DeveloperLevel{
-    一级 = 1,
-    二级 = 2,
-    三级 = 3,
-    四级 = 4
+
+export const LEVELS: {[key:string]:{[key:number]:string}} = {
+    Developer : {1:'一级', 2: '二级',3:'三级',4:'四级'},
+    Design:{1:'甲级',2: '乙级',3: '丙级'},
+    Construct:{0:'特级',1:'一级',2: '二级',3:'三级'},
+    Supervisor:{1:'甲级',2: '乙级',3: '丙级'},
+    LandExploration:{1:'甲级',2: '乙级',3: '丙级'},
+    FireCheck:{1:'甲级',2: '乙级',3: '丙级'}
 }
+
 
 
 @Injectable({providedIn: 'root'})
@@ -60,27 +64,32 @@ export class DataUtilsService{
 
     personIdType = Object.keys(PersonIdType).map(key => ({key: key, label: PersonIdType[key]}));
 
-    joinType = Object.keys(ConstructJoinType).map(key => ({key: key, label: ConstructJoinType[key]}));
+    joinType = Object.keys(JoinType).map(key => ({key: key, label: JoinType[key]}));
+
+    levelLabel(type:string,level: number):string{
+        return LEVELS[type][level];
+    }
 
     joinTypeLabel(key: string):string{
-        return ConstructJoinType[key];
+        return JoinType[key];
     }
 
     splitTypeLabel(types: string): string[]{
-        return types.split(" ").filter(key => key.trim() != '').map(key => ConstructJoinType[key]);
+        return types.split(" ").filter(key => key.trim() != '').map(key => JoinType[key]);
     }
 
-    getLevel(joinType: ConstructJoinType){
+    getLevel(joinType: JoinType){
         switch (joinType){
-            case ConstructJoinType.Developer: {
+            case JoinType.Developer: {
 
                 break;
             }
-            case ConstructJoinType.Design:{
+            case JoinType.Design:{
 
                 break;
             }
         }
     }
-
 }
+
+
