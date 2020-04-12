@@ -1,18 +1,17 @@
-import { GroupIdType, PersonIdType, BusinessSource, BusinessStatus, OperateType, JoinType } from './define';
 
 
-export class CorpInfo{
+export declare class CorpInfo{
     name: string;
-    groupIdType: GroupIdType;
+    groupIdType: string; // GroupIdType;
     groupId: string;
     ownerName: string;
-    ownerIdType: PersonIdType;
+    ownerIdType:string;// PersonIdType;
     ownerId: string;
     address: string;
     tel: string;
 }
 
-export class RegInfo{
+export declare class RegInfo{
     
     regTo: Date;
     level: number;
@@ -20,13 +19,14 @@ export class RegInfo{
 
 }
 
-export class CorpReg{
+export declare class CorpReg{
 
-    id: {type: JoinType, corp: Corp}
+    id: {type: string, // JoinType
+         corp?: Corp}
     info: RegInfo;
 }
 
-export class Corp{
+export declare class Corp{
     corpCode: number;
     enable: boolean;
     info: CorpInfo;
@@ -35,18 +35,19 @@ export class Corp{
     regs: CorpReg[];
 }
 
-export class BusinessReg{
-    id: {type: JoinType, business: CorpBusiness}
-    operateType: OperateType;
+export declare class BusinessReg{
+    id: {type: string,//JoinType,
+         business?: CorpBusiness}
+    operateType: string;//OperateType;
     info: RegInfo;
 }
 
-export class CorpBusiness{
+export declare class CorpBusiness{
     id: number;
     applyTime: Date;
     regTime: Date;
-    source: BusinessSource;
-    status: BusinessStatus;
+    source: string;//BusinessSource;
+    status: string;//BusinessStatus;
     info: boolean;
     corpInfo: number;
     regs: BusinessReg[];

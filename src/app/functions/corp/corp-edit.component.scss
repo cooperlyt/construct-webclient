@@ -29,3 +29,14 @@
 .invalid .type-select-label h2{
     color: #f44336;
 }
+
+mat-card-actions{
+    display: flex;
+    justify-content:flex-end;
+    
+    margin: 0;
+}
+
+table .actions {
+    width: 110px;
+}

@@ -11,8 +11,8 @@ import { SearchFunctionBase, SearchCondition, FunctionPageBar, PageFunctionBase 
 import { ActivatedRoute } from '@angular/router';
 
 
-import { Corp } from 'src/app/shared/data/corp';
-import { GroupIdType, PersonIdType, DataUtilsService, JoinType } from 'src/app/shared/data/define';
+import { Corp, CorpInfo, CorpReg, CorpBusiness } from 'src/app/shared/data/corp';
+import { DataUtilsService, JoinType } from 'src/app/shared/data/define';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { CorpService } from './corp.service';
@@ -102,23 +102,23 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
   businessForm: FormGroup;
 
-  groupIdTypes = Object.keys(GroupIdType).map(key => ({id: key, name:GroupIdType[key]}));
-
-  personIdType = Object.keys(PersonIdType).map(key => ({id: key, name: PersonIdType[key]}));
-
   joinTypes:{id: string, name: string}[];
 
+  oldJoinTypes: {type:string,level: number, number: string, limit: Date, del: boolean}[];
 
-
-  getJoinTypeLabel(type: JoinType){
-    return JoinType[type]
-  }
+  removedTypes :Set<string> = new Set<string>();
 
   get regsForm(): FormArray{
     return this.businessForm.get('regs') as FormArray;
   }
 
-  constructor(public dialog: MatDialog,
+  typeIsOld(type: string):boolean{
+    return !!this.corp && !!this.corp.regs.find(reg => reg.id.type == type);
+  }
+
+  constructor(
+    public dataUtils: DataUtilsService,
+    public dialog: MatDialog,
     private _fb: FormBuilder,
     private _route: ActivatedRoute,
     private _service: CorpService,
@@ -129,69 +129,128 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
   }
 
   private calcJoinTypes():void{
+
+    if (this.corp){
+      this.oldJoinTypes = this.corp.regs
+        .filter(cr => (!this.businessForm.value.regs.find(reg => (reg.id.type == cr.id.type))))
+        .map(reg => ({type: reg.id.type, level: reg.info.level, number: reg.info.levelNumber, limit: reg.info.regTo, del: !! this.removedTypes.has(reg.id.type)}));
+    }
     this.joinTypes = Object.keys(JoinType).filter(key => {
-   
-      if ((!this.corp ||  !this.corp.regs.find(reg => reg.id.type == key) )&&
-        !this.businessForm.value.regs.find(reg => reg.id.type == key))
-      return true;
+      if (!this.corp){
+        return !this.businessForm.value.regs.find(reg => reg.id.type == key)
+      }else{
+        return !this.businessForm.value.regs.find(reg => (reg.id.type == key)) 
+          && !this.corp.regs.find(reg => (reg.id.type == key));
+      }
     }).map(key => ({id: key, name: JoinType[key]}));
   }
 
-  addJoinType(type: JoinType):void{
+  private addInfoForm(info? : CorpInfo){
+    this.businessForm.addControl('corpInfo' , this._fb.group({
+      name: [info ? info.name : null, [Validators.required,Validators.maxLength(128)]],
+      groupIdType: [info ? info.groupIdType : null, Validators.required],
+      groupId: [info ? info.groupId : null, [Validators.required,Validators.maxLength(128)]],
+      ownerName: [info ? info.ownerName : null, [Validators.required, Validators.maxLength(32)]],
+      ownerIdType: [info ? info.ownerIdType : null, Validators.required],
+      ownerId: [info ? info.ownerId : null, [Validators.required, Validators.maxLength(32)]],
+      address: [info ? info.address : null,Validators.maxLength(256)],
+      tel: [info ? info.tel: null,Validators.maxLength(16)],
+    }));
+  }
+
+
+
+  infoEdit():void{
+    if (this.corp){
+      this.addInfoForm(this.corp.info);
+    }
+  }
+
+  cancelInfoEdit():void{
+    if (this.corp){
+      this.businessForm.removeControl("corpInfo");
+    }
+  }
+
+  addJoinType(type: string):void{
     console.log(type);
+    let oldReg: CorpReg = null;
+    if (this.corp){
+      oldReg = this.corp.regs.find(reg => reg.id.type == type)
+    }
+
     this.regsForm.push(this._fb.group({
       id: this._fb.group({type: [type,Validators.required]}),
-      operateType: ["CREATE",Validators.required],
+      operateType: [oldReg ? "MODIFY" : "CREATE",Validators.required],
       info: this._fb.group({     
-        regTo: [,Validators.required],
-        level: [,Validators.required],
-        levelNumber: ['',Validators.maxLength(32)]
+        regTo: [oldReg ? oldReg.info.regTo : null,Validators.required],
+        level: [oldReg ? oldReg.info.level : null,Validators.required],
+        levelNumber: [oldReg ? oldReg.info.levelNumber : null ,Validators.maxLength(32)]
       })
     }));
     this.calcJoinTypes();
   }
 
-  onDeleteClick(type: JoinType):void{
+  private removeType(type: string):void{
+    for(let i = 0; i< this.regsForm.length; i++) {
+      if (this.regsForm.value[i].id.type == type){
+        this.regsForm.removeAt(i);
+        break;
+      }
+    }
+  }
+
+  restoreType(type: string):void{
+    this.removeType(type);
+    this.removedTypes.delete(type);
+    this.calcJoinTypes();
+  }
+
+  deleteType(type: string):void{
     const dialogRef = this.dialog.open(ConfirmDialogComponent,{width:'400px',role:'alertdialog',data:{title:'移除确认', description: '确认要移除此角色？' , result: type }});
     dialogRef.afterClosed().subscribe(result => {
       if (result){
-        if (this.corp){
-
-        }else{
-          for(let i = 0; i< this.regsForm.length; i++) {
-            if (this.regsForm.value[i].id.type == result){
-              this.regsForm.removeAt(i);
-              this.calcJoinTypes();
-            }
-          }
+        this.removeType(result);
+        if (!!this.corp && !!this.corp.regs.find(reg => (reg.id.type == result))){
+          this.removedTypes.add(result);
         }
+        this.calcJoinTypes();
       }
-
     });
   }
 
-
   get joinTypeVaild(): boolean{
     if (this.corp){
-
+      return !!this.corp.regs.find(reg => (!this.removedTypes.has(reg.id.type))) || this.regsForm.length > 0
+    }else{
+      return this.regsForm.length > 0 ;
     }
-    return this.regsForm.length > 0 ;
+    
   }
 
   get valid(): boolean{
-    return this.businessForm.valid && this.joinTypeVaild;
+    return this.businessForm.valid && this.joinTypeVaild && (!this.corp || !!this.businessForm.value.corpInfo || (this.removedTypes.size > 0) || (this.regsForm.value.length > 0));
   }
 
   onSubmit() {
     this._ngxService.start();
-    console.warn(this.businessForm.value);
-    this._service.patchCreateCorp(this.businessForm.value).pipe(catchError(err=>{
-      this._ngxService.stop();
-      this._toastr.error("请联系管理员或请稍后再试！","存储数据失败");
-      return empty();
-    })).subscribe(id => {
-      this._ngxService.stop();
-    });
+    
+    let business: CorpBusiness = this.businessForm.value;
+ 
+    if (this.corp){
+      this.removedTypes.forEach(key => business.regs.push({id: {type: key}, operateType: 'DELETE', info: this.corp.regs.find(reg => reg.id.type == key).info}));
+      console.log(business);
+    }else{
+      this._service.patchCreateCorp(business).pipe(catchError(err=>{
+        this._ngxService.stop();
+        this._toastr.error("请联系管理员或请稍后再试！","存储数据失败");
+        return empty();
+      })).subscribe(id => {
+        this._ngxService.stop();
+      });
+    }
+    
+
   }
 
   ngOnInit(): void {
@@ -206,16 +265,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
 
       if (!this.corp){
-        this.businessForm.addControl('corpInfo' , this._fb.group({
-          name: ['', [Validators.required,Validators.maxLength(128)]],
-          groupIdType: ['', Validators.required],
-          groupId: ['', [Validators.required,Validators.maxLength(128)]],
-          ownerName: ['', [Validators.required, Validators.maxLength(32)]],
-          ownerIdType: ['', Validators.required],
-          ownerId: ['', [Validators.required, Validators.maxLength(32)]],
-          address: ['',Validators.maxLength(256)],
-          tel: ['',Validators.maxLength(16)],
-        }));
+        this.addInfoForm();
       }
 
       this.calcJoinTypes();

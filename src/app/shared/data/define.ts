@@ -45,7 +45,7 @@ export enum OperateType{
 }
 
 
-export const LEVELS: {[key:string]:{[key:number]:string}} = {
+const LEVELS: {[key:string]:{[key:number]:string}} = {
     Developer : {1:'一级', 2: '二级',3:'三级',4:'四级'},
     Design:{1:'甲级',2: '乙级',3: '丙级'},
     Construct:{0:'特级',1:'一级',2: '二级',3:'三级'},
@@ -54,11 +54,40 @@ export const LEVELS: {[key:string]:{[key:number]:string}} = {
     FireCheck:{1:'甲级',2: '乙级',3: '丙级'}
 }
 
+@Pipe({name: 'joinTypeLabel'})
+export class JoinTypeLabelPipe implements PipeTransform {
 
+    transform(value: JoinType) {
+        return JoinType[value];
+    }
+    
+}
+
+@Pipe({name: 'levelLabel'})
+export class LevelLabelPipe implements PipeTransform {
+
+    transform(value: number, type: JoinType) {
+        return LEVELS[type][value]
+    }
+    
+}
+
+@Pipe({name: 'personCardLabel'})
+export class PersonCardLabel implements PipeTransform {
+    transform(value: PersonIdType) {
+        return PersonIdType[value];
+    }
+}
+
+@Pipe({name: 'groupCardLabel'})
+export class GroupCardLabel implements PipeTransform{
+    transform(value: GroupIdType) {
+        return GroupIdType[value];
+    }
+}
 
 @Injectable({providedIn: 'root'})
 export class DataUtilsService{
-
 
     groupIdTypes = Object.keys(GroupIdType).map(key => ({key: key, label:GroupIdType[key]}));
 
@@ -70,25 +99,12 @@ export class DataUtilsService{
         return LEVELS[type][level];
     }
 
-    joinTypeLabel(key: string):string{
-        return JoinType[key];
-    }
-
     splitTypeLabel(types: string): string[]{
         return types.split(" ").filter(key => key.trim() != '').map(key => JoinType[key]);
     }
 
-    getLevel(joinType: JoinType){
-        switch (joinType){
-            case JoinType.Developer: {
-
-                break;
-            }
-            case JoinType.Design:{
-
-                break;
-            }
-        }
+    getLevels(joinType: string):{[key: number]: string}{
+        return LEVELS[joinType]
     }
 }
 
