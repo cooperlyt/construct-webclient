@@ -41,7 +41,8 @@
 
             <a [matMenuTriggerFor]="typeMenu" class="filter-menu" 
                 [class.filtered]="!!params.type">
-                {{params.type ? dataUtil.joinTypeLabel(params.type) : '全部类型'}}
+                <span *ngIf="params.type">{{params.type | joinTypeLabel}}</span>
+                <span *ngIf="!params.type">全部类型</span>
             </a>
 
         </div>

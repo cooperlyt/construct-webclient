@@ -18,7 +18,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-di
 import { CorpService } from './corp.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { catchError } from 'rxjs/operators';
-import { empty } from 'rxjs';
+import { empty, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { PageResult } from 'src/app/shared/page-result';
@@ -97,6 +97,8 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
 })
 export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
+
+  test = [{key: 1, label: '甲级'} ,{key: 2, label: '乙级'},{key: 3, label: '丙级'}];
 
   corp: Corp;
 
@@ -236,19 +238,24 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
     this._ngxService.start();
     
     let business: CorpBusiness = this.businessForm.value;
+
+    let save$:Observable<number>;
  
     if (this.corp){
       this.removedTypes.forEach(key => business.regs.push({id: {type: key}, operateType: 'DELETE', info: this.corp.regs.find(reg => reg.id.type == key).info}));
       console.log(business);
+      save$ = this._service.patchCorp(business,this.corp.corpCode);
     }else{
-      this._service.patchCreateCorp(business).pipe(catchError(err=>{
-        this._ngxService.stop();
-        this._toastr.error("请联系管理员或请稍后再试！","存储数据失败");
-        return empty();
-      })).subscribe(id => {
-        this._ngxService.stop();
-      });
+      save$ = this._service.patchCorp(business);
     }
+
+    save$.pipe(catchError(err=>{
+      this._ngxService.stop();
+      this._toastr.error("请联系管理员或请稍后再试！","存储数据失败");
+      return empty();
+    })).subscribe(id => {
+      this._ngxService.stop();
+    });
     
 
   }

@@ -1,10 +1,10 @@
 import { NgModule} from "@angular/core";
-import { JoinTypeLabelPipe, LevelLabelPipe, GroupCardLabel, PersonCardLabel } from './define';
+import { JoinTypeLabelPipe, LevelLabelPipe, GroupCardLabel, PersonCardLabel, LevelKeyLabel } from './define';
 
 
 
 @NgModule({
-    declarations:[JoinTypeLabelPipe,LevelLabelPipe,GroupCardLabel,PersonCardLabel],
-    exports: [JoinTypeLabelPipe,LevelLabelPipe,GroupCardLabel,PersonCardLabel]
+    declarations:[JoinTypeLabelPipe,LevelLabelPipe,GroupCardLabel,PersonCardLabel,LevelKeyLabel],
+    exports: [JoinTypeLabelPipe,LevelLabelPipe,GroupCardLabel,PersonCardLabel,LevelKeyLabel]
 })
 export class SharedDataModule{}

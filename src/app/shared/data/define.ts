@@ -57,7 +57,7 @@ const LEVELS: {[key:string]:{[key:number]:string}} = {
 @Pipe({name: 'joinTypeLabel'})
 export class JoinTypeLabelPipe implements PipeTransform {
 
-    transform(value: JoinType) {
+    transform(value: string) {
         return JoinType[value];
     }
     
@@ -74,16 +74,24 @@ export class LevelLabelPipe implements PipeTransform {
 
 @Pipe({name: 'personCardLabel'})
 export class PersonCardLabel implements PipeTransform {
-    transform(value: PersonIdType) {
+    transform(value: string) {
         return PersonIdType[value];
     }
 }
 
 @Pipe({name: 'groupCardLabel'})
 export class GroupCardLabel implements PipeTransform{
-    transform(value: GroupIdType) {
+    transform(value: string) {
         return GroupIdType[value];
     }
+}
+
+@Pipe({name: "levelKeyValue"})
+export class LevelKeyLabel implements PipeTransform{
+    transform(value: string):{key:number,label: string}[]{
+        return Object.keys(LEVELS[value]).map(key => ({key: Number(key), label: LEVELS[value][key]}));
+    }
+    
 }
 
 @Injectable({providedIn: 'root'})

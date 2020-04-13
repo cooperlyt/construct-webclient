@@ -181,7 +181,7 @@
 
 
 
-    <mat-card *ngIf="!!oldJoinTypes">
+    <mat-card *ngIf="!!oldJoinTypes &&  oldJoinTypes.length > 0">
 
         <mat-card-content>
 
@@ -237,8 +237,7 @@
 
         <mat-card *ngFor="let reg of regsForm.controls; let i=index">
             <mat-card-header class="tools-card-header">
-                <mat-card-title>{{regsForm.value[i].id.type | joinTypeLabel}} 备案信息</mat-card-title>
-                
+                <mat-card-title>{{regsForm.value[i].id.type | joinTypeLabel}} </mat-card-title>
                 <div class="actions">
                     <button *ngIf="typeIsOld(regsForm.value[i].id.type)" 
                     (click)="restoreType(regsForm.value[i].id.type)"
@@ -266,9 +265,9 @@
 
                         <mat-select formControlName="level" required>
                             <mat-option>--</mat-option>
-                            <mat-option [value]="8">-tttt</mat-option>
-                            <mat-option *ngFor="let type of dataUtils.getLevels(regsForm.value[i].id.type) | keyvalue" [value]="type.key">
-                                {{type.value}} 
+                 
+                            <mat-option *ngFor="let type of regsForm.value[i].id.type | levelKeyValue" [value]="type.key">
+                                {{type.label}} 
                             </mat-option>
                         </mat-select>
 

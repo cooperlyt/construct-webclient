@@ -24,10 +24,11 @@ export class CorpService{
         return this._http.get<Corp>(`${environment.apiUrl}/construct-attach-corp/view/corp/${id}`);
     }
 
-    patchCreateCorp(business: CorpBusiness): Observable<number>{
-        return this._http.post<number>(`${environment.apiUrl}/construct-attach-corp/mgr/path/create`,business, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
+
+    patchCorp(business: CorpBusiness, code?: number): Observable<number>{
+
+        return this._http.post<number>(`${environment.apiUrl}/construct-attach-corp/mgr/path/${code ? 'modify/' + code: 'create'}`,business, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
     }
-    
 
     changeCorpStatus(code: number,enable: boolean): Observable<CorpStautsResult>{
         return this._http.delete<CorpStautsResult>(`${environment.apiUrl}/construct-attach-corp/mgr/${enable ? 'enable' : 'disable'}/${code}`)
