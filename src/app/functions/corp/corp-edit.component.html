@@ -209,7 +209,7 @@
 
                 <ng-container matColumnDef="actions">
                     <th class="actions" mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element">
+                    <td class="actions" mat-cell *matCellDef="let element">
                         <button *ngIf="!element.del" type="button" mat-icon-button (click)="addJoinType(element.type)">
                             <mat-icon color="primary">edit</mat-icon>
                         </button>
