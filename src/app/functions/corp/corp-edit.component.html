@@ -13,6 +13,7 @@
         请不要试图用更改名称的方式来达到成为其它单位的目地! 更改单位信息并不会更改曾经参与的历史业务数据中的单位信息,它们会保持业务建立时的单位情况.如需更改业务中的信息还需要运行相应的更正或变更业务! 
     </p>
 
+
 </div>
 
 
@@ -29,7 +30,7 @@
             <ul class="striped list-unstyled field-info-list">
 
                 <li>
-                    <strong>{{corp.info.groupIdType | groupCardLabel}}：</strong>{{corp.info.ownerName}}
+                    <strong>{{corp.info.groupIdType | groupCardLabel}}：</strong>{{corp.info.groupId}}
                 </li>
    
                 <li>
@@ -90,12 +91,15 @@
 
                 <mat-form-field class="col-sm-8">
                     <mat-label>证件编号</mat-label>
-                    <input matInput formControlName="groupId" required>
+                    <input [errorStateMatcher]="groupNumberParentMatcher" matInput formControlName="groupId" required>
                     <mat-error *ngIf="businessForm.get('corpInfo').get('groupId').hasError('required')">
                         编号 <strong>不能为空</strong>
                     </mat-error>
                     <mat-error *ngIf="businessForm.get('corpInfo').get('groupId').hasError('maxlength')">
                         编号长度不能超过 <strong>32</strong>
+                    </mat-error>
+                    <mat-error *ngIf="businessForm.get('corpInfo').hasError('group-number')">
+                        此编号的单位已经存在
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -130,14 +134,17 @@
 
                 </mat-form-field>
 
-                <mat-form-field class="col-md-6 col-sm-8" required>
+                <mat-form-field class="col-md-6 col-sm-8" required >
                     <mat-label>法人证件编号</mat-label>
-                    <input matInput formControlName="ownerId" required>
+                    <input matInput [errorStateMatcher]="identityNumberParentMatcher" formControlName="ownerId" required>
                     <mat-error *ngIf="businessForm.get('corpInfo').get('ownerId').hasError('required')">
                         编号 <strong>不能为空</strong>
                     </mat-error>
                     <mat-error *ngIf="businessForm.get('corpInfo').get('ownerId').hasError('maxlength')">
                         编号长度不能超过 <strong>32</strong>
+                    </mat-error>
+                    <mat-error *ngIf="businessForm.get('corpInfo').hasError('identity')">
+                        身份证号码不合法 
                     </mat-error>
                 </mat-form-field>
 
@@ -334,5 +341,5 @@
 
 <!--  -->
 <button mat-raised-button color="primary" [disabled]="!valid" form="corp-form"  type="submit" >
-    建立参建单位
+   {{corp ? '修改':'建立'}} 参建单位
 </button>

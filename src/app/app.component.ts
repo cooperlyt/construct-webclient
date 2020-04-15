@@ -21,11 +21,16 @@ export class AppComponent {
       .pipe(filter((event: Event) => event instanceof NavigationEnd))
       .subscribe((data: Event) => {
         const urlAfterRedirects = (data as NavigationEnd).urlAfterRedirects;
-        // We want to reset the scroll position on navigation except when navigating within
-        // the documentation for a single component.
-        if (!isNavigationWithinComponentView(previousRoute, urlAfterRedirects)) {
+
+        //this is material sidenav bug :
+        //https://github.com/angular/components/issues/4280
+        //https://github.com/angular/angular/issues/24547
+
+        // now all page to top 
+
+        //if (!isNavigationWithinComponentView(previousRoute, urlAfterRedirects)) {
           resetScrollPosition();
-        }
+        //}
 
         previousRoute = urlAfterRedirects;
       });
@@ -35,16 +40,16 @@ export class AppComponent {
 
 
 
-function isNavigationWithinComponentView(previousUrl: string, newUrl: string) {
-  const componentViewExpression = /(cdk|components)\/(\w+)/;
+// function isNavigationWithinComponentView(previousUrl: string, newUrl: string) {
+//   const componentViewExpression = /(cdk|components)\/(\w+)/;
 
-  const previousUrlMatch = previousUrl.match(componentViewExpression);
-  const newUrlMatch = newUrl.match(componentViewExpression);
+//   const previousUrlMatch = previousUrl.match(componentViewExpression);
+//   const newUrlMatch = newUrl.match(componentViewExpression);
 
-  return previousUrl && newUrl && previousUrlMatch && newUrlMatch
-      && previousUrlMatch[0] === newUrlMatch[0]
-      && previousUrlMatch[1] === newUrlMatch[1];
-}
+//   return previousUrl && newUrl && previousUrlMatch && newUrlMatch
+//       && previousUrlMatch[0] === newUrlMatch[0]
+//       && previousUrlMatch[1] === newUrlMatch[1];
+// }
 
 function resetScrollPosition() {
   if (typeof document === 'object' && document) {

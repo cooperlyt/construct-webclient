@@ -213,7 +213,6 @@ export abstract class PageFunctionBase implements OnDestroy{
 
     // parent awaly is function ?
     _route.parent.url.pipe(takeUntil(this._destroyed)).subscribe(url => {
-        console.log(url);
         if (url.length > 0){    
           _func.loadTitleFunction(url[0].path);
         }else{
@@ -241,7 +240,7 @@ export abstract class SearchFunctionBase implements OnDestroy{
 
     // parent awaly is function ?
     _route.parent.url.pipe(takeUntil(this._destroyed)).subscribe(url => {
-        console.log(url);
+        //console.log(url);
         if (url.length > 0){    
           _func.loadSearchFunction(url[0].path).pipe(takeUntil(this._destroyed)).subscribe(key => this.doSearch(key));
         }else{

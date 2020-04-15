@@ -64,7 +64,7 @@ export class FunctionPageHeaderComponent implements OnInit{
       pairwise(), // look at this and the last emitted element
 
       map(([y0,y]):number => {
-        console.log("scroll Top is: " + y0 + "-" + y)
+        //console.log("scroll Top is: " + y0 + "-" + y)
 
         if (y0 < (MIN_HEIGHT + MAX_PADDING) ){
           return  MAX_PADDING - (y + y0) / 2 / 2;
@@ -85,7 +85,7 @@ export class FunctionPageHeaderComponent implements OnInit{
 
           if (this.func.info.search ){
 
-            console.log("set padding:" + padding)
+            //console.log("set padding:" + padding)
             if (padding > MAX_PADDING){
               this.padding = MAX_PADDING;
             }else if (padding < MIN_PADDING){

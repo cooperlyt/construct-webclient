@@ -5,6 +5,7 @@ import { CorpBusiness, Corp } from 'src/app/shared/data/corp';
 import { environment } from 'src/environments/environment';
 import { PageResult } from 'src/app/shared/page-result';
 import { CustomEncoder } from 'src/app/shared/custom-encoder';
+import { map } from 'rxjs/operators';
 
 export declare class CorpStautsResult {
     code:number;
@@ -41,7 +42,23 @@ export class CorpService{
         if (type){
             params = params.append('type',type);
         }
-        console.log("search business params:", JSON.stringify(params));
+        //console.log("search business params:", JSON.stringify(params));
         return this._http.get<PageResult<Corp>>(`${environment.apiUrl}/construct-attach-corp/view/list`,{params: params});
+    }
+
+    groupNumberExists(type:string,number:string,code:number | null):Observable<boolean>{
+        console.log("call validator:" + `${environment.apiUrl}/construct-attach-corp/view/corp/exists/${type}/${number}${code ? '/' + code : ''}`);
+        return this._http.get<string>(`${environment.apiUrl}/construct-attach-corp/view/corp/exists/${type}/${number}${code ? '/' + code : ''}`, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'})
+        .pipe(
+            map(result => (Boolean(JSON.parse(result))))
+        );
+    }
+
+    corpInBusiness(code: number):Observable<boolean>{
+        return this._http.get<string>(`${environment.apiUrl}/construct-attach-corp/view/business/exists/corp/${code}`, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'})
+        .pipe(
+            map(result => (Boolean(JSON.parse(result))))
+        );
+
     }
 }

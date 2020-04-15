@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, CanActivate, Router, ActivatedRoute } from '@angular/router';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
@@ -31,14 +31,39 @@ import { CorpListResolver } from './corp-list.resolver';
 import { CorpComponent, CorpEditComponent } from './corp.component';
 import { SharedDataModule } from 'src/app/shared/data/data.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CorpService } from './corp.service';
+import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
+@Injectable({
+  providedIn: 'root'
+})
+export class InBusinessGuard implements  CanActivate{
+
+  constructor(private _service: CorpService,private _toastr: ToastrService){}
+
+  canActivate(route: import("@angular/router").ActivatedRouteSnapshot, state: import("@angular/router").RouterStateSnapshot): boolean | import("@angular/router").UrlTree | import("rxjs").Observable<boolean | import("@angular/router").UrlTree> | Promise<boolean | import("@angular/router").UrlTree> {
+    const id = Number(route.paramMap.get("id"));
+    return this._service.corpInBusiness(id).pipe(
+      map(exists => {
+        if (exists){
+          // this._router.navigate([state..,'details',id,'info'],{relativeTo:this._route});
+          this._toastr.warning('此企业正在办理备案业务,不能进行编辑操作!');
+
+        }
+        return !exists;
+      }),
+    )
+  }
+
+}
 
 
 
 const routes: Routes =[
     {path: '' , component: CorpComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange', resolve:{dataPage: CorpListResolver}},
     {path: 'edit', component: CorpEditComponent},
-    {path: 'edit/:id', component: CorpEditComponent, resolve: {corp: CorpResolver}},
+    {path: 'edit/:id', component: CorpEditComponent,canActivate: [InBusinessGuard], resolve: {corp: CorpResolver}},
     {path: 'details/:id', 
       component: CorpDetailsComponent, 
       children:[

@@ -1,11 +1,11 @@
 
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, ValidatorFn, ValidationErrors, FormControl, AsyncValidator, AsyncValidatorFn, AbstractControl, NgForm, FormGroupDirective } from '@angular/forms';
 
 import { Router, Params } from '@angular/router';
 
 
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { faRegistered } from '@fortawesome/free-regular-svg-icons';
 import { SearchFunctionBase, SearchCondition, FunctionPageBar, PageFunctionBase } from 'src/app/shared/function-items/function-items';
 import { ActivatedRoute } from '@angular/router';
@@ -17,12 +17,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { CorpService } from './corp.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { catchError } from 'rxjs/operators';
-import { empty, Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { empty, Observable, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { PageResult } from 'src/app/shared/page-result';
 import { PageEvent } from '@angular/material/paginator';
+import { identityNoValidator, IdentityNumberParentMatcher } from 'src/app/tools/validator/identityNumberValidator';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 
 
@@ -62,8 +64,6 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
 
   onTypeChange(type: string){
 
-    console.log("change :" + type);
-
     if (!type || type === '' || type === this.params.type){
       this._router.navigate([],{relativeTo: this._route,queryParams: {type: null}, queryParamsHandling: 'merge'})
     }else{
@@ -90,6 +90,46 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
 }
 
 
+
+const ownerIdentityNumberValidator: ValidatorFn = (control:FormGroup) : ValidationErrors | null =>{
+    console.log("person id vad");
+  
+  if (!control.get('ownerId').value || control.get('ownerId').value == '' || (control.get('ownerId').value.length > 32)){
+    return null;
+  }
+  if(control.get('ownerIdType').value === 'MASTER_ID'){
+    return identityNoValidator(control.get('ownerId') as FormControl)
+  }
+  return null;
+}
+
+
+function uniqueCorpGroupNumberValidator(_service: CorpService,_code: number | null): AsyncValidatorFn {
+
+  return (control: AbstractControl):  Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+    const type = control.get('groupIdType').value;
+    const number = control.get('groupId').value;
+    console.log("person id vad");
+    if (type && number ){
+      return _service.groupNumberExists(type,number,_code).pipe(
+        map(exists => (exists ? {'group-number':'conflict'} : null),
+        catchError(err => {console.log(err); return of(null)})
+      ));
+    }else{
+      return of(null);
+    }
+
+
+  }
+
+} 
+
+class GroupNumberParentMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+      return ((control.parent.invalid && control.parent.getError('group-number')) || control.invalid)&& control.touched;
+  }
+}
+
 @Component({
   selector: 'corp-edit',
   templateUrl: './corp-edit.component.html',
@@ -97,9 +137,10 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
 })
 export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
+  identityNumberParentMatcher = new IdentityNumberParentMatcher();
 
-  test = [{key: 1, label: '甲级'} ,{key: 2, label: '乙级'},{key: 3, label: '丙级'}];
-
+  groupNumberParentMatcher = new GroupNumberParentMatcher();
+ 
   corp: Corp;
 
   businessForm: FormGroup;
@@ -123,6 +164,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
     public dialog: MatDialog,
     private _fb: FormBuilder,
     private _route: ActivatedRoute,
+    private _router: Router,
     private _service: CorpService,
     private _ngxService: NgxUiLoaderService,
     private _toastr: ToastrService,
@@ -148,16 +190,18 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
   }
 
   private addInfoForm(info? : CorpInfo){
+
+  
     this.businessForm.addControl('corpInfo' , this._fb.group({
       name: [info ? info.name : null, [Validators.required,Validators.maxLength(128)]],
       groupIdType: [info ? info.groupIdType : null, Validators.required],
-      groupId: [info ? info.groupId : null, [Validators.required,Validators.maxLength(128)]],
+      groupId: [info ? info.groupId : null,  [Validators.required,Validators.maxLength(128)]],
       ownerName: [info ? info.ownerName : null, [Validators.required, Validators.maxLength(32)]],
       ownerIdType: [info ? info.ownerIdType : null, Validators.required],
-      ownerId: [info ? info.ownerId : null, [Validators.required, Validators.maxLength(32)]],
+      ownerId: [info ? info.ownerId : null,[Validators.required, Validators.maxLength(32)]],
       address: [info ? info.address : null,Validators.maxLength(256)],
       tel: [info ? info.tel: null,Validators.maxLength(16)],
-    }));
+    },{updateOn:'blur', validators: [ownerIdentityNumberValidator], asyncValidators: [uniqueCorpGroupNumberValidator(this._service, this.corp ? this.corp.corpCode : null)]}));
   }
 
 
@@ -255,6 +299,8 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
       return empty();
     })).subscribe(id => {
       this._ngxService.stop();
+
+      this._router.navigate([this.corp ? '../../' : '../','details',id,'info'],{relativeTo: this._route});
     });
     
 
