@@ -19,7 +19,7 @@
 
 <div class="paper-page">
 
-    <mat-card *ngIf="!businessForm.get('corpInfo')">
+    <mat-card *ngIf="!businessForm.get('info')">
         <mat-card-header>
             <mat-card-title>{{corp.info.name}}</mat-card-title>
 
@@ -57,7 +57,7 @@
 
 
 
-    <mat-card *ngIf="businessForm.get('corpInfo')"  formGroupName="corpInfo">
+    <mat-card *ngIf="businessForm.get('info')"  formGroupName="info">
         <mat-card-header>
             <mat-card-title>基本信息</mat-card-title>
         </mat-card-header>
@@ -67,10 +67,10 @@
                 <mat-label>名称</mat-label>
                 <input matInput formControlName="name" required>
             
-                <mat-error *ngIf="businessForm.get('corpInfo').get('name').hasError('required')">
+                <mat-error *ngIf="businessForm.get('info').get('name').hasError('required')">
                     企业名称 <strong>不能为空</strong>
                 </mat-error>
-                <mat-error *ngIf="businessForm.get('corpInfo').get('name').hasError('maxlength')">
+                <mat-error *ngIf="businessForm.get('info').get('name').hasError('maxlength')">
                     名称长度不能超过 <strong>128</strong>
                 </mat-error>
             </mat-form-field>
@@ -85,20 +85,20 @@
                             {{type.label}}
                           </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="businessForm.get('corpInfo').get('groupIdType').hasError('required')">请选择证件类型</mat-error>
+                    <mat-error *ngIf="businessForm.get('info').get('groupIdType').hasError('required')">请选择证件类型</mat-error>
                 </mat-form-field>
 
 
                 <mat-form-field class="col-sm-8">
                     <mat-label>证件编号</mat-label>
                     <input [errorStateMatcher]="groupNumberParentMatcher" matInput formControlName="groupId" required>
-                    <mat-error *ngIf="businessForm.get('corpInfo').get('groupId').hasError('required')">
+                    <mat-error *ngIf="businessForm.get('info').get('groupId').hasError('required')">
                         编号 <strong>不能为空</strong>
                     </mat-error>
-                    <mat-error *ngIf="businessForm.get('corpInfo').get('groupId').hasError('maxlength')">
+                    <mat-error *ngIf="businessForm.get('info').get('groupId').hasError('maxlength')">
                         编号长度不能超过 <strong>32</strong>
                     </mat-error>
-                    <mat-error *ngIf="businessForm.get('corpInfo').hasError('group-number')">
+                    <mat-error *ngIf="businessForm.get('info').hasError('group-number')">
                         此编号的单位已经存在
                     </mat-error>
                 </mat-form-field>
@@ -111,10 +111,10 @@
                 <mat-form-field class="col-md-3">
                     <mat-label>法人姓名</mat-label>
                     <input matInput formControlName="ownerName" required>
-                    <mat-error *ngIf="businessForm.get('corpInfo').get('ownerName').hasError('required')">
+                    <mat-error *ngIf="businessForm.get('info').get('ownerName').hasError('required')">
                         姓名 <strong>不能为空</strong>
                     </mat-error>
-                    <mat-error *ngIf="businessForm.get('corpInfo').get('ownerName').hasError('maxlength')">
+                    <mat-error *ngIf="businessForm.get('info').get('ownerName').hasError('maxlength')">
                         姓名 <strong>32</strong>
                     </mat-error>
 
@@ -130,20 +130,20 @@
                           </mat-option>
                     </mat-select>
 
-                    <mat-error *ngIf="businessForm.get('corpInfo').get('ownerIdType').hasError('required')">请选择证件类型</mat-error>
+                    <mat-error *ngIf="businessForm.get('info').get('ownerIdType').hasError('required')">请选择证件类型</mat-error>
 
                 </mat-form-field>
 
                 <mat-form-field class="col-md-6 col-sm-8" required >
                     <mat-label>法人证件编号</mat-label>
                     <input matInput [errorStateMatcher]="identityNumberParentMatcher" formControlName="ownerId" required>
-                    <mat-error *ngIf="businessForm.get('corpInfo').get('ownerId').hasError('required')">
+                    <mat-error *ngIf="businessForm.get('info').get('ownerId').hasError('required')">
                         编号 <strong>不能为空</strong>
                     </mat-error>
-                    <mat-error *ngIf="businessForm.get('corpInfo').get('ownerId').hasError('maxlength')">
+                    <mat-error *ngIf="businessForm.get('info').get('ownerId').hasError('maxlength')">
                         编号长度不能超过 <strong>32</strong>
                     </mat-error>
-                    <mat-error *ngIf="businessForm.get('corpInfo').hasError('identity')">
+                    <mat-error *ngIf="businessForm.get('info').hasError('identity')">
                         身份证号码不合法 
                     </mat-error>
                 </mat-form-field>
@@ -160,7 +160,7 @@
                 <mat-form-field class="col-sm-4">
                     <mat-label>联系电话</mat-label>
                     <input matInput formControlName="tel">
-                    <mat-error *ngIf="businessForm.get('corpInfo').get('tel').hasError('maxlength')">
+                    <mat-error *ngIf="businessForm.get('info').get('tel').hasError('maxlength')">
                         电话长度不能超过 <strong>16</strong>
                     </mat-error>
                 </mat-form-field>
@@ -169,7 +169,7 @@
                 <mat-form-field class="col-sm-8">
                     <mat-label>地址</mat-label>
                     <input matInput formControlName="address">
-                    <mat-error *ngIf="businessForm.get('corpInfo').get('address').hasError('maxlength')">
+                    <mat-error *ngIf="businessForm.get('info').get('address').hasError('maxlength')">
                         地址长度不能超过 <strong>256</strong>
                     </mat-error>
                 </mat-form-field>
@@ -244,15 +244,15 @@
 
         <mat-card *ngFor="let reg of regsForm.controls; let i=index">
             <mat-card-header class="tools-card-header">
-                <mat-card-title>{{regsForm.value[i].id.type | joinTypeLabel}} </mat-card-title>
+                <mat-card-title>{{regsForm.value[i].property | joinTypeLabel}} </mat-card-title>
                 <div class="actions">
-                    <button *ngIf="typeIsOld(regsForm.value[i].id.type)" 
-                    (click)="restoreType(regsForm.value[i].id.type)"
+                    <button *ngIf="typeIsOld(regsForm.value[i].property)" 
+                    (click)="restoreType(regsForm.value[i].property)"
                     color="primary" type="button" mat-icon-button >
                         <mat-icon>restore</mat-icon>
                     </button>
 
-                    <button type="button" (click)="deleteType(regsForm.value[i].id.type)" mat-icon-button color="warn" >
+                    <button type="button" (click)="deleteType(regsForm.value[i].property)" mat-icon-button color="warn" >
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
@@ -273,7 +273,7 @@
                         <mat-select formControlName="level" required>
                             <mat-option>--</mat-option>
                  
-                            <mat-option *ngFor="let type of regsForm.value[i].id.type | levelKeyValue" [value]="type.key">
+                            <mat-option *ngFor="let type of regsForm.value[i].property | levelKeyValue" [value]="type.key">
                                 {{type.label}} 
                             </mat-option>
                         </mat-select>

@@ -5,20 +5,20 @@
         <mat-card >
             <mat-card-header>
                 <mat-card-title [class.line-through]="!corp.enable" >{{corp.info.name}}</mat-card-title>
-                <mat-card-subtitle>{{corp.corpCode}}</mat-card-subtitle>
+                <mat-card-subtitle>{{corp.code}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
 
                 <table mat-table [dataSource]="corp.regs">
 
-                    <ng-container matColumnDef="type">
+                    <ng-container matColumnDef="property">
                         <th mat-header-cell *matHeaderCellDef> 类型 </th>
-                        <td mat-cell *matCellDef="let element">  {{element.id.type | joinTypeLabel}} </td>
+                        <td mat-cell *matCellDef="let element">  {{element.property | joinTypeLabel}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="level">
                         <th mat-header-cell *matHeaderCellDef> 资质等级 </th>
-                        <td mat-cell *matCellDef="let element">  {{element.info.level | levelLabel : element.id.type}} </td>
+                        <td mat-cell *matCellDef="let element">  {{element.info.level | levelLabel : element.property}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="number">
@@ -30,8 +30,8 @@
                         <th mat-header-cell *matHeaderCellDef>到期时间</th>
                         <td mat-cell *matCellDef="let element">{{element.info.regTo | date: 'yyyy年MM月dd日'}}</td>
                     </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="['type','level','number','limit']"></tr>
-                    <tr mat-row *matRowDef="let row; columns: ['type','level','number','limit'];"></tr>
+                    <tr mat-header-row *matHeaderRowDef="['property','level','number','limit']"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['property','level','number','limit'];"></tr>
                 </table>
 
             </mat-card-content>

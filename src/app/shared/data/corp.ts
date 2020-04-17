@@ -12,7 +12,7 @@ export declare class CorpInfo{
 }
 
 export declare class RegInfo{
-    
+    regTime: Date;
     regTo: Date;
     level: number;
     levelNumber: string;
@@ -21,23 +21,21 @@ export declare class RegInfo{
 
 export declare class CorpReg{
 
-    id: {type: string, // JoinType
-         corp?: Corp}
     info: RegInfo;
+    property:string// JoinType
 }
 
 export declare class Corp{
-    corpCode: number;
+    code: number;
     enable: boolean;
     info: CorpInfo;
     types: string;
-    dataTime: Date;
     regs: CorpReg[];
 }
 
 export declare class BusinessReg{
-    id: {type: string,//JoinType,
-         business?: CorpBusiness}
+
+    property: string;//JoinType,
     operateType: string;//OperateType;
     info: RegInfo;
 }
@@ -48,8 +46,8 @@ export declare class CorpBusiness{
     regTime: Date;
     source: string;//BusinessSource;
     status: string;//BusinessStatus;
-    info: boolean;
-    corpInfo: number;
+    infoChanged: boolean;
+    info: CorpInfo;
     regs: BusinessReg[];
-    corpCode: string;
+    code: string;
 }

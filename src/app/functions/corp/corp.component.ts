@@ -156,7 +156,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
   }
 
   typeIsOld(type: string):boolean{
-    return !!this.corp && !!this.corp.regs.find(reg => reg.id.type == type);
+    return !!this.corp && !!this.corp.regs.find(reg => reg.property == type);
   }
 
   constructor(
@@ -176,15 +176,15 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
     if (this.corp){
       this.oldJoinTypes = this.corp.regs
-        .filter(cr => (!this.businessForm.value.regs.find(reg => (reg.id.type == cr.id.type))))
-        .map(reg => ({type: reg.id.type, level: reg.info.level, number: reg.info.levelNumber, limit: reg.info.regTo, del: !! this.removedTypes.has(reg.id.type)}));
+        .filter(cr => (!this.businessForm.value.regs.find(reg => (reg.property == cr.property))))
+        .map(reg => ({type: reg.property, level: reg.info.level, number: reg.info.levelNumber, limit: reg.info.regTo, del: !! this.removedTypes.has(reg.property)}));
     }
     this.joinTypes = Object.keys(JoinType).filter(key => {
       if (!this.corp){
-        return !this.businessForm.value.regs.find(reg => reg.id.type == key)
+        return !this.businessForm.value.regs.find(reg => reg.property == key)
       }else{
-        return !this.businessForm.value.regs.find(reg => (reg.id.type == key)) 
-          && !this.corp.regs.find(reg => (reg.id.type == key));
+        return !this.businessForm.value.regs.find(reg => (reg.property == key)) 
+          && !this.corp.regs.find(reg => (reg.property == key));
       }
     }).map(key => ({id: key, name: JoinType[key]}));
   }
@@ -192,7 +192,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
   private addInfoForm(info? : CorpInfo){
 
   
-    this.businessForm.addControl('corpInfo' , this._fb.group({
+    this.businessForm.addControl('info' , this._fb.group({
       name: [info ? info.name : null, [Validators.required,Validators.maxLength(128)]],
       groupIdType: [info ? info.groupIdType : null, Validators.required],
       groupId: [info ? info.groupId : null,  [Validators.required,Validators.maxLength(128)]],
@@ -201,7 +201,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
       ownerId: [info ? info.ownerId : null,[Validators.required, Validators.maxLength(32)]],
       address: [info ? info.address : null,Validators.maxLength(256)],
       tel: [info ? info.tel: null,Validators.maxLength(16)],
-    },{updateOn:'blur', validators: [ownerIdentityNumberValidator], asyncValidators: [uniqueCorpGroupNumberValidator(this._service, this.corp ? this.corp.corpCode : null)]}));
+    },{updateOn:'blur', validators: [ownerIdentityNumberValidator], asyncValidators: [uniqueCorpGroupNumberValidator(this._service, this.corp ? this.corp.code : null)]}));
   }
 
 
@@ -214,7 +214,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
   cancelInfoEdit():void{
     if (this.corp){
-      this.businessForm.removeControl("corpInfo");
+      this.businessForm.removeControl("info");
     }
   }
 
@@ -222,11 +222,11 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
     console.log(type);
     let oldReg: CorpReg = null;
     if (this.corp){
-      oldReg = this.corp.regs.find(reg => reg.id.type == type)
+      oldReg = this.corp.regs.find(reg => reg.property == type)
     }
 
     this.regsForm.push(this._fb.group({
-      id: this._fb.group({type: [type,Validators.required]}),
+      property: [type,Validators.required],
       operateType: [oldReg ? "MODIFY" : "CREATE",Validators.required],
       info: this._fb.group({     
         regTo: [oldReg ? oldReg.info.regTo : null,Validators.required],
@@ -239,7 +239,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
   private removeType(type: string):void{
     for(let i = 0; i< this.regsForm.length; i++) {
-      if (this.regsForm.value[i].id.type == type){
+      if (this.regsForm.value[i].property == type){
         this.regsForm.removeAt(i);
         break;
       }
@@ -257,7 +257,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
       if (result){
         this.removeType(result);
-        if (!!this.corp && !!this.corp.regs.find(reg => (reg.id.type == result))){
+        if (!!this.corp && !!this.corp.regs.find(reg => (reg.property == result))){
           this.removedTypes.add(result);
         }
         this.calcJoinTypes();
@@ -267,7 +267,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
 
   get joinTypeVaild(): boolean{
     if (this.corp){
-      return !!this.corp.regs.find(reg => (!this.removedTypes.has(reg.id.type))) || this.regsForm.length > 0
+      return !!this.corp.regs.find(reg => (!this.removedTypes.has(reg.property))) || this.regsForm.length > 0
     }else{
       return this.regsForm.length > 0 ;
     }
@@ -275,7 +275,7 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
   }
 
   get valid(): boolean{
-    return this.businessForm.valid && this.joinTypeVaild && (!this.corp || !!this.businessForm.value.corpInfo || (this.removedTypes.size > 0) || (this.regsForm.value.length > 0));
+    return this.businessForm.valid && this.joinTypeVaild && (!this.corp || !!this.businessForm.value.info || (this.removedTypes.size > 0) || (this.regsForm.value.length > 0));
   }
 
   onSubmit() {
@@ -286,9 +286,9 @@ export class CorpEditComponent extends PageFunctionBase implements OnInit{
     let save$:Observable<number>;
  
     if (this.corp){
-      this.removedTypes.forEach(key => business.regs.push({id: {type: key}, operateType: 'DELETE', info: this.corp.regs.find(reg => reg.id.type == key).info}));
+      this.removedTypes.forEach(key => business.regs.push({property: key, operateType: 'DELETE', info: this.corp.regs.find(reg => reg.property == key).info}));
       console.log(business);
-      save$ = this._service.patchCorp(business,this.corp.corpCode);
+      save$ = this._service.patchCorp(business,this.corp.code);
     }else{
       save$ = this._service.patchCorp(business);
     }
