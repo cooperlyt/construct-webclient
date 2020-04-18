@@ -24,17 +24,19 @@ export enum JoinType{
     LandExploration = "土地勘查",
 }
 
-export enum BusinessSource{
-    OLD = "补录",
-    OLE = "申请",
-    BIZ = "窗口"
+export enum RegSource{
+    Import = "数据整理",
+    Patch = "补录",
+    Inside = "备案业务",
+    Outside = "备案申请"
 }
 
-export enum BusinessStatus{
-    prepare = "准备中",
-    running = "运行中",
-    valid = "生效",
-    invalid = "无效"
+export enum RegStatus{
+    Prepare = "准备中",
+    Abort = "终止",
+    Running = "运行中",
+    Register = "已备案",
+    Invalid = "无效"
 }
 
 export enum OperateType{
