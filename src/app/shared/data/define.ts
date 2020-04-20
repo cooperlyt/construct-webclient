@@ -46,6 +46,65 @@ export enum OperateType{
     QUOTED = "引用"
 }
 
+export enum FLoorType{
+    SINGLE = "单层",
+    MULTI = "多层",
+    HEIGHT = "高层"
+}
+
+export enum ProjectProperty{
+    NEW = "新建", 
+    MODIFY = "改建", 
+    BIG = "扩建", 
+    MOVE = "迁建", 
+    TEMP = "临建" 
+}
+
+export enum ImportType{
+    NORMAL = "非重点项目",
+    COUNTY = "国家级重点项目", 
+    PROVINCE = "省级重点项目",
+    CITY = "市级重点项目"
+}
+
+export declare class ProjectMainType {
+    [key:string]: {label:string, needLevel:boolean }
+}
+
+export const projectMainTypes:ProjectMainType[] = [
+    {CIVIL: {label : "民用建筑", needLevel: true }},
+    {INDUSTRY: {label : "工业建筑", needLevel: true }},
+    {INDUSTRY: {label : "人防工程", needLevel: true }},
+    {INDUSTRY: {label : "锅炉房", needLevel: true }},
+    {INDUSTRY: {label : "构筑物", needLevel: true }}
+];
+
+
+
+export const projectType: {[key:string]:{label: string, group:ProjectMainType}}[] = [
+
+    {CIVIL_HOUSE: {label: "住宅", group: projectMainTypes["CIVIL"]}},
+    {CIVIL_COMMON: {label: "公用建筑", group: projectMainTypes["CIVIL"]}},
+    {CIVIL_OTHER: {label: "特殊建筑", group: projectMainTypes["CIVIL"]}},
+
+    {INDUSTRY: {label: "公用建筑", group: projectMainTypes["INDUSTRY"]}},
+
+    {BOILER: {label: "锅炉房", group: projectMainTypes["BOILER"]}},
+
+    {PEOPLE: {label: "人防工程", group: projectMainTypes["PEOPLE"]}},
+
+    {APPENDAGE_CHIMNEY_1: {label: "砼烟囱", group: projectMainTypes["APPENDAGE"]}},
+    {APPENDAGE_CHIMNEY_1: {label: "砼烟囱", group: projectMainTypes["APPENDAGE"]}},
+    {APPENDAGE_CHIMNEY_1: {label: "砼烟囱", group: projectMainTypes["APPENDAGE"]}},
+    {APPENDAGE_CHIMNEY_1: {label: "砼烟囱", group: projectMainTypes["APPENDAGE"]}},
+    {APPENDAGE_CHIMNEY_1: {label: "砼烟囱", group: projectMainTypes["APPENDAGE"]}},
+    {APPENDAGE_CHIMNEY_1: {label: "砼烟囱", group: projectMainTypes["APPENDAGE"]}},
+
+]
+
+
+
+
 
 const LEVELS: {[key:string]:{[key:number]:string}} = {
     Developer : {1:'一级', 2: '二级',3:'三级',4:'四级'},
