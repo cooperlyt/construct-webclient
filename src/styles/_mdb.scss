@@ -183,8 +183,25 @@ button.close {
     margin-bottom: 0.5rem;
 }
 
+.list-inline, .list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
+
+ul.striped li {
+    padding: .5rem;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+}
 
 // mdb 组件适配
+.mat-card {
+    margin: 10px 0;
+  }
+  
+.mat-form-field {
+    line-height: 1.5;
+}
+  
 
 .mdb.mat-card{
     padding: 0;
@@ -208,3 +225,7 @@ button.close {
 
 
 
+.mat-card table{
+    width: 100%;
+    margin-bottom: 1rem;
+}

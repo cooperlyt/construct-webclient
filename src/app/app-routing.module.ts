@@ -22,7 +22,8 @@ const routes: Routes = [
           {
             path: '',
             component: HomeComponent
-          },{
+          },
+          {
             path: 'function',
             canActivateChild: [FunctionGuard],
             children:[
@@ -30,7 +31,11 @@ const routes: Routes = [
                 path: 'employee',
                 canLoad: [FunctionGuard],
                 loadChildren: () => import('./functions/employee/employee.module').then(m => m.EmployeeModule)
-              }
+              },
+              {
+                path: 'corp',
+                loadChildren: () => import('./functions/corp/corp.module').then(m => m.CorpModule)
+              },
             ]
           }
         ]

@@ -52,7 +52,6 @@ export class AuthInterceptor implements HttpInterceptor {
     if (!this.inflightAuthRequest) {
       this.inflightAuthRequest = authService.getAccessToken();
     }
-    console.log(" Http Client AuthInterceptor 1 ");
     return this.inflightAuthRequest.pipe(
       switchMap((newToken: string) => {
         // unset request inflight

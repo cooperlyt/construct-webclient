@@ -117,10 +117,10 @@
     ora "4.0.2"
     rxjs "6.5.3"
 
-"@angular/animations@^9.0.7":
-  version "9.0.7"
-  resolved "https://registry.npm.taobao.org/@angular/animations/download/@angular/animations-9.0.7.tgz#b91219257ea40f34a79fd66f10860409f29f3e29"
-  integrity sha1-uRIZJX6kDzSnn9ZvEIYECfKfPik=
+"@angular/animations@^9.1.1":
+  version "9.1.1"
+  resolved "https://registry.npm.taobao.org/@angular/animations/download/@angular/animations-9.1.1.tgz#983e54d96e7a854cee801dbac214f31c03c1cfa8"
+  integrity sha1-mD5U2W56hUzugB26whTzHAPBz6g=
 
 "@angular/cdk@^9.2.0":
   version "9.2.0"
@@ -211,6 +211,11 @@
     "@babel/core" "7.8.3"
     glob "7.1.2"
     yargs "13.1.0"
+
+"@angular/material-moment-adapter@^9.2.0":
+  version "9.2.0"
+  resolved "https://registry.npm.taobao.org/@angular/material-moment-adapter/download/@angular/material-moment-adapter-9.2.0.tgz#ee6311770e0897f63902ec1c2c099bdc3a61dd85"
+  integrity sha1-7mMRdw4Il/Y5AuwcLAmb3Dph3YU=
 
 "@angular/material@^9.2.0":
   version "9.2.0"
@@ -5412,6 +5417,11 @@ mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1, mkdirp@~0.5.x:
   integrity sha1-WlFLcXklkoeVKIHpRBDsVGVln4w=
   dependencies:
     minimist "^1.2.5"
+
+moment@^2.24.0:
+  version "2.24.0"
+  resolved "https://registry.npm.taobao.org/moment/download/moment-2.24.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmoment%2Fdownload%2Fmoment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha1-DQVdU/UFKqZTyfbraLtdEr9cK1s=
 
 move-concurrently@^1.0.1:
   version "1.0.1"

@@ -24,7 +24,7 @@ export class GeneralErrorInterceptor implements HttpInterceptor {
   
                 }else if (err.status == 403 ){
                     console.log("403 error:",err.error.message);
-                    this.toastr.error(err.error.message,"不能完成操作");
+                    this.toastr.error("您没有进行此项操作权限！","权限不足");
      
                 } 
                 return throwError(err);
