@@ -22,7 +22,7 @@ export class CorpService{
     }
 
     corp(id: number):Observable<Corp>{
-        return this._http.get<Corp>(`${environment.apiUrl}/construct-attach-corp/view/corp/${id}`);
+        return this._http.get<Corp>(`${environment.apiUrl}/construct-project-cache/data/corp/${id}`);
     }
 
 

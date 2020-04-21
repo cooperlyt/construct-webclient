@@ -13,22 +13,13 @@
         
 
             <div class="flex-auto">
-
-
-                
             </div>
 
             <div class="actions">
-
-
                 <button routerLink="edit" mat-icon-button color="primary"  aria-label="Example icon-button with a menu">
                     <mat-icon>add</mat-icon>
                 </button>
-
-
             </div>
-
-              
         </div>
 
         <mat-menu #typeMenu="matMenu">
@@ -36,9 +27,6 @@
             <button *ngFor="let type of dataUtil.joinType" mat-menu-item  (click)="onTypeChange(type.key)">{{type.label}}</button>
         </mat-menu>
         <div class="head-filter-bar">
-
- 
-
             <a [matMenuTriggerFor]="typeMenu" class="filter-menu" 
                 [class.filtered]="!!params.type">
                 <span *ngIf="params.type">{{params.type | joinTypeLabel}}</span>

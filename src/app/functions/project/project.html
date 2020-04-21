@@ -1,0 +1,23 @@
+<div class="context-view-head">
+  <div class="head-nav">
+    <div class="valid-toggle">
+        <mat-slide-toggle (toggleChange)="onShowDisabledChange()" [checked]="params.showDisabled"  matTooltip="是否显示已设置为禁用的项目">
+ 
+        </mat-slide-toggle>
+    </div>
+        <h3>
+            <!-- {{dataPage.totalElements | number}} -->
+            共  个{{params.showDisabled ? '' : '生效'}}备案项目
+        </h3>  
+
+
+    <div class="flex-auto">
+    </div>
+
+    <div class="actions">
+        <button routerLink="edit" mat-icon-button color="primary"  aria-label="Example icon-button with a menu">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</div>
+</div>

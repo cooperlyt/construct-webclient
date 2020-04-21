@@ -40,7 +40,7 @@ export declare class ProjectInfo{
     name:string;
     address:string;
     type: string; //projectType
-    typeClass: number;
+    typeLevel: number;
     floorType: string;
     property: string;
     area: number;
@@ -52,7 +52,7 @@ export declare class ProjectInfo{
     tender:string;
     structure: string;
     costs:number;
-    importantLevel:string;
+    importantType:string;
     importantFile:string;
     memo:string;
     height:number;
@@ -84,5 +84,4 @@ export declare class ProjectReg{
     info: ProjectInfoReg;
     corpMaster: boolean;
     infoMaster: boolean;
-
 }
