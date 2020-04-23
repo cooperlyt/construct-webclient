@@ -256,7 +256,25 @@
         <div class="row">
           <corp-select class="col-sm-6" [formControl]="corpCtl">
           </corp-select>
+
+
+          <mat-form-field class="col-sm-3">
+            <mat-label>
+              参建类型
+            </mat-label>
+            <mat-select [(ngModel)]="selectReg" [disabled]="!selectCorp">
+              <mat-option>--</mat-option>
+              <ng-container *ngIf="selectCorp">
+                <mat-option *ngFor="let reg of selectCorp.regs" [value]="reg"> {{reg.property | joinTypeLabel}}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="col-sm-3  flex-right-center">
+            <button [disabled]="!selectReg" mat-raised-button color="primary">添加参建单位</button>
+          </div>
         </div>
+
       </mat-card-content>
 
 

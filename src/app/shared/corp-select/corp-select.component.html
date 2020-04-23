@@ -3,7 +3,7 @@
 
   <mat-form-field >
     <mat-label>参建单位</mat-label>
-    <mat-select msInfiniteScroll selectionChange="" (infiniteScroll)="nextPage()" [complete]="false">
+    <mat-select msInfiniteScroll (selectionChange)="selectChange($event)" (infiniteScroll)="nextPage()" [complete]="false">
       <mat-select-search [formControl]="corpFilterCtrl" placeholderLabel="查询参建单位"  noEntriesFoundLabel="没找到符合条件的参建单位"></mat-select-search>
       <mat-option *ngFor="let option of options$ | async" [value]="option.code">{{option.info.name}}</mat-option>
     </mat-select>

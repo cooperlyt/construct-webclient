@@ -1,7 +1,8 @@
 import { Resolve } from '@angular/router';
 import { Corp } from 'src/app/shared/data/corp';
-import { CorpService } from './corp.service';
+
 import { Injectable } from '@angular/core';
+import { CorpService } from 'src/app/shared/remote-services/corp.service';
 
 
 @Injectable({providedIn: 'root'})

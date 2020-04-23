@@ -10,10 +10,7 @@ import {MatSelectInfiniteScrollModule} from 'ng-mat-select-infinite-scroll';
 import { MatSelectSearchModule } from 'src/app/tools/mat-select-search/mat-select-search.module';
 import { FormControl, ReactiveFormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { Corp } from '../data/corp';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { PageResult } from '../page-result';
-import { environment } from 'src/environments/environment';
-import { CustomEncoder } from '../custom-encoder';
+import { CorpService } from '../remote-services/corp.service';
 
 @Component({selector:"corp-select",
   templateUrl:"./corp-select.component.html",
@@ -29,7 +26,7 @@ export class CorpSelectComponent implements OnInit,ControlValueAccessor{
 
   private _onDestroy = new Subject<void>();
 
-  constructor(private _http: HttpClient){}
+  constructor(private service: CorpService){}
 
   private _value: number;
 
@@ -53,6 +50,7 @@ export class CorpSelectComponent implements OnInit,ControlValueAccessor{
   // }
 
   selectChange(change: MatSelectChange){
+    console.log("select Change")
     const valueChanged = change.value !== this._value;
     if (valueChanged){
       this._value = change.value;
@@ -73,7 +71,7 @@ export class CorpSelectComponent implements OnInit,ControlValueAccessor{
     this.options$ = this.offset$.pipe(
       takeUntil(this._onDestroy),
       withLatestFrom(this.search$),
-      switchMap(([offset, search]) => this.getOptions(offset, search)),
+      switchMap(([offset, search]) => this.service.listNamedCorps(offset,search).pipe(tap(page => {this.complete = page.last; this.currPage = page.number}),map(page => (page.content)))),
       withLatestFrom(this.offset$),
       scan((acc, [currOptions, currOffset]) => currOffset === 0 ? currOptions : [...acc, ...currOptions], []),
       tap(aa => console.log(aa))
@@ -97,23 +95,6 @@ export class CorpSelectComponent implements OnInit,ControlValueAccessor{
     this.search$.next(key);
     this.offset$.next(0);
   }
-
-  getOptions(offset, term): Observable<any> {
-
-    
-    let params = new HttpParams({encoder: new CustomEncoder()})
-    if (term ){
-      params = params.append("key",term);
-    }
-    return this._http.get<PageResult<Corp>>(`${environment.apiUrl}/construct-attach-corp/view/names/${offset}`,{params: params}).pipe(
-      tap(page => {this.complete = page.last; this.currPage = page.number}),
-      map(page => (page.content))
-    )
-
-  
-  }
-
-
 
 
   ngOnDestroy() {

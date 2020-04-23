@@ -59,6 +59,13 @@ export class CorpService{
         .pipe(
             map(result => (Boolean(JSON.parse(result))))
         );
+    }
 
+    listNamedCorps(offset:number, term: string):Observable<PageResult<Corp>>{
+        let params = new HttpParams({encoder: new CustomEncoder()})
+        if (term ){
+          params = params.append("key",term);
+        }
+        return this._http.get<PageResult<Corp>>(`${environment.apiUrl}/construct-attach-corp/view/names/${offset}`,{params: params});
     }
 }

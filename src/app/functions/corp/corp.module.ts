@@ -31,7 +31,7 @@ import { CorpListResolver } from './corp-list.resolver';
 import { CorpComponent, CorpEditComponent } from './corp.component';
 import { SharedDataModule } from 'src/app/shared/data/data.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CorpService } from './corp.service';
+import { CorpService } from '../../shared/remote-services/corp.service';
 import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 

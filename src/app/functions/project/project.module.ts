@@ -4,7 +4,7 @@ import { ProjectComponent, ProjectEditComponent } from './project.componet';
 import { ProjectResolver } from './project.resolver';
 import { ProjectDetailsComponent, ProjectInfoComponent, ProjectBusinessComponent } from './project-details.component';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +25,7 @@ import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialo
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 import { CorpSelectModule } from 'src/app/shared/corp-select/corp-select.component';
+import { SharedDataModule } from 'src/app/shared/data/data.module';
 
 
 const routes:Routes = [
@@ -47,6 +48,7 @@ const routes:Routes = [
 imports:[
     RouterModule.forChild(routes),
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
     MatButtonModule,
@@ -67,6 +69,7 @@ imports:[
     ConfirmDialogModule,
     MatSlideToggleModule,
     OcticonModule,
+    SharedDataModule,
     CorpSelectModule]
 })
 export class ProjectModule{}

@@ -15,7 +15,7 @@ import { Corp, CorpInfo, CorpReg, CorpBusiness } from 'src/app/shared/data/corp'
 import { DataUtilsService, JoinType } from 'src/app/shared/data/define';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
-import { CorpService } from './corp.service';
+import { CorpService } from '../../shared/remote-services/corp.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { catchError, map } from 'rxjs/operators';
 import { empty, Observable, of } from 'rxjs';

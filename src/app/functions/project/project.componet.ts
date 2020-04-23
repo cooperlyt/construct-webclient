@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { SearchFunctionBase, FunctionPageBar, PageFunctionBase } from 'src/app/shared/function-items/function-items';
 import { PageResult } from 'src/app/shared/page-result';
 import { Project } from 'src/app/shared/data/project';
-import { DataUtilsService } from 'src/app/shared/data/define';
+import { DataUtilsService, JoinType } from 'src/app/shared/data/define';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { CorpService } from 'src/app/shared/remote-services/corp.service';
+import { Corp, CorpReg } from 'src/app/shared/data/corp';
 
 
 @Component({selector: "project-search",templateUrl:"./project.html",styleUrls:["./project.scss"]})
@@ -42,14 +44,20 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
 
     public corpCtl: FormControl = new FormControl();
 
+
     project: Project;
 
     regForm: FormGroup;
+
+    selectCorp: Corp;
+
+    selectReg: CorpReg ;
 
     constructor(
         public dataUtils: DataUtilsService,
         private _route: ActivatedRoute,
         private _fb: FormBuilder,
+        private _corpService: CorpService,
         _func: FunctionPageBar){
             super(_route,_func);
 
@@ -60,6 +68,28 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
     }
 
     ngOnInit(): void {
+
+        this.corpCtl.valueChanges.subscribe(value => {
+            console.log("search corp by" + value);
+            if (value){
+                if (!this.selectCorp || this.selectCorp.code !== value){
+                    this.selectCorp = null;
+                    this.selectReg = null;
+                    console.log("search corp by" + value);
+                    this._corpService.corp(value).subscribe(corp => {
+                        this.selectCorp = corp;
+                        if (corp.regs.length == 1){
+                            this.selectReg = corp.regs[0];
+                        }
+                    });
+                }
+            }else{
+                this.selectCorp = null;
+                this.selectReg = null;
+            }
+            
+        })
+
 
         this._route.data.subscribe(data => {
       
