@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { SearchFunctionBase, FunctionPageBar } from 'src/app/shared/function-items/function-items';
+import { SearchFunctionBase, FunctionPageBar, PageFunctionBase } from 'src/app/shared/function-items/function-items';
 import { PageResult } from 'src/app/shared/page-result';
 import { Project } from 'src/app/shared/data/project';
 import { DataUtilsService } from 'src/app/shared/data/define';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 
 
 @Component({selector: "project-search",templateUrl:"./project.html",styleUrls:["./project.scss"]})
@@ -37,16 +37,23 @@ export class ProjectComponent extends SearchFunctionBase implements OnInit{
 }
 
 @Component({selector:"project-edit", templateUrl:"./edit.html", styleUrls:["./edit.scss"]})
-export class ProjectEditComponent implements OnInit{
+export class ProjectEditComponent extends PageFunctionBase implements OnInit{
 
+
+    public corpCtl: FormControl = new FormControl();
 
     project: Project;
 
     regForm: FormGroup;
 
-    constructor(private _route: ActivatedRoute,
+    constructor(
+        public dataUtils: DataUtilsService,
+        private _route: ActivatedRoute,
         private _fb: FormBuilder,
-        public dataUtils: DataUtilsService){}
+        _func: FunctionPageBar){
+            super(_route,_func);
+
+    }
 
     onSubmit(){
 

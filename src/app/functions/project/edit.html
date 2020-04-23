@@ -241,11 +241,27 @@
       </mat-card-content>
     </mat-card>
 
-    <ng-container *ngIf="regForm.get('corp')">
-      
-    </ng-container>
+
+
+
+
 
 
 
   </form>
+
+  <ng-container *ngIf="regForm.get('corp')">
+    <mat-card>
+      <mat-card-content>
+        <div class="row">
+          <corp-select class="col-sm-6" [formControl]="corpCtl">
+          </corp-select>
+        </div>
+      </mat-card-content>
+
+
+    </mat-card>
+  </ng-container>
+
+
 </div>

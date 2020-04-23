@@ -24,6 +24,7 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
+import { CorpSelectModule } from 'src/app/shared/corp-select/corp-select.component';
 
 
 const routes:Routes = [
@@ -65,6 +66,7 @@ imports:[
     NgxUiLoaderModule,
     ConfirmDialogModule,
     MatSlideToggleModule,
-    OcticonModule]
+    OcticonModule,
+    CorpSelectModule]
 })
 export class ProjectModule{}
