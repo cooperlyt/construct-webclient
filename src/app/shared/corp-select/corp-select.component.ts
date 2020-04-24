@@ -28,7 +28,7 @@ export class CorpSelectComponent implements OnInit,ControlValueAccessor{
 
   constructor(private service: CorpService){}
 
-  private _value: number;
+  _value: number;
 
   onChange: Function = (_: any) => {};
   onTouched: Function = (_: any) => {};

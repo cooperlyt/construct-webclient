@@ -225,3 +225,15 @@ dl.form-group{
   min-width: 80px;
 }
 
+
+.check-edit-field{
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+
+
+  .checked-input{
+    padding-left: 10px;
+    flex: 1 1 auto !important;
+  }
+}

@@ -26,6 +26,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 import { CorpSelectModule } from 'src/app/shared/corp-select/corp-select.component';
 import { SharedDataModule } from 'src/app/shared/data/data.module';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 const routes:Routes = [
@@ -65,6 +66,7 @@ imports:[
     MatTooltipModule,
     MatTableModule,
     MatProgressSpinnerModule,
+    MatCheckboxModule,
     NgxUiLoaderModule,
     ConfirmDialogModule,
     MatSlideToggleModule,

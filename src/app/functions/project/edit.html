@@ -242,6 +242,70 @@
     </mat-card>
 
 
+    <ng-container *ngIf="regForm.get('corp')" formGroupName="corp">
+      <ng-container formArrayName="corps">
+
+
+        <mat-card *ngFor="let corp of corpsForm.controls; let i=index">
+          <mat-card-header>
+            <mat-card-title>
+              {{editCorps[i].reg.property | joinTypeLabel}} - {{editCorps[i].corp.info.name}}
+            </mat-card-title>
+            <mat-card-subtitle>
+              {{editCorps[i].corp.info.groupIdType | groupCardLabel}}: {{editCorps[i].corp.info.groupId}}
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content [formGroupName]="i">
+
+           
+            <div class="row">
+
+              <mat-form-field class="col-sm-4">
+                <mat-label>
+                  外埠队伍审批手续
+                </mat-label>
+                <input matInput formControlName="outsideTeamFile">
+              </mat-form-field>
+              
+              <div class="check-edit-field col-sm-5">
+                <mat-checkbox formControlName="outLevel" (change)="outLevelCheckChange(i)">
+                </mat-checkbox>
+                <div class="checked-input">
+                <mat-form-field >
+                  <mat-label>
+                    越级审批文号
+                  </mat-label>
+          
+                  <input  matInput formControlName="outLevelFile">
+                </mat-form-field>
+                </div>
+              </div>
+
+
+
+
+            <mat-form-field class="col-sm-4">
+              <mat-label>
+                  联系人
+              </mat-label>
+              <input matInput formControlName="contacts">
+            </mat-form-field>
+
+            <mat-form-field class="col-sm-4">
+              <mat-label>
+                联系电话
+              </mat-label>
+              <input matInput formControlName="tel">
+            </mat-form-field>
+
+          </div>
+          </mat-card-content>
+        </mat-card>
+
+
+      </ng-container>
+    </ng-container>
 
 
 
@@ -271,7 +335,7 @@
           </mat-form-field>
 
           <div class="col-sm-3  flex-right-center">
-            <button [disabled]="!selectReg" mat-raised-button color="primary">添加参建单位</button>
+            <button [disabled]="!selectReg" (click)="addNewCorp()" mat-raised-button color="primary">添加参建单位</button>
           </div>
         </div>
 

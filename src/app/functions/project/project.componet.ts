@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchFunctionBase, FunctionPageBar, PageFunctionBase } from 'src/app/shared/function-items/function-items';
 import { PageResult } from 'src/app/shared/page-result';
-import { Project } from 'src/app/shared/data/project';
+import { Project, JoinCorp } from 'src/app/shared/data/project';
 import { DataUtilsService, JoinType } from 'src/app/shared/data/define';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
@@ -44,7 +44,6 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
 
     public corpCtl: FormControl = new FormControl();
 
-
     project: Project;
 
     regForm: FormGroup;
@@ -52,6 +51,12 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
     selectCorp: Corp;
 
     selectReg: CorpReg ;
+
+    editCorps:{corp: Corp, reg: CorpReg}[] = []
+
+    get corpsForm():FormArray{
+        return this.regForm.get("corp").get("corps") as FormArray;
+    }
 
     constructor(
         public dataUtils: DataUtilsService,
@@ -65,6 +70,36 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
 
     onSubmit(){
 
+    }
+
+
+    outLevelCheckChange(i: number){
+
+        if (!this.corpsForm.controls[i].value.outLevel) {
+            this.corpsForm.controls[i].get('outLevelFile').setValue(null);
+            this.corpsForm.controls[i].get('outLevelFile').disable();
+        }else{
+            this.corpsForm.controls[i].get('outLevelFile').enable();
+        }
+    }
+
+    addNewCorp(){
+        this.editCorps.push({corp:this.selectCorp, reg: this.selectReg});
+
+        this.corpsForm.push(this._fb.group({
+            property: [this.selectReg.property,Validators.required],
+            outsideTeamFile: [, Validators.maxLength(32)],
+            outLevel: [false],
+            outLevelFile:[{value: null, disabled: true}, Validators.maxLength(32)],
+            code:[this.selectCorp.code, Validators.required],
+            contacts:[, Validators.maxLength(64)],
+            tel:[this.selectCorp.info.tel, Validators.maxLength(16)]
+        }));
+
+
+        this.selectReg = null;
+        this.selectCorp = null;
+        this.corpCtl.setValue(null);
     }
 
     ngOnInit(): void {
@@ -102,7 +137,10 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
       
             if (!this.project){
               this.addInfoForm();
-              this.addCorpForm();
+
+              this.regForm.addControl('corp', this._fb.group({
+                    corps: this._fb.array([])
+                }));
             }
       
             
@@ -136,25 +174,27 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
         })) 
     }
 
-    private addCorpForm(){
-        let corpsForm: FormArray = this._fb.array([]);
-        if (this.project){
-            this.project.corp.corps.forEach(corp => {
-                corpsForm.push(this._fb.group({
-                    property: [corp.property,Validators.required],
-                    outsideTeamFile: [corp.outsideTeamFile, Validators.maxLength(32)],
-                    outLevel: [corp.outLevel],
-                    outLevelFile:[corp.outLevelFile, Validators.maxLength(32)],
-                    code:[corp.code, Validators.required],
-                    contacts:[corp.contacts, Validators.maxLength(64)],
-                    tel:[corp.tel, Validators.maxLength(16)]
-
-                }))
+    private pushCorp(joinCorp: JoinCorp){
+        this.corpsForm.push(
+            this._fb.group({
+                property: [joinCorp.property,Validators.required],
+                outsideTeamFile: [joinCorp.outsideTeamFile, Validators.maxLength(32)],
+                outLevel: [joinCorp.outLevel],
+                outLevelFile:[joinCorp.outLevelFile, Validators.maxLength(32)],
+                code:[joinCorp.code, Validators.required],
+                contacts:[joinCorp.contacts, Validators.maxLength(64)],
+                tel:[joinCorp.tel, Validators.maxLength(16)]
             })
-        }
-
-        this.regForm.addControl('corp', this._fb.group({
-            corps: corpsForm
-        }));
+        );
     }
+
+    //private addCorpForm(){
+        // let corpsForm: FormArray = this._fb.array([]);
+        // if (this.project){
+        //     this.project.corp.corps.forEach(corp => {
+        //         corpsForm.push()
+        //     })
+        // }
+
+    //}
 }
