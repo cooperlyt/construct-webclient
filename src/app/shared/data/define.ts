@@ -139,25 +139,66 @@ export class LevelLabelPipe implements PipeTransform {
 }
 
 @Pipe({name: 'personCardLabel'})
-export class PersonCardLabel implements PipeTransform {
+export class PersonCardLabelPipe implements PipeTransform {
     transform(value: string) {
         return PersonIdType[value];
     }
 }
 
 @Pipe({name: 'groupCardLabel'})
-export class GroupCardLabel implements PipeTransform{
+export class GroupCardLabelPipe implements PipeTransform{
     transform(value: string) {
         return GroupIdType[value];
     }
 }
 
 @Pipe({name: "levelKeyValue"})
-export class LevelKeyLabel implements PipeTransform{
+export class LevelKeyLabelPipe implements PipeTransform{
     transform(value: string):{key:number,label: string}[]{
         return Object.keys(LEVELS[value]).map(key => ({key: Number(key), label: LEVELS[value][key]}));
     }
-    
+}
+
+@Pipe({name: "projectPropertyLabel"})
+export class ProjectPropertyLabelPipe implements PipeTransform{
+    transform(value: string) {
+        return ProjectProperty[value];
+    }
+}
+
+@Pipe({name: "projectTypeClassLabel"})
+export class ProjectTypeClassLabelPipe implements PipeTransform{
+    transform(value: string) {
+        return ProjectTypeClass[value]
+    }
+}
+
+@Pipe({name: 'projectTypeLabel'})
+export class ProjectTypeLabelPipe implements PipeTransform{
+    transform(value: string) {
+        return PROJECT_TYPES[value].group + '-' + PROJECT_TYPES[value].label;
+    }
+}
+
+@Pipe({name: 'improtantTypeLabel'})
+export class ImportantTypeLabelPipe implements PipeTransform{
+    transform(value: string) {
+        return ImportantType[value];
+    }
+}
+
+@Pipe({name: "floorTypeLabel"})
+export class FloorTypePipe implements PipeTransform{
+    transform(value: string) {
+        return FLoorType[value];
+    }
+}
+
+@Pipe({name: 'projectTypeLevelLabel'})
+export class ProjectTypeLevelLabelPipe implements PipeTransform{
+    transform(value: number) {
+        throw TYPE_LEVEL[value];
+    }
 }
 
 @Injectable({providedIn: 'root'})

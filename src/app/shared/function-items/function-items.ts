@@ -1,9 +1,11 @@
-import {Injectable, Component, OnDestroy} from '@angular/core';
+import {Injectable, Component, OnDestroy, ViewChild, OnInit} from '@angular/core';
 import { Subject, Observable, combineLatest } from 'rxjs';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { TableOfContents } from '../table-of-contents/table-of-contents';
 
 export interface FunctionItem {
   /** Id of the doc item. Used in the URL for linking to the doc. */
@@ -226,6 +228,37 @@ export abstract class PageFunctionBase implements OnDestroy{
   ngOnDestroy(): void {
     this._destroyed.next();
     this._destroyed.complete();
+  }
+
+}
+
+export abstract class TocPageFunctionBase extends PageFunctionBase implements OnInit{
+
+  @ViewChild('toc') tableOfContents: TableOfContents;
+
+  showToc: Observable<boolean>;
+
+  destroyed = new Subject<void>();
+
+  constructor(_route: ActivatedRoute, _func: FunctionPageBar,
+      breakpointObserver: BreakpointObserver) {
+      super(_route,_func);
+    this.showToc = breakpointObserver.observe('(max-width: 1200px)')
+      .pipe(map(result => !result.matches));
+  }
+
+  ngOnInit(): void {
+      if (this.tableOfContents) {
+        this.tableOfContents.resetHeaders();
+      }
+  }
+
+  updateTableOfContents(sectionName: string, docViewerContent: HTMLElement, sectionIndex = 0) {
+    console.log("add table contents:" + sectionName)
+    if (this.tableOfContents) {
+      this.tableOfContents.addHeaders(sectionName, docViewerContent, sectionIndex);
+      this.tableOfContents.updateScrollPosition();
+    }
   }
 
 }

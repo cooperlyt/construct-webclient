@@ -4,7 +4,7 @@
   <h2 class="Subhead-heading">{{!!project ? '编辑' : '创建'}}项目备案</h2>
 
   <p *ngIf="!project" class="Subhead-description">
-      每个建设项目可以添加多个参建单位.
+      每个建设项目可以添加多个参建单位,至少要包含一个开发单位.
   </p>
 
   <p *ngIf="!!project" class="Subhead-description">
@@ -14,9 +14,9 @@
 
 </div>
 
-<div class="paper-page">
+<div class="edit-content">
 
-
+<div class="paper-page" >
   <form id="project-form" [formGroup]="regForm"  (ngSubmit)="onSubmit()">
     <mat-card *ngIf="regForm.get('info')"  formGroupName="info">
 
@@ -79,7 +79,7 @@
             </mat-error>
           </mat-form-field>
 
-<!-- 
+          <!-- 
           [disabled]="false" [required]="true"  -->
           <mat-form-field class="col-sm-3" >
             <mat-label>
@@ -246,7 +246,7 @@
       <ng-container formArrayName="corps">
 
 
-        <mat-card *ngFor="let corp of corpsForm.controls; let i=index">
+        <mat-card [id]="editCorps[i].reg.property + '-' + editCorps[i].corp.code" *ngFor="let corp of corpsForm.controls; let i=index">
           <mat-card-header>
             <mat-card-title>
               {{editCorps[i].reg.property | joinTypeLabel}} - {{editCorps[i].corp.info.name}}
@@ -314,9 +314,15 @@
 
   </form>
 
+  <div id="corp-info">
+
+  </div>
   <ng-container *ngIf="regForm.get('corp')">
     <mat-card>
       <mat-card-content>
+        <div *ngIf="!existsDeveloper" class="mat-error">
+          *至少要包含一个开发单位
+        </div>
         <div class="row">
           <corp-select class="col-sm-6" [formControl]="corpCtl">
           </corp-select>
@@ -335,8 +341,12 @@
           </mat-form-field>
 
           <div class="col-sm-3  flex-right-center">
-            <button [disabled]="!selectReg" (click)="addNewCorp()" mat-raised-button color="primary">添加参建单位</button>
+            <button [disabled]="!newCorpValid" (click)="addNewCorp()" mat-raised-button color="primary">添加参建单位</button>
           </div>
+        </div>
+
+        <div class="mat-error" *ngIf="selectReg && !newCorpValid">
+          此参建单位已添加!不可重复添加重复添加同一类型的同一参建单位.
         </div>
 
       </mat-card-content>
@@ -344,6 +354,14 @@
 
     </mat-card>
   </ng-container>
+
+  <hr/>
+
+<!--  -->
+<button mat-raised-button color="primary" [disabled]="!regForm.valid || !existsDeveloper" form="project-form"  type="submit" >
+   {{project ? '修改':'建立'}} 项目备案
+</button>
+</div>
 
 
 </div>

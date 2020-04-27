@@ -27,10 +27,10 @@ import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 import { CorpSelectModule } from 'src/app/shared/corp-select/corp-select.component';
 import { SharedDataModule } from 'src/app/shared/data/data.module';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-
+import { ProjectSearchResolver } from './project-search.resolver';
 
 const routes:Routes = [
-    {path: "", component: ProjectComponent},
+    {path: "", component: ProjectComponent,runGuardsAndResolvers: 'paramsOrQueryParamsChange', resolve: {projects: ProjectSearchResolver}},
     {path: "edit", component: ProjectEditComponent},
     {path: "edit/:id", component: ProjectEditComponent, resolve: {project: ProjectResolver}},
     {path: "details/:id",component: ProjectDetailsComponent,children:[

@@ -1,13 +1,16 @@
+
+
+
 <div class="context-view-head">
   <div class="head-nav">
-    <div class="valid-toggle">
+    <div class="head-toggle">
         <mat-slide-toggle (toggleChange)="onShowDisabledChange()" [checked]="params.showDisabled"  matTooltip="是否显示已设置为禁用的项目">
  
         </mat-slide-toggle>
     </div>
         <h3>
-            <!-- {{dataPage.totalElements | number}} -->
-            共  个{{params.showDisabled ? '' : '生效'}}备案项目
+      
+            共 {{dataPage.totalElements | number}} 个{{params.showDisabled ? '' : '生效'}}备案项目
         </h3>  
 
 
@@ -19,5 +22,127 @@
             <mat-icon>add</mat-icon>
         </button>
     </div>
+  </div>
+
+
+
+  <mat-menu #classMenu="matMenu">
+    <button mat-menu-item (click)="onClassChange(null)" >全部类型</button>
+    <button  [class.mat-selected] ="type.key == params.projectClass" *ngFor="let type of dataUtil.projectMainTypes" mat-menu-item  (click)="onClassChange(type.key)">{{type.label}}</button>
+   </mat-menu>
+
+   <mat-menu #propertyMenu="matMenu">
+       <button mat-menu-item (click)="onPropertyChange(null)" >全部性质</button>
+       <button mat-menu-item *ngFor="let property of dataUtil.projectProperties" (click)="onPropertyChange(property.key)" [class.mat-selected] ="property.key == params.property" >{{property.label}}</button>
+   </mat-menu>
+
+
+    <div class="head-tab-menu">
+        <div class="head-tab-items">
+                <a class="head-tab-item selected" (click)="onPropertyChange(null)"  [class.selected]="!params.property">
+                    全部
+                </a>
+
+                <a class="head-tab-item" (click)="onPropertyChange(property.key)" [class.selected]="params.property == property.key" *ngFor="let property of dataUtil.projectProperties">
+                    {{property.label}}
+                </a>
+        </div>
+
+        <div class="head-filter-bar property-filter-bar">
+            <a [matMenuTriggerFor]="propertyMenu" class="filter-menu" 
+            [class.filtered]="!!params.property">
+            <span *ngIf="params.property">{{params.property | projectPropertyLabel}}</span>
+            <span *ngIf="!params.property">全部性质</span>
+        </a>
+        </div>
+
+
+        <div class="head-filter-bar">
+            <a [matMenuTriggerFor]="classMenu" class="filter-menu" 
+                [class.filtered]="!!params.projectClass">
+                <span *ngIf="params.projectClass">{{params.projectClass | projectTypeClassLabel}}</span>
+                <span *ngIf="!params.projectClass">全部类型</span>
+            </a>
+
+        </div>
+
+    </div> 
 </div>
+
+<div class="context-view-body" >
+<div *ngIf="!dataPage.empty" class="context-view-master">
+    <div class="px-2 view-context">
+        <ul class="repo-list">
+            <li *ngFor="let item of dataPage.content"  class="repo-list-item hx_hit-repo d-flex flex-justify-start py-4 public source">
+                <div class="flex-shrink-0 mr-2">
+                    <fa-icon [class.red-text]="item.info.info.importantType != 'NORMAL'" [icon]="faProjectDiagram"></fa-icon>
+                </div>
+
+                <div class="mt-n1">
+                    <div class="f4 text-normal">
+                        <a class="v-align-middle"  [routerLink]="'details/' + item.code + '/info'">
+                          {{item.code}} / <span [class.line-through]="!item.enable">{{item.info.info.name}}</span> 
+                        </a>
+                        <span class="badge badge-info">
+                        {{item.info.info.property | projectPropertyLabel}}
+                        </span>
+                     
+             
+                    </div>
+                    <p class="mb-1">
+                        项目  <ng-container *ngIf="item.info.info.importantType != 'NORMAL'"> 为 <strong>{{item.info.info.importantType | improtantTypeLabel}}</strong>   文号: <strong> {{item.info.info.importantFile}} </strong> </ng-container> 
+                        位于 <strong>{{item.info.info.address}} </strong> , 属于 <strong>{{item.info.info.type | projectTypeLabel}}  {{item.info.info.floorType | floorTypeLabel}}  {{item.info.info.typeLevel | projectTypeLevelLabel}} </strong>  
+                    </p>
+                    <div>
+    
+                        <div>
+                            <mat-chip-list>
+                                <mat-chip *ngFor="let corp of item.corp.corpSummary" color="primary" selected>{{corp.name}}</mat-chip>
+                            </mat-chip-list>
+                       
+                        </div>
+                        <!-- <div class="d-flex flex-wrap text-small text-gray">
+                            <div class="mr-3">
+                      
+                            </div>
+                        </div> -->
+                    </div>
+    
+                </div>
+            </li>
+        </ul>
+
+        <mat-paginator [length]="dataPage.totalElements"
+        hidePageSize="true"
+        showFirstLastButtons="true"
+        [pageIndex]="dataPage.number"
+        (page)="onPageChange($event)"
+        [pageSize]="dataPage.size">
+        </mat-paginator>
+    </div>
+
+</div>
+
+<div class="px-2 context-view-master" *ngIf="dataPage.empty">
+    <div class="blankslate flex-auto" >
+        <span octicon="search" class="blankslate-icon" width="32"></span>
+        <h3>没有找到符合条件的参建单位。</h3>
+        你可以 <a routerLink="edit"> 创建 </a> 项目备案
+    </div>
+</div>
+
+
+<div class="context-view-details" >
+    <div class="details-context">
+        <ul class="filter-list small">
+            <li *ngFor="let type of dataUtil.projectMainTypes" >
+                <a (click)="onClassChange(type.key)"  class="filter-item" [class.selected]="type.key == params.projectClass">
+                    <span *ngIf="type.key == params.projectClass" octicon="x" class="float-right"></span>
+                    {{type.label}}
+                </a>
+            </li>
+        </ul>     
+    </div>
+ </div>
+
 </div>

@@ -2,7 +2,7 @@
 
     <div class="context-view-head">
         <div class="head-nav">
-            <div class="valid-toggle">
+            <div class="head-toggle">
                 <mat-slide-toggle (toggleChange)="onShowDisabledChange()" [checked]="params.showDisabled"  matTooltip="是否显示已设置为禁用的参建单位">
          
                 </mat-slide-toggle>
@@ -24,7 +24,7 @@
 
         <mat-menu #typeMenu="matMenu">
             <button mat-menu-item (click)="onTypeChange(params.type)" >全部</button>
-            <button *ngFor="let type of dataUtil.joinType" mat-menu-item  (click)="onTypeChange(type.key)">{{type.label}}</button>
+            <button [class.mat-selected] ="type.key == params.type" *ngFor="let type of dataUtil.joinType" mat-menu-item  (click)="onTypeChange(type.key)">{{type.label}}</button>
         </mat-menu>
         <div class="head-filter-bar">
             <a [matMenuTriggerFor]="typeMenu" class="filter-menu" 
@@ -35,25 +35,9 @@
 
         </div>
 
-
-
-
-        <!-- <div class="head-tab-menu">
-
-            <div class="head-tab-items">
-
-                <a class="head-tab-item selected">
-                    全部
-                </a>
-
-                <a class="head-tab-item" *ngFor="let type of dataUtil.joinType">
-                    {{type.label}}
-                </a>
-            </div>
-
-        </div> -->
-
     </div>
+
+
 <div class="context-view-body" >
 
 <div *ngIf="!dataPage.empty" class="context-view-master">
@@ -116,7 +100,6 @@
  
  <div class="context-view-details" >
     <div class="details-context">
-
         <ul class="filter-list small">
             <li *ngFor="let type of dataUtil.joinType" >
                 <a (click)="onTypeChange(type.key)"  class="filter-item" [class.selected]="type.key == params.type">
@@ -124,12 +107,10 @@
                     {{type.label}}
                 </a>
             </li>
-        </ul>
-
-        
+        </ul>     
     </div>
-
  </div>
+
 </div>
     
 

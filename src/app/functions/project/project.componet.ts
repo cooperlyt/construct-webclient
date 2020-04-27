@@ -1,12 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { SearchFunctionBase, FunctionPageBar, PageFunctionBase } from 'src/app/shared/function-items/function-items';
+import { SearchFunctionBase, FunctionPageBar, PageFunctionBase, TocPageFunctionBase } from 'src/app/shared/function-items/function-items';
 import { PageResult } from 'src/app/shared/page-result';
 import { Project, JoinCorp } from 'src/app/shared/data/project';
 import { DataUtilsService, JoinType } from 'src/app/shared/data/define';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { CorpService } from 'src/app/shared/remote-services/corp.service';
 import { Corp, CorpReg } from 'src/app/shared/data/corp';
+import { ProjectService } from 'src/app/shared/remote-services/project.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { ToastrService } from 'ngx-toastr';
+import { catchError } from 'rxjs/operators';
+import { empty } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
+import { faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({selector: "project-search",templateUrl:"./project.html",styleUrls:["./project.scss"]})
@@ -14,7 +21,9 @@ export class ProjectComponent extends SearchFunctionBase implements OnInit{
 
     dataPage: PageResult<Project>;
 
-    params: {showDisabled : boolean, type: string};
+    faProjectDiagram = faProjectDiagram;
+
+    params: {showDisabled : boolean, property: string , projectClass: string};
 
     constructor(
         public dataUtil: DataUtilsService,
@@ -24,16 +33,47 @@ export class ProjectComponent extends SearchFunctionBase implements OnInit{
         super(_route,_func);
       }
 
-    doSearch(key: import("../../shared/function-items/function-items").SearchCondition): void {
-        
+    doSearch(condition: import("../../shared/function-items/function-items").SearchCondition): void {
+        if (condition.now){
+            let params: Params = {page:0};
+            params['key'] = condition.key;
+            this._router.navigate([],{relativeTo: this._route, queryParams: params, queryParamsHandling: 'merge' })
+        }
+    }
+
+    onPropertyChange(property: string){
+   
+        if (!property || property === '' ){
+    
+          this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,property: null}, queryParamsHandling: 'merge'})
+        }else if (property !== this.params.property){
+          this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,property: property}, queryParamsHandling: 'merge'})
+        }
+    }
+
+    onClassChange(projectClass: string){
+        if (!projectClass || projectClass === '' || projectClass === this.params.projectClass){
+            this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,class: null}, queryParamsHandling: 'merge'})
+          }else{
+            this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,class: projectClass}, queryParamsHandling: 'merge'})
+          }
+    }
+    
+    onPageChange(pageEvent: PageEvent){
+    
+        if ((pageEvent.pageIndex) !== this.dataPage.number){
+    
+          this._router.navigate([], {relativeTo: this._route, queryParams: {page: pageEvent.pageIndex} ,queryParamsHandling: 'merge'});
+        }
     }
 
     onShowDisabledChange(){
-
+        this._router.navigate([],{relativeTo: this._route,queryParams: {page:0, valid: !this.params.showDisabled}, queryParamsHandling: 'merge'})
     }
 
     ngOnInit(): void {
-        this._route.queryParamMap.subscribe(params => this.params = {showDisabled: JSON.parse(params.get('valid')) ,type : params.get('type')})
+        this._route.data.subscribe(data => this.dataPage = data.projects);
+        this._route.queryParamMap.subscribe(params => this.params = {showDisabled: JSON.parse(params.get('valid')) ,property : params.get('property'), projectClass: params.get('class')})
     }
 
 }
@@ -43,6 +83,7 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
 
 
     public corpCtl: FormControl = new FormControl();
+
 
     project: Project;
 
@@ -54,6 +95,30 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
 
     editCorps:{corp: Corp, reg: CorpReg}[] = []
 
+    currentSection = 'base-info';
+
+    onSectionChange(sectionId: string) {
+      this.currentSection = sectionId;
+    }
+  
+    scrollTo(section) {
+      document.querySelector('#' + section)
+      .scrollIntoView();
+    }
+
+    get existsDeveloper(): boolean{
+        return !!this.editCorps.find(element => element.reg.property === 'Developer')
+    }
+
+    get newCorpValid():boolean{
+
+        if (this.selectCorp && this.selectReg){
+            return !this.editCorps.find(element  => ((element.corp.code === this.selectCorp.code) && (element.reg.property === this.selectReg.property)));
+        }else{
+            return false;
+        }
+    }
+
     get corpsForm():FormArray{
         return this.regForm.get("corp").get("corps") as FormArray;
     }
@@ -61,15 +126,26 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
     constructor(
         public dataUtils: DataUtilsService,
         private _route: ActivatedRoute,
+        private _router: Router,
         private _fb: FormBuilder,
         private _corpService: CorpService,
+        private service:ProjectService,
+        private _ngxService: NgxUiLoaderService,
+        private _toastr: ToastrService,
         _func: FunctionPageBar){
             super(_route,_func);
 
     }
 
     onSubmit(){
-
+        this._ngxService.start();
+        this.service.patchProject(this.regForm.value).pipe(catchError(err=>{
+            //this._ngxService.stop();
+            this._toastr.error("请联系管理员或请稍后再试！","存储数据失败");
+            return empty();
+          })).subscribe(code => {
+            this._ngxService.stop();
+          });
     }
 
 

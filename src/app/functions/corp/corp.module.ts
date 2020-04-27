@@ -106,7 +106,6 @@ const routes: Routes =[
       MatSlideToggleModule,
       OcticonModule,
       RouterModule.forChild(routes),
-
       SharedDataModule
     ]
   

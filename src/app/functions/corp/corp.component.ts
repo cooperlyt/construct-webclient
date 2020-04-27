@@ -51,23 +51,22 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
   doSearch(condition: SearchCondition): void {
     if (condition.now){
       let params: Params = {page:0};
-      if (condition.key){
-        params['key'] = condition.key;
-      }
-      this._router.navigate([],{relativeTo: this._route, queryParams: params })
+      params['key'] = condition.key;
+      
+      this._router.navigate([],{relativeTo: this._route, queryParams: params, queryParamsHandling: 'merge' })
     }
   }
 
   onShowDisabledChange(){
-    this._router.navigate([],{relativeTo: this._route,queryParams: {valid: !this.params.showDisabled}, queryParamsHandling: 'merge'})
+    this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,valid: !this.params.showDisabled}, queryParamsHandling: 'merge'})
   }
 
   onTypeChange(type: string){
 
     if (!type || type === '' || type === this.params.type){
-      this._router.navigate([],{relativeTo: this._route,queryParams: {type: null}, queryParamsHandling: 'merge'})
+      this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,type: null}, queryParamsHandling: 'merge'})
     }else{
-      this._router.navigate([],{relativeTo: this._route,queryParams: {type: type}, queryParamsHandling: 'merge'})
+      this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,type: type}, queryParamsHandling: 'merge'})
     }
 
 
