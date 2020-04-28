@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
     selector: 'corp-info',
     templateUrl: './info.html',
-    styleUrls: []
+    styleUrls: ['./info.scss']
   })
 export class CorpInfoComponent implements OnInit{
 

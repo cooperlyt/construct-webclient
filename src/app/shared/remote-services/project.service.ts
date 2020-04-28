@@ -12,6 +12,10 @@ export class ProjectService{
 
   constructor(private _http: HttpClient) { }
 
+  project(code:number):Observable<Project>{
+    return this._http.get<Project>(`${environment.apiUrl}/construct-project-cache/data/project/${code}`);
+  }
+
 
   patchProject(reg:ProjectReg, code?:number): Observable<number>{
     return this._http.post<number>(`${environment.apiUrl}/construct-project/mgr/patch/${code ? 'modify/' + code: 'create'}`,reg, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});

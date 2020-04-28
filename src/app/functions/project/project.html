@@ -90,8 +90,9 @@
              
                     </div>
                     <p class="mb-1">
-                        项目  <ng-container *ngIf="item.info.info.importantType != 'NORMAL'"> 为 <strong>{{item.info.info.importantType | improtantTypeLabel}}</strong>   文号: <strong> {{item.info.info.importantFile}} </strong> </ng-container> 
-                        位于 <strong>{{item.info.info.address}} </strong> , 属于 <strong>{{item.info.info.type | projectTypeLabel}}  {{item.info.info.floorType | floorTypeLabel}}  {{item.info.info.typeLevel | projectTypeLevelLabel}} </strong>  
+                        项目<ng-container *ngIf="item.info.info.importantType != 'NORMAL'">为<strong>{{item.info.info.importantType | improtantTypeLabel}}</strong>   文号: <strong> {{item.info.info.importantFile}} </strong> </ng-container> 
+                        位于 <strong>{{item.info.info.address}} </strong> , 工程类别为: <strong>{{item.info.info.type | projectTypeLabel}}  {{item.info.info.floorType | floorTypeLabel}}  {{item.info.info.typeLevel | projectTypeLevelLabel}} {{item.info.info.structure | structLabel}}</strong>
+                        占地 <strong>{{item.info.info.landArea | number }}</strong> 平方米, 建筑面积 <strong>{{item.info.info.area | number}}</strong>平方米. 地上<strong>{{item.info.info.groundCount | number}}</strong>层,地下<strong>{{item.info.info.underCount | number}}</strong>层.工程造价<strong>{{item.info.info.costs | number}}</strong>万元,计划与<strong>{{item.info.info.beginDate | date:'yyyy年MM月dd日'}}</strong> 开工,与<strong>{{item.info.info.completeDate | date:'yyyy年MM月dd日'}}</strong>竣工.
                     </p>
                     <div>
     
@@ -101,11 +102,14 @@
                             </mat-chip-list>
                        
                         </div>
-                        <!-- <div class="d-flex flex-wrap text-small text-gray">
+                        <div class="d-flex flex-wrap text-small text-gray">
                             <div class="mr-3">
-                      
+                                项目信息备案时间:{{item.info.regTime | date:'yyyy年MM月dd日'}}
                             </div>
-                        </div> -->
+                            <div class="mr-3">
+                                参建单位备案时间:{{item.corp.regTime | date:'yyyy年MM月dd日'}}
+                            </div>
+                        </div> 
                     </div>
     
                 </div>

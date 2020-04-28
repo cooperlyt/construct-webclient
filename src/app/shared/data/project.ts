@@ -8,7 +8,7 @@ export declare class JoinCorpInfo{
 }
 
 export declare class JoinCorp{
-    property: JoinType;
+    property: string;
     outsideTeamFile: string;
     outLevel: boolean;
     outLevelFile:string;
@@ -20,7 +20,7 @@ export declare class JoinCorp{
 }
 
 export declare class JoinCorpRegSummary{
-    property: JoinType;
+    property: string;
     code: number;
     name: string;
     idType: GroupIdType;

@@ -197,8 +197,16 @@ export class FloorTypePipe implements PipeTransform{
 @Pipe({name: 'projectTypeLevelLabel'})
 export class ProjectTypeLevelLabelPipe implements PipeTransform{
     transform(value: number) {
-        throw TYPE_LEVEL[value];
+        return TYPE_LEVEL[value];
     }
+}
+
+@Pipe({name:'structLabel'})
+export class StructLabelPipe implements PipeTransform{
+    transform(value: string) {
+        return ProjectStruct[value];
+    }
+    
 }
 
 @Injectable({providedIn: 'root'})

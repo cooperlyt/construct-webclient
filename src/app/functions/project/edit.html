@@ -150,7 +150,7 @@
 
           <mat-form-field class="col-sm-3">
             <mat-label>
-              工程造价
+              工程造价(万元)
             </mat-label>
             <input matInput type="number" formControlName="costs">
           </mat-form-field>
@@ -168,14 +168,14 @@
         <div class="row">
           <mat-form-field class="col-sm-3">
             <mat-label>
-              建筑面积
+              建筑面积(平方米)
             </mat-label>
             <input matInput type="number" formControlName="area">
           </mat-form-field>
 
           <mat-form-field class="col-sm-3">
             <mat-label>
-              占地面积
+              占地面积(平方米)
             </mat-label>
             <input matInput type="number" formControlName="landArea">
           </mat-form-field>
@@ -221,6 +221,16 @@
             <input matInput formControlName="tender">
             <mat-error *ngIf="regForm.get('info').get('info').get('name').hasError('maxlength')">
               长度不能超过 <strong>32</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-sm-12">
+            <mat-label>
+              项目地址
+            </mat-label>
+            <input matInput formControlName="address">
+            <mat-error *ngIf="regForm.get('info').get('info').get('address').hasError('maxlength')">
+              长度不能超过 <strong>512</strong>
             </mat-error>
           </mat-form-field>
 

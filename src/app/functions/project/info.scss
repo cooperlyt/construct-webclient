@@ -1,0 +1,11 @@
+.field-info-list li strong{
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.field-info-list li strong:not(:first-child){
+
+  margin-left: 12px;
+
+
+}

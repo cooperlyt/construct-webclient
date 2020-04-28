@@ -72,7 +72,7 @@ export class ProjectComponent extends SearchFunctionBase implements OnInit{
     }
 
     ngOnInit(): void {
-        this._route.data.subscribe(data => this.dataPage = data.projects);
+        this._route.data.pipe(catchError(err => {console.log(err); return empty})).subscribe(data => this.dataPage = data.projects);
         this._route.queryParamMap.subscribe(params => this.params = {showDisabled: JSON.parse(params.get('valid')) ,property : params.get('property'), projectClass: params.get('class')})
     }
 
