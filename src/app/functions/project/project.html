@@ -79,27 +79,35 @@
                 </div>
 
                 <div class="mt-n1">
-                    <div class="f4 text-normal">
-                        <a class="v-align-middle"  [routerLink]="'details/' + item.code + '/info'">
+                    <div class="f4 text-normal project-title">
+                        <a class="v-align-middle" [class.line-through]="!item.enable"  [routerLink]="'details/' + item.code + '/info'">
                           {{item.code}} / <span [class.line-through]="!item.enable">{{item.info.info.name}}</span> 
                         </a>
-                        <span class="badge badge-info">
-                        {{item.info.info.property | projectPropertyLabel}}
-                        </span>
+                        <span class="badge badge-info badge-pill">{{item.info.info.property | projectPropertyLabel}}</span>
                      
              
                     </div>
-                    <p class="mb-1">
-                        项目<ng-container *ngIf="item.info.info.importantType != 'NORMAL'">为<strong>{{item.info.info.importantType | improtantTypeLabel}}</strong>   文号: <strong> {{item.info.info.importantFile}} </strong> </ng-container> 
-                        位于 <strong>{{item.info.info.address}} </strong> , 工程类别为: <strong>{{item.info.info.type | projectTypeLabel}}  {{item.info.info.floorType | floorTypeLabel}}  {{item.info.info.typeLevel | projectTypeLevelLabel}} {{item.info.info.structure | structLabel}}</strong>
-                        占地 <strong>{{item.info.info.landArea | number }}</strong> 平方米, 建筑面积 <strong>{{item.info.info.area | number}}</strong>平方米. 地上<strong>{{item.info.info.groundCount | number}}</strong>层,地下<strong>{{item.info.info.underCount | number}}</strong>层.工程造价<strong>{{item.info.info.costs | number}}</strong>万元,计划与<strong>{{item.info.info.beginDate | date:'yyyy年MM月dd日'}}</strong> 开工,与<strong>{{item.info.info.completeDate | date:'yyyy年MM月dd日'}}</strong>竣工.
+                    <p class="mb-1" [class.line-through]="!item.enable">
+                        项目<ng-container *ngIf="item.info.info.importantType != 'NORMAL'">为<strong>{{item.info.info.importantType | improtantTypeLabel}}</strong> 文号: <strong> {{item.info.info.importantFile}} </strong> </ng-container> 
+                        <descript-field [field]="item.info.info.address" suffix=",">位于</descript-field>工程类别为: <strong>{{item.info.info.type | projectTypeLabel}}  {{item.info.info.floorType | floorTypeLabel}}  {{item.info.info.typeLevel | projectTypeLevelLabel}} {{item.info.info.structure | structLabel}}</strong>
+                        <descript-field [field]="item.info.info.landArea | number " suffix="平方米,">占地</descript-field>
+                        <descript-field [field]="item.info.info.area | number" suffix="平方米.">建筑面积</descript-field>
+                        <descript-field [field]="item.info.info.groundCount | number" suffix="层,">地上</descript-field>
+                        <descript-field [field]="item.info.info.underCount | number"  suffix="层,">地下</descript-field> 
+                        <descript-field [field]="item.info.info.height |number" suffix="米,">高度</descript-field>
+                        <descript-field [field]="item.info.info.costs | number" suffix="万元,">工程造价</descript-field>
+                        <ng-container *ngIf="item.info.info.beginDate || item.info.info.completeDate">计划</ng-container>
+                        <descript-field [field]="item.info.info.beginDate | date:'yyyy年MM月dd日'" suffix="开工,">于</descript-field>
+                        <descript-field [field]="item.info.info.completeDate | date:'yyyy年MM月dd日'" suffix="竣工.">于</descript-field>
                     </p>
                     <div>
     
-                        <div>
-                            <mat-chip-list>
-                                <mat-chip *ngFor="let corp of item.corp.corpSummary" color="primary" selected>{{corp.name}}</mat-chip>
-                            </mat-chip-list>
+                        <div class="corp-badges">
+
+                            <a [routerLink]="'/function/corp/details/' + corp.code + '/info'" *ngFor="let corp of item.corp.corpSummary" class="badge" [class.badge-primary]="corp.property == 'Developer'" [class.badge-default]="corp.property != 'Developer'">
+                                {{corp.property | joinTypeLabel}} - {{corp.name}}
+                            </a>
+                            
                        
                         </div>
                         <div class="d-flex flex-wrap text-small text-gray">

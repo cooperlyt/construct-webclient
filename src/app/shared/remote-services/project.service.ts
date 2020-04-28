@@ -7,6 +7,7 @@ import { CustomEncoder } from 'src/app/shared/custom-encoder';
 import { ProjectReg, Project } from '../data/project';
 
 
+
 @Injectable({providedIn: 'root'})
 export class ProjectService{
 
@@ -19,6 +20,10 @@ export class ProjectService{
 
   patchProject(reg:ProjectReg, code?:number): Observable<number>{
     return this._http.post<number>(`${environment.apiUrl}/construct-project/mgr/patch/${code ? 'modify/' + code: 'create'}`,reg, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
+  }
+
+  changeProjectStatus(code: number,enable: boolean): Observable<{code: number, enable:boolean}>{
+    return this._http.delete<{code: number, enable:boolean}>(`${environment.apiUrl}/construct-project/mgr/${enable ? 'enable' : 'disable'}/${code}`)
   }
 
 
@@ -34,6 +39,6 @@ export class ProjectService{
     }
     //console.log("search business params:", JSON.stringify(params));
     return this._http.get<PageResult<Project>>(`${environment.apiUrl}/construct-project/view/list`,{params: params});
-}
+  }
 
 }

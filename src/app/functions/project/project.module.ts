@@ -28,6 +28,8 @@ import { CorpSelectModule } from 'src/app/shared/corp-select/corp-select.compone
 import { SharedDataModule } from 'src/app/shared/data/data.module';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ProjectSearchResolver } from './project-search.resolver';
+import { DescriptFieldModule } from 'src/app/tools/descript-field/descript-field.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 const routes:Routes = [
     {path: "", component: ProjectComponent,runGuardsAndResolvers: 'paramsOrQueryParamsChange', resolve: {projects: ProjectSearchResolver}},
@@ -44,7 +46,7 @@ const routes:Routes = [
     ProjectEditComponent,
     ProjectDetailsComponent,
     ProjectInfoComponent,
-    ProjectBusinessComponent
+    ProjectBusinessComponent, 
 ],
 imports:[
     RouterModule.forChild(routes),
@@ -72,6 +74,8 @@ imports:[
     MatSlideToggleModule,
     OcticonModule,
     SharedDataModule,
-    CorpSelectModule]
+    CorpSelectModule,
+    MatExpansionModule,
+    DescriptFieldModule]
 })
 export class ProjectModule{}

@@ -132,7 +132,7 @@ export class JoinTypeLabelPipe implements PipeTransform {
 @Pipe({name: 'levelLabel'})
 export class LevelLabelPipe implements PipeTransform {
 
-    transform(value: number, type: JoinType) {
+    transform(value: number, type: string) {
         return LEVELS[type][value]
     }
     

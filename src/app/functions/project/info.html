@@ -1,11 +1,49 @@
 <div class="row">
   <div class="col-md-7">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="corp.property == 'Developer'" *ngFor="let corp of project.corp.corps">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{corp.property | joinTypeLabel}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{corp.info.name}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <ul class="striped list-unstyled field-info-list">
+          <li>
+            <strong>备案编号:</strong>{{corp.code}}
+          </li>
+          <li>
+            <strong>{{corp.info.groupIdType | groupCardLabel}}:</strong>{{corp.info.groupId}}
+          </li>
+          <li>
+            <strong>资质等级:</strong>{{corp.info.level | levelLabel:corp.property}}
+          </li>
+          <li *ngIf="corp.outLevel">
+            <strong>越级审批文号:</strong> {{corp.outLevelFile}}
+          </li>
+          <li>
+            <strong>外埠队伍审批手续:</strong> {{corp.outsideTeamFile}}
+          </li>
+          <li>
+            <strong>联系方式:</strong> <fa-icon *ngIf="corp.contacts" [icon]="faUserTie"></fa-icon> {{corp.contacts}} <fa-icon *ngIf="corp.tel" [icon]="faPhone"></fa-icon> {{corp.tel}}
+          </li>
+        </ul>
+
+      </mat-expansion-panel>
+      
+    </mat-accordion>
+  </div>
+
+  <div class="col-md-5">
     <mat-card>
       <mat-card-header>
-        <mat-card-title>
+        <mat-card-title [class.line-through]="!project.enable">
           {{project.info.info.name}}
         </mat-card-title>
-        <mat-card-subtitle>
+        <mat-card-subtitle [class.line-through]="!project.enable">
           {{project.info.regTime | date:'yyyy年MM月dd日'}} / {{project.code}}
         </mat-card-subtitle>
       </mat-card-header>
@@ -45,39 +83,16 @@
           
         </ul>
       </mat-card-content>
-    </mat-card>
-  </div>
 
-  <div class="col-md-5">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>
-          {{developer.info.name}}
-        </mat-card-title>
-        <mat-card-subtitle>
-           {{developer.code}}
-        </mat-card-subtitle>
-      </mat-card-header>
-
-      <mat-card-content>
-        <ul class="striped list-unstyled field-info-list">
-          <li>
-            <strong>资质等级:</strong>{{developer.info.level | levelLabel:developer.property}}
-          </li>
-          <li>
-            <strong>{{developer.info.groupIdType | groupCardLabel}}:</strong>{{developer.info.groupId}}
-          </li>
-          <li *ngIf="developer.outLevel">
-            <strong>越级审批文号:</strong> {{developer.outLevelFile}}
-          </li>
-          <li *ngIf="developer.outsideTeamFile">
-            <strong>外埠队伍审批手续:</strong> {{developer.outsideTeamFile}}
-          </li>
-          <li>
-            <strong>联系方式:</strong> {{developer.contacts}} / {{developer.tel}}
-          </li>
-        </ul>
-      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="edit()" >编辑</button>
+        <button mat-button [color]="project.enable ? 'warn' : 'primary' " (click)="changeStatus()">
+            <mat-icon *ngIf="statusWaiting">
+                <mat-progress-spinner color="primary" diameter="20" mode="indeterminate"></mat-progress-spinner> 
+            </mat-icon>
+            {{project.enable ? '禁用' : '启用'}}
+            </button>
+      </mat-card-actions>
     </mat-card>
   </div>
 
