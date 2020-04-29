@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageFunctionBase, FunctionPageBar } from 'src/app/shared/function-items/function-items';
-import { CorpService } from './corp.service';
+import { CorpService } from '../../shared/remote-services/corp.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Corp } from 'src/app/shared/data/corp';
 import {DataUtilsService } from 'src/app/shared/data/define';
@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
     selector: 'corp-info',
     templateUrl: './info.html',
-    styleUrls: []
+    styleUrls: ['./info.scss']
   })
 export class CorpInfoComponent implements OnInit{
 

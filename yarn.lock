@@ -5500,6 +5500,13 @@ neo-async@^2.5.0, neo-async@^2.6.1:
   resolved "https://registry.npm.taobao.org/neo-async/download/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha1-rCetpmFn+ohJpq3dg39rGJrSCBw=
 
+ng-mat-select-infinite-scroll@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/ng-mat-select-infinite-scroll/download/ng-mat-select-infinite-scroll-2.0.0.tgz#2670165b76cd03b62e74dcc6a482085df0857e8c"
+  integrity sha1-JnAWW3bNA7YudNzGpIIIXfCFfow=
+  dependencies:
+    tslib "^1.9.0"
+
 ngx-toastr@^12.0.0:
   version "12.0.0"
   resolved "https://registry.npm.taobao.org/ngx-toastr/download/ngx-toastr-12.0.0.tgz#1b35a4e5b785246c558e091c831a26ebf211cfd7"

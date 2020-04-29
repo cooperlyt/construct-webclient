@@ -15,7 +15,7 @@ import { Corp, CorpInfo, CorpReg, CorpBusiness } from 'src/app/shared/data/corp'
 import { DataUtilsService, JoinType } from 'src/app/shared/data/define';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
-import { CorpService } from './corp.service';
+import { CorpService } from '../../shared/remote-services/corp.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { catchError, map } from 'rxjs/operators';
 import { empty, Observable, of } from 'rxjs';
@@ -51,23 +51,22 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
   doSearch(condition: SearchCondition): void {
     if (condition.now){
       let params: Params = {page:0};
-      if (condition.key){
-        params['key'] = condition.key;
-      }
-      this._router.navigate([],{relativeTo: this._route, queryParams: params })
+      params['key'] = condition.key;
+      
+      this._router.navigate([],{relativeTo: this._route, queryParams: params, queryParamsHandling: 'merge' })
     }
   }
 
   onShowDisabledChange(){
-    this._router.navigate([],{relativeTo: this._route,queryParams: {valid: !this.params.showDisabled}, queryParamsHandling: 'merge'})
+    this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,valid: !this.params.showDisabled}, queryParamsHandling: 'merge'})
   }
 
   onTypeChange(type: string){
 
     if (!type || type === '' || type === this.params.type){
-      this._router.navigate([],{relativeTo: this._route,queryParams: {type: null}, queryParamsHandling: 'merge'})
+      this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,type: null}, queryParamsHandling: 'merge'})
     }else{
-      this._router.navigate([],{relativeTo: this._route,queryParams: {type: type}, queryParamsHandling: 'merge'})
+      this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,type: type}, queryParamsHandling: 'merge'})
     }
 
 

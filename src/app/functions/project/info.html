@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="col-md-7">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="corp.property == 'Developer'" *ngFor="let corp of project.corp.corps">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{corp.property | joinTypeLabel}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{corp.info.name}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <ul class="striped list-unstyled field-info-list">
+          <li>
+            <strong>备案编号:</strong>{{corp.code}}
+          </li>
+          <li>
+            <strong>{{corp.info.groupIdType | groupCardLabel}}:</strong>{{corp.info.groupId}}
+          </li>
+          <li>
+            <strong>资质等级:</strong>{{corp.info.level | levelLabel:corp.property}}
+          </li>
+          <li *ngIf="corp.outLevel">
+            <strong>越级审批文号:</strong> {{corp.outLevelFile}}
+          </li>
+          <li>
+            <strong>外埠队伍审批手续:</strong> {{corp.outsideTeamFile}}
+          </li>
+          <li>
+            <strong>联系方式:</strong> <fa-icon *ngIf="corp.contacts" [icon]="faUserTie"></fa-icon> {{corp.contacts}} <fa-icon *ngIf="corp.tel" [icon]="faPhone"></fa-icon> {{corp.tel}}
+          </li>
+        </ul>
+
+      </mat-expansion-panel>
+      
+    </mat-accordion>
+  </div>
+
+  <div class="col-md-5">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title [class.line-through]="!project.enable">
+          {{project.info.info.name}}
+        </mat-card-title>
+        <mat-card-subtitle [class.line-through]="!project.enable">
+          {{project.info.regTime | date:'yyyy年MM月dd日'}} / {{project.code}}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <ul class="striped list-unstyled field-info-list">
+          <li *ngIf="project.info.info.importantType != 'NORMAL'">
+            <strong>{{project.info.info.importantType | improtantTypeLabel}}</strong> [{{project.info.info.importantFile}}]
+          </li>
+          <li>
+            <strong>工程类别:</strong>{{project.info.info.type | projectTypeLabel}} {{project.info.info.floorType | floorTypeLabel}} {{project.info.info.typeLevel | projectTypeLevelLabel}}
+          </li>
+          <li>
+            <strong>结构型式:</strong>{{project.info.info.structure | structLabel}} <ng-container *ngIf="!project.info.info.structure"> - </ng-container>
+          </li>
+          <li>
+            <strong>地上/地下层数:</strong> <ng-container *ngIf="!project.info.info.groundCount"> - </ng-container> {{project.info.info.groundCount | number}} / {{project.info.info.underCount | number}} <ng-container *ngIf="!project.info.info.underCount"> - </ng-container>  <ng-container *ngIf="project.info.info.height"> <strong>高度:</strong> {{project.info.info.height |number}} </ng-container>
+          </li>
+          <li>
+            <strong>占地/建筑面积:</strong> <ng-container *ngIf="!project.info.info.landArea"> - </ng-container>{{project.info.info.landArea | number}}m<sup>2</sup> / <ng-container *ngIf="!project.info.info.area"> - </ng-container>{{project.info.info.area | number}}m<sup>2</sup>
+          </li>
+
+          <li>
+            <strong>计划开工/竣工:</strong> <ng-container *ngIf="!project.info.info.beginDate"> - </ng-container>{{project.info.info.beginDate | date:'yyyy年MM月dd日'}} / {{project.info.info.completeDate | date:'yyyy年MM月dd日'}}<ng-container *ngIf="!project.info.info.completeDate"> - </ng-container>
+          </li>
+
+          <li>
+            <strong>工程造价:</strong> <ng-container *ngIf="!project.info.info.costs"> - </ng-container>{{project.info.info.costs | number}}万元 <ng-container *ngIf="project.info.info.tender"> <strong>招标情况:</strong> {{project.info.info.tender}} </ng-container>
+          </li>
+
+          <li>
+            <strong>地址:</strong>{{project.info.info.address}}
+          </li>
+          <li>
+            <strong>备注:</strong>{{project.info.info.memo}}
+          </li>
+          
+        </ul>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button (click)="edit()" >编辑</button>
+        <button mat-button [color]="project.enable ? 'warn' : 'primary' " (click)="changeStatus()">
+            <mat-icon *ngIf="statusWaiting">
+                <mat-progress-spinner color="primary" diameter="20" mode="indeterminate"></mat-progress-spinner> 
+            </mat-icon>
+            {{project.enable ? '禁用' : '启用'}}
+            </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</div>

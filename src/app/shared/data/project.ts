@@ -1,4 +1,5 @@
 import { GroupIdType, JoinType, RegStatus, RegSource } from './define';
+import { Corp } from './corp';
 
 export declare class JoinCorpInfo{
     name:string;
@@ -8,7 +9,7 @@ export declare class JoinCorpInfo{
 }
 
 export declare class JoinCorp{
-    property: JoinType;
+    property: string;
     outsideTeamFile: string;
     outLevel: boolean;
     outLevelFile:string;
@@ -20,7 +21,7 @@ export declare class JoinCorp{
 }
 
 export declare class JoinCorpRegSummary{
-    property: JoinType;
+    property: string;
     code: number;
     name: string;
     idType: GroupIdType;
@@ -40,7 +41,7 @@ export declare class ProjectInfo{
     name:string;
     address:string;
     type: string; //projectType
-    typeClass: number;
+    typeLevel: number;
     floorType: string;
     property: string;
     area: number;
@@ -52,7 +53,7 @@ export declare class ProjectInfo{
     tender:string;
     structure: string;
     costs:number;
-    importantLevel:string;
+    importantType:string;
     importantFile:string;
     memo:string;
     height:number;
@@ -84,5 +85,9 @@ export declare class ProjectReg{
     info: ProjectInfoReg;
     corpMaster: boolean;
     infoMaster: boolean;
-
 }
+
+export declare class ProjectAndCorp{
+    project: Project;
+    corps: Corp[]
+  }

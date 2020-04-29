@@ -1,0 +1,11 @@
+
+<nav mat-tab-nav-bar style="margin-bottom: 25px;">
+  <a mat-tab-link routerLink="info" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
+      基本信息
+  </a>
+
+  <a mat-tab-link routerLink="projects" disabled="true" routerLinkActive #rlc="routerLinkActive" [active]="rlc.isActive">
+      相关业务
+  </a>
+</nav>
+<router-outlet></router-outlet>
