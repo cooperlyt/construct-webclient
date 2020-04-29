@@ -30,11 +30,12 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ProjectSearchResolver } from './project-search.resolver';
 import { DescriptFieldModule } from 'src/app/tools/descript-field/descript-field.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { ProjectEditResolver } from './project-edit.resolver';
 
 const routes:Routes = [
     {path: "", component: ProjectComponent,runGuardsAndResolvers: 'paramsOrQueryParamsChange', resolve: {projects: ProjectSearchResolver}},
     {path: "edit", component: ProjectEditComponent},
-    {path: "edit/:id", component: ProjectEditComponent, resolve: {project: ProjectResolver}},
+    {path: "edit/:id", component: ProjectEditComponent, resolve: {project: ProjectEditResolver }},
     {path: "details/:id",component: ProjectDetailsComponent,children:[
         {path: "info", component: ProjectInfoComponent, resolve: {project: ProjectResolver}},
         {path: "business", component: ProjectBusinessComponent}

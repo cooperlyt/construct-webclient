@@ -14,6 +14,8 @@ import { catchError } from 'rxjs/operators';
 import { empty } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 
 
 @Component({selector: "project-search",templateUrl:"./project.html",styleUrls:["./project.scss"]})
@@ -124,6 +126,7 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
     }
 
     constructor(
+        public dialog: MatDialog,
         public dataUtils: DataUtilsService,
         private _route: ActivatedRoute,
         private _router: Router,
@@ -138,14 +141,18 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
     }
 
     onSubmit(){
+        console.log(this.regForm.value);
         this._ngxService.start();
-        this.service.patchProject(this.regForm.value).pipe(catchError(err=>{
-            //this._ngxService.stop();
+        this.service.patchProject(this.regForm.value, this.project ? this.project.code : null).pipe(catchError(err=>{
+            this._ngxService.stop();
             this._toastr.error("请联系管理员或请稍后再试！","存储数据失败");
             return empty();
           })).subscribe(code => {
-            this._ngxService.stop();
-          });
+
+            this._router.navigate([this.project ? '../../' : '../','details',code,'info'],{relativeTo: this._route});
+
+
+        });
     }
 
 
@@ -178,6 +185,18 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
         this.corpCtl.setValue(null);
     }
 
+    delCorp(i:number){
+
+
+        const dialogRef = this.dialog.open(ConfirmDialogComponent,{width:'400px',role:'alertdialog',data:{title:'移除确认', description: '确认要移除此参建单位？' , result: i }});
+        dialogRef.afterClosed().subscribe(result => {
+          if (result >= 0){
+            this.corpsForm.removeAt(result);
+            this.editCorps.splice(result,1);
+          }
+        });
+    }
+
     ngOnInit(): void {
 
         this.corpCtl.valueChanges.subscribe(value => {
@@ -204,22 +223,34 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
 
         this._route.data.subscribe(data => {
       
-            this.project = data.project;
+            
        
             this.regForm = this._fb.group({
               applyTime: [Date.now()]
             })
-      
-      
-            if (!this.project){
-              this.addInfoForm();
+     
+            this.regForm.addControl('corp', this._fb.group({
+                corps: this._fb.array([])
+            }));
 
-              this.regForm.addControl('corp', this._fb.group({
-                    corps: this._fb.array([])
-                }));
+            if (data.project){
+                this.project = data.project.project;
+
+                this.project.corp.corps.forEach(joinCorp => {
+                    const corp: Corp = data.project.corps.find(corp => (corp.code === joinCorp.code))
+                    if (corp && corp.enable){
+                        const reg = corp.regs.find(r => (r.property == joinCorp.property));
+                        if (reg){
+                            console.log('push :' + corp.code )
+                            this.editCorps.push({corp: corp, reg: reg});
+                            this.pushCorp(joinCorp);
+                        }
+                    }
+                });  
             }
-      
-            
+
+            this.addInfoForm();
+
           })
         
     }
@@ -244,7 +275,7 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
                 costs:[this.project ? this.project.info.info.costs : null],
                 importantType:[this.project ? this.project.info.info.importantType: null, Validators.required],
                 importantFile:[this.project ? this.project.info.info.importantFile : null ],
-                memo:[this.project ? this.project.info.info : null],
+                memo:[this.project ? this.project.info.info.memo : null, Validators.maxLength(512)],
                 height:[this.project ? this.project.info.info.height : null]
             })
         })) 

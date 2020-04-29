@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PageResult } from 'src/app/shared/page-result';
 import { CustomEncoder } from 'src/app/shared/custom-encoder';
-import { ProjectReg, Project } from '../data/project';
+import { ProjectReg, Project, ProjectAndCorp } from '../data/project';
 
 
 
@@ -17,6 +17,9 @@ export class ProjectService{
     return this._http.get<Project>(`${environment.apiUrl}/construct-project-cache/data/project/${code}`);
   }
 
+  projectAndCorp(code:number):Observable<ProjectAndCorp>{
+    return this._http.get<ProjectAndCorp>(`${environment.apiUrl}/construct-project-cache/data/project-corp/${code}`);
+  }
 
   patchProject(reg:ProjectReg, code?:number): Observable<number>{
     return this._http.post<number>(`${environment.apiUrl}/construct-project/mgr/patch/${code ? 'modify/' + code: 'create'}`,reg, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});

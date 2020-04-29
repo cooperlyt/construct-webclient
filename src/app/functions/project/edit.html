@@ -261,13 +261,21 @@
 
 
         <mat-card [id]="editCorps[i].reg.property + '-' + editCorps[i].corp.code" *ngFor="let corp of corpsForm.controls; let i=index">
-          <mat-card-header>
+          <mat-card-header  class="tools-card-header">
             <mat-card-title>
               {{editCorps[i].reg.property | joinTypeLabel}} - {{editCorps[i].corp.info.name}}
             </mat-card-title>
             <mat-card-subtitle>
               {{editCorps[i].corp.info.groupIdType | groupCardLabel}}: {{editCorps[i].corp.info.groupId}}
             </mat-card-subtitle>
+
+            <div class="actions">
+
+
+              <button type="button" (click)="delCorp(i)" mat-icon-button color="warn" >
+                  <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </mat-card-header>
 
           <mat-card-content [formGroupName]="i">

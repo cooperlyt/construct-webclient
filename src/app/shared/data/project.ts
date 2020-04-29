@@ -1,4 +1,5 @@
 import { GroupIdType, JoinType, RegStatus, RegSource } from './define';
+import { Corp } from './corp';
 
 export declare class JoinCorpInfo{
     name:string;
@@ -85,3 +86,8 @@ export declare class ProjectReg{
     corpMaster: boolean;
     infoMaster: boolean;
 }
+
+export declare class ProjectAndCorp{
+    project: Project;
+    corps: Corp[]
+  }
