@@ -3,7 +3,6 @@ export const environment = {
   apiUrl: 'http://192.168.1.21:5555/api',
   clientId: 'register',
   clientPassword: 'thisissecret',
-  regApiUrl: 'http://192.168.1.21:9901/api',
 
   title: '建设工程审批系统'
 

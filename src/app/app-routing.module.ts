@@ -24,6 +24,10 @@ const routes: Routes = [
             component: HomeComponent
           },
           {
+            path: 'business',
+            loadChildren: () => import('./business/business.module').then(m => m.BusinessModule)
+          },
+          {
             path: 'function',
             canActivateChild: [FunctionGuard],
             children:[

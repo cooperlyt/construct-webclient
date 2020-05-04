@@ -83,7 +83,7 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
 
   ngOnInit(): void {
     this._route.queryParamMap.subscribe(params => this.params = {showDisabled: JSON.parse(params.get('valid')) ,type : params.get('type')})
-    this._route.data.subscribe(data => this.dataPage = data.dataPage)
+    this._route.data.subscribe(data =>{this.dataPage = data.dataPage; console.log(data.dataPage)} )
   }
 
 }
