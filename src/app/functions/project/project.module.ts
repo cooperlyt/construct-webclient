@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from '@angular/router';
 import { ProjectComponent, ProjectEditComponent } from './project.componet';
-import { ProjectResolver } from './project.resolver';
 import { ProjectDetailsComponent, ProjectInfoComponent, ProjectBusinessComponent } from './project-details.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -31,12 +30,13 @@ import { ProjectSearchResolver } from './project-search.resolver';
 import { DescriptFieldModule } from 'src/app/tools/descript-field/descript-field.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { ProjectEditResolver } from './project-edit.resolver';
+import { ProjectResolver } from 'src/app/shared/resolver/project.resolver';
 
 const routes:Routes = [
     {path: "", component: ProjectComponent,runGuardsAndResolvers: 'paramsOrQueryParamsChange', resolve: {projects: ProjectSearchResolver}},
     {path: "edit", component: ProjectEditComponent},
-    {path: "edit/:id", component: ProjectEditComponent, resolve: {project: ProjectEditResolver }},
-    {path: "details/:id",component: ProjectDetailsComponent,children:[
+    {path: "edit/:pid", component: ProjectEditComponent, resolve: {project: ProjectEditResolver }},
+    {path: "details/:pid",component: ProjectDetailsComponent,children:[
         {path: "info", component: ProjectInfoComponent, resolve: {project: ProjectResolver}},
         {path: "business", component: ProjectBusinessComponent}
     ]}

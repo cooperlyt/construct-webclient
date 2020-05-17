@@ -26,7 +26,6 @@ import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialo
 
 
 import { CorpProjectsComponent, CorpBusinessComponent, CorpInfoComponent, CorpDetailsComponent } from './corp-details.component';
-import { CorpResolver } from './corp.resolver';
 import { CorpListResolver } from './corp-list.resolver';
 import { CorpComponent, CorpEditComponent } from './corp.component';
 import { SharedDataModule } from 'src/app/shared/data/data.module';
@@ -34,6 +33,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CorpService } from '../../shared/remote-services/corp.service';
 import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { CorpResolver } from 'src/app/shared/resolver/corp.resolver';
 
 @Injectable({
   providedIn: 'root'
@@ -63,8 +63,8 @@ export class InBusinessGuard implements  CanActivate{
 const routes: Routes =[
     {path: '' , component: CorpComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange', resolve:{dataPage: CorpListResolver}},
     {path: 'edit', component: CorpEditComponent},
-    {path: 'edit/:id', component: CorpEditComponent,canActivate: [InBusinessGuard], resolve: {corp: CorpResolver}},
-    {path: 'details/:id', 
+    {path: 'edit/:cid', component: CorpEditComponent,canActivate: [InBusinessGuard], resolve: {corp: CorpResolver}},
+    {path: 'details/:cid', 
       component: CorpDetailsComponent, 
       children:[
         {path: 'info', component: CorpInfoComponent, resolve: {corp: CorpResolver}},

@@ -1,6 +1,7 @@
-
 import { NgModule } from '@angular/core';
-import { TasksComponent } from './tasks/tasks.component';
+import { Routes, RouterModule } from '@angular/router';
+import { FireTaskViewComponent } from './task-view.component';
+import { FireTaskResolver } from './fire-task.resolver';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -19,19 +20,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import { ConfirmDialogModule } from '../shared/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { OcticonModule } from '../tools/octicon/octicon.directive';
-import { Routes, RouterModule } from '@angular/router';
-import { RelativeTimeModule } from '../tools/pipe/relative-time.pipe';
-
+import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 
 const routes: Routes =[
-  {path: 'tasks' , component: TasksComponent,runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
+  {path: '' , component: FireTaskViewComponent , resolve: {fireTask: FireTaskResolver}},
 ]
 
+
 @NgModule({
-  declarations:[TasksComponent],
+  declarations:[FireTaskViewComponent],
   imports:[
     CommonModule,
     ReactiveFormsModule,
@@ -54,10 +53,7 @@ const routes: Routes =[
     ConfirmDialogModule,
     MatSlideToggleModule,
     OcticonModule,
-    RouterModule.forChild(routes),
-    RelativeTimeModule
+    RouterModule.forChild(routes)
   ]
 })
-export class BusinessModule{
-
-}
+export class FireTaskModule {}

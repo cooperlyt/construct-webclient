@@ -1,6 +1,4 @@
-
 import { NgModule } from '@angular/core';
-import { TasksComponent } from './tasks/tasks.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -19,19 +17,23 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import { ConfirmDialogModule } from '../shared/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { OcticonModule } from '../tools/octicon/octicon.directive';
-import { Routes, RouterModule } from '@angular/router';
-import { RelativeTimeModule } from '../tools/pipe/relative-time.pipe';
+import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
+import { RouterModule, Routes } from '@angular/router';
+import { SharedDataModule } from 'src/app/shared/data/data.module';
+import { FireCheckCreateComponent } from './create.component';
+import { ProjectResolver } from 'src/app/shared/resolver/project.resolver';
+
+
 
 
 const routes: Routes =[
-  {path: 'tasks' , component: TasksComponent,runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
+  {path: 'create/:pid' , component: FireCheckCreateComponent, resolve:{project: ProjectResolver}}
 ]
 
 @NgModule({
-  declarations:[TasksComponent],
+  declarations:[FireCheckCreateComponent],
   imports:[
     CommonModule,
     ReactiveFormsModule,
@@ -55,9 +57,9 @@ const routes: Routes =[
     MatSlideToggleModule,
     OcticonModule,
     RouterModule.forChild(routes),
-    RelativeTimeModule
+    SharedDataModule
   ]
 })
-export class BusinessModule{
+export class FireModule{
 
 }

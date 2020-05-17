@@ -207,6 +207,56 @@ dd {
     border-radius: 3px;
 }
 
+.Box-header {
+    padding: 16px;
+    margin: -1px -1px 0;
+    background-color: #f6f8fa;
+    border: 1px solid #d1d5da;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.notifications-list-item.notification-unread {
+    background-color: #fff;
+  }
+  
+.notifications-list-item.notification-unread .notification-list-item-unread-indicator {
+    background-color: #0366d6;
+    width: 8px;
+    height: 8px;
+}
+
+.notifications-list-item.notification-unread .notification-list-item-link {
+    color: #24292e!important;
+}
+
+.notifications-list-item .notification-list-item-link {
+    color: #6a737d!important;
+}
+
+.notifications-list-item:hover {
+    background-color: #f1f8ff!important;
+}
+
+.notifications-list-item:hover .notification-list-item-actions {
+    display: flex!important;
+}
+
+.notifications-list-item:hover .notification-list-item-hide-on-hover {
+    visibility: hidden!important;
+}
+
+.notifications-list-item:hover .notification-list-item-actions .btn {
+    color: #586069!important;
+    background: transparent!important;
+    border: 0!important;
+}
+
+.notifications-list-item:hover .notification-list-item-actions .btn:hover {
+    color: #24292e!important;
+    background-color: #e1e4e8!important;
+}
+
 .Subhead {
     border-bottom: 1px solid #e1e4e8;
     display: flex;
@@ -391,6 +441,30 @@ dd {
     line-height: 20px;
     padding: 3px 10px;
     vertical-align: middle;
+}
+
+.btn {
+    position: relative;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-repeat: repeat-x;
+    background-position: -1px -1px;
+    background-size: 110% 110%;
+    border: 1px solid rgba(27,31,35,.2);
+    border-radius: .25em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .btn i {

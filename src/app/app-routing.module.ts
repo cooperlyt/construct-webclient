@@ -28,6 +28,15 @@ const routes: Routes = [
             loadChildren: () => import('./business/business.module').then(m => m.BusinessModule)
           },
           {
+            path: 'task',
+            children:[
+              {
+                path: 'fire',
+                loadChildren: () => import('./functions/fire/task/task.module').then(m => m.FireTaskModule)
+              }
+            ]
+          },
+          {
             path: 'function',
             canActivateChild: [FunctionGuard],
             children:[
@@ -43,6 +52,10 @@ const routes: Routes = [
               {
                 path: 'project',
                 loadChildren: () => import('./functions/project/project.module').then(m => m.ProjectModule)
+              },
+              {
+                path: 'fire',
+                loadChildren: () => import('./functions/fire/fire.module').then(m => m.FireModule)
               }
             ]
           }

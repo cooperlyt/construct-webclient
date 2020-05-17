@@ -255,6 +255,22 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
         
     }
 
+    ngAfterContentChecked(){
+
+        if (this.regForm.get('info')){
+            this.regForm.get('info').get('info').get('property').valueChanges.subscribe(value => {
+                if (value != 'MODIFY'){
+                    this.regForm.disabled
+                    this.regForm.get('info').get('info').get('modifyType').setValue(null);
+                    this.regForm.get('info').get('info').get('modifyType')['disable']();
+                }else{
+                    this.regForm.get('info').get('info').get('modifyType')['enable']();
+                }
+            })
+        }
+
+    }
+
     private addInfoForm(){
         this.regForm.addControl('info', this._fb.group({
             info: this._fb.group({
@@ -263,6 +279,7 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
                 type: [this.project ? this.project.info.info.type : null , Validators.required],
                 typeLevel: [this.project ? this.project.info.info.typeLevel : null],
                 floorType: [this.project ? this.project.info.info.floorType : null],
+                modifyType: [this.project ? this.project.info.info.modifyType : null],
                 property: [this.project ? this.project.info.info.property: null, Validators.required ],
                 area: [this.project ? this.project.info.info.area: null],
                 landArea: [this.project ? this.project.info.info.landArea : null],
@@ -278,7 +295,8 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
                 memo:[this.project ? this.project.info.info.memo : null, Validators.maxLength(512)],
                 height:[this.project ? this.project.info.info.height : null]
             })
-        })) 
+        }));
+
     }
 
     private pushCorp(joinCorp: JoinCorp){

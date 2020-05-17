@@ -6,6 +6,16 @@ import { tap, share, map, catchError  } from "rxjs/operators";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 
+export declare class UserInfo{
+  authorities: string[];
+  client_id: string;
+  exp: number;
+  jti: string;
+  name: string;
+  scope: string[];
+  user_name: string;
+
+}
 
 @Injectable({
   providedIn: 'root'
@@ -94,7 +104,7 @@ export class AuthenticationService {
     localStorage.clear();
   }
 
-  getUserInfo(): Observable<any>{
+  getUserInfo(): Observable<UserInfo>{
     return this.getAccessToken().pipe(
       map(res => {
         const helper = new JwtHelperService();

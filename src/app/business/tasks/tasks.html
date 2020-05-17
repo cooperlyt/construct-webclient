@@ -1,3 +1,90 @@
 
 
-this tasks page
+<div class="Box mx-0 mt-0 mb-3 task-list ">
+  <div class="Box-header d-flex flex-items-center py-2 pl-md-0 pl-3">
+    <label class="h6 pl-0 pl-md-4">
+      任务列表
+    </label>
+  </div>
+
+  <div class="Box-body p-0">
+    <ul class="list-style-none bg-gray">
+      <li *ngFor="let task of tasks " [class.notification-unread]="!task.assignee || task.assignee === userId "
+        class="notifications-list-item p-0 pl-2 pb-2 pb-md-0 position-relative border-0  border-bottom border-gray-light" >
+        <div class="d-flex flex-column flex-md-row flex-md-items-center">
+          <div class="d-flex flex-row flex-md-1">
+            <div class="d-flex flex-column flex-sm-row flex-self-start flex-items-center" style="margin-top:5px;">
+              <div class="notification-list-item-unread-indicator circle d-none d-md-block"></div>
+              &nbsp;
+            </div>
+            <a (click)="view(task)"
+              class="d-flex flex-items-center flex-auto min-width-0 no-underline py-2 notification-list-item-link break-word">
+              
+              
+              <div class="d-flex flex-column flex-md-row mr-2 flex-self-start flex-items-center">
+                <div class="flex-shrink-0 flex-self-start text-center" [octicon]="!task.assignee ? 'organization' : 'person'  " style="width: 16px;">
+                </div>
+      
+                <div class="notification-list-item-unread-indicator circle d-md-none d-block mt-1"></div>
+              </div>
+
+              <div class="d-flex flex-column flex-auto">
+                <div class="d-flex">
+                  <p class="m-0 f6 flex-auto">
+                      {{task.name}}
+                      <span class="text-normal text-gray-light">
+                        #1
+                      </span>
+                  </p>
+                </div>
+                <p class="m-0 text-normal pr-2 pr-md-0">
+                  #{{task | json}}
+                </p>
+              </div>
+
+
+              
+            </a>
+          
+          </div>
+
+          <div class="d-flex flex-row flex-md-row-reverse">
+            <p [class.notification-list-item-hide-on-hover]="!task.assignee || task.assignee === userId"
+              class="note m-0 d-md-block d-none text-gray-light text-right pr-3 flex-shrink-0 "
+              style="width: 140px; line-height: 20px;">
+              {{task.created | relativeTime}}
+            </p>
+            
+          </div>
+
+        </div>
+
+        <ul [class.notification-list-item-actions]="!task.assignee || task.assignee === userId"
+          class=" d-none position-absolute top-0 bottom-0 right-0 list-style-none mr-2  flex-items-center">
+          <li class="notification-action-mark-archived mr-2 ">
+            <button *ngIf="!task.assignee" class="btn px-2" (click)="claim(task.id)">
+              <span class="text-center d-inline-block" octicon="person" style="width:16px"> 
+              </span>
+            </button>
+            <button *ngIf="task.assignee === userId" class="btn px-2" (click)="unclaim(task.id)">
+              <span class="text-center d-inline-block" octicon="organization" style="width:16px"> 
+              </span>
+            </button>
+
+            <!-- <button class="btn px-2">
+              <span class="text-center d-inline-block" octicon="briefcase" style="width:16px"> 
+
+              </span>
+            </button> -->
+            <button class="btn px-2">
+              <span class="text-center d-inline-block" octicon="pencil" style="width:16px"> 
+
+              </span>
+            </button>
+          </li>
+        </ul>
+        
+      </li>
+    </ul>
+  </div>
+</div>

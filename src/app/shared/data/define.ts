@@ -61,6 +61,12 @@ enum ProjectProperty{
     TEMP = "临建" 
 }
 
+enum ProjectModifyType{
+    FIT_UP = "装修",
+    INSULATED = "建筑保温",
+    CHANGE = "改变用途"
+}
+
 enum ImportantType{
     NORMAL = "非重点项目",
     COUNTY = "国家级重点项目", 
@@ -166,6 +172,14 @@ export class ProjectPropertyLabelPipe implements PipeTransform{
     }
 }
 
+@Pipe({name: "projectModifyTypeLabel"})
+export class ProjectModifyTypeLabelPipe implements PipeTransform{
+    transform(value: string) {
+        return ProjectModifyType[value];
+    }
+
+}
+
 @Pipe({name: "projectTypeClassLabel"})
 export class ProjectTypeClassLabelPipe implements PipeTransform{
     transform(value: string) {
@@ -219,6 +233,8 @@ export class DataUtilsService{
     joinType = Object.keys(JoinType).map(key => ({key: key, label: JoinType[key]}));
 
     projectProperties = Object.keys(ProjectProperty).map(key => ({key: key, label:ProjectProperty[key]}));
+
+    propertModifyTypes = Object.keys(ProjectModifyType).map(key => ({key:key, label: ProjectModifyType[key]}));
 
     floorTypes = Object.keys(FLoorType).map(key => ({key:key,label:FLoorType[key]}));
 

@@ -1,20 +1,36 @@
 
-import { catchError, map, tap } from "rxjs/operators";
+import { catchError, map, tap, switchMap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, of } from 'rxjs';
-import { Task, ProcessDefinition } from './schemas';
+import { Task, ProcessDefinition, ProcessInstance } from './schemas';
+import { environment } from 'src/environments/environment';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class CamundaRestService {
-  private engineRestUrl = "${apiUrl}/camundasvr/rest/";
+  private engineRestUrl = `${environment.apiUrl}/camundasvr/rest/`;
+  
 
   constructor(private http: HttpClient) {}
 
+  claimTask(id:string, userId:string):Observable<any>{
+    return this.http.post(`${this.engineRestUrl}task/${id}/claim`,{userId:userId});
+  }
+
+  unclaimTask(id:string):Observable<any>{
+    return this.http.post(`${this.engineRestUrl}task/${id}/unclaim`,null);
+  }
+
+  getTask(id:string): Observable<Task>{
+    return this.http.get<Task>(`${this.engineRestUrl}task/${id}`);
+  }
+
+  getProcessInstance(id:string):Observable<ProcessInstance>{
+    return this.http.get<ProcessInstance>(`${this.engineRestUrl}process-instance/${id}`);
+  }
+
   getTasks(): Observable<Task[]> {
-    const endpoint = `${
-      this.engineRestUrl
-    }task?sortBy=created&sortOrder=desc&maxResults=10`;
+    const endpoint = `${this.engineRestUrl}task?sortBy=created&sortOrder=desc`; //&maxResults=10
     return this.http.get<any>(endpoint).pipe(
       tap(form => this.log(`fetched tasks`)),
       catchError(this.handleError("getTasks", []))
@@ -103,5 +119,15 @@ export class CamundaRestService {
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
     console.log(message);
+  }
+
+
+
+  //Adapter api
+  private apapterRestUrl = `${environment.apiUrl}/camundasvr/adapter/`;
+
+  getTaskExtensions(processDefinitionId: string , taskDefinitionKey: string , key: string):Observable<string>{
+    const endpoint = `${this.apapterRestUrl}utils/define/process/${processDefinitionId}/task/${taskDefinitionKey}/extensions/${key}`;
+    return this.http.get<string>(endpoint,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
   }
 }

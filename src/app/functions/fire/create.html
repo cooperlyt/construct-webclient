@@ -1,0 +1,78 @@
+<div class="repo-container">
+
+    <div class="Subhead">
+      <h2 class="Subhead-heading">
+        建立建设工程消防验收业务
+      </h2>
+      <p class="Subhead-description">
+         {{project.info.info.name}}
+      </p>
+
+    </div>
+
+    <form [formGroup]="businessForm"  (ngSubmit)="onSubmit()">
+
+      <mat-form-field>
+        <mat-label>申请单位</mat-label>
+        <mat-select formControlName="corp" required>
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let corp of project.corp.corps" [value]="corp.code" >{{corp.info.name}}</mat-option>
+        </mat-select>
+    
+        <mat-error *ngIf="businessForm.get('corp').hasError('required')">
+            请选择申请单位
+        </mat-error>
+      </mat-form-field>
+
+      <div class="row">
+        <mat-form-field class="col-sm-8">
+          <mat-label>联系人</mat-label>
+          <input matInput formControlName="contracts">
+          <mat-error *ngIf="businessForm.get('contracts').hasError('maxlength')">
+            最大长度不能超过<strong>64</strong>
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field class="col-sm-4">
+          <mat-label>联系电话</mat-label>
+          <input matInput formControlName="tel">
+          <mat-error *ngIf="businessForm.get('tel').hasError('maxlength')">
+            最大长度不能超过<strong>16</strong>
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+
+
+      <div class="row">
+
+      <mat-form-field class="col-sm-9">
+        <mat-label>受理/备案凭证文号</mat-label>
+        <input matInput formControlName="file">
+        <mat-error *ngIf="businessForm.get('file').hasError('maxlength')">
+          最大长度不能超过<strong>32</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-sm-3">
+        <mat-label>火灾危险性</mat-label>
+        <mat-select formControlName="danger">
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let level of dataDefine.fireDanerLevels " [value]="level.key">
+            {{level.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      </div>
+      <hr>
+
+      <button mat-raised-button color="primary" [disabled]="!businessForm.valid"  type="submit" >
+         建立业务
+      </button>
+    </form>
+
+    
+
+</div>

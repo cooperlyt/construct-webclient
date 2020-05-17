@@ -41,6 +41,7 @@ export declare class ProjectInfo{
     name:string;
     address:string;
     type: string; //projectType
+    modifyType: string;
     typeLevel: number;
     floorType: string;
     property: string;
