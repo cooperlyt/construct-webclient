@@ -29,6 +29,10 @@ export class CamundaRestService {
     return this.http.get<ProcessInstance>(`${this.engineRestUrl}process-instance/${id}`);
   }
 
+  getProcessDefinitionById(id:string):Observable<ProcessDefinition>{
+    return this.http.get<ProcessDefinition>(`${this.engineRestUrl}process-definition/${id}`);
+  }
+
   getTasks(): Observable<Task[]> {
     const endpoint = `${this.engineRestUrl}task?sortBy=created&sortOrder=desc`; //&maxResults=10
     return this.http.get<any>(endpoint).pipe(

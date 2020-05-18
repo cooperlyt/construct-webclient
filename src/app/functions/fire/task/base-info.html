@@ -1,0 +1,87 @@
+
+
+<div class="row">
+  <div class="col-md-7">
+    <mat-accordion >
+      <mat-expansion-panel [expanded]="corp.code === dataService.fireCheck.corp" *ngFor="let corp of dataService.fireCheck?.project.corps">
+
+
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span  style="margin-right: 5px;" *ngIf="corp.code === dataService.fireCheck.corp" octicon="bookmark"></span>
+          {{corp.property | joinTypeLabel}}
+        </mat-panel-title>
+        <mat-panel-description>
+
+          {{corp.name}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <ul class="striped list-unstyled field-info-list">
+        <li>
+          <strong>备案编号:</strong>{{corp.code}}
+        </li>
+        <li>
+          <strong>{{corp.groupIdType | groupCardLabel}}:</strong>{{corp.groupId}}
+        </li>
+        <li>
+          <strong>资质等级:</strong>{{corp.level | levelLabel:corp.property}}
+        </li>
+        <li>
+          <strong>联系方式:</strong> <fa-icon *ngIf="corp.contacts" [icon]="faUserTie"></fa-icon> {{corp.contacts}} <fa-icon *ngIf="corp.tel" [icon]="faPhone"></fa-icon> {{corp.tel}}
+        </li>
+      </ul>
+    </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <div class="col-md-5">
+    <mat-card *ngIf="dataService.fireCheck">
+      <mat-card-header>
+        <mat-card-title >
+          {{dataService.fireCheck.project.name}}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{dataService.fireCheck.id}}/{{dataService.fireCheck.projectCode}}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <ul class="striped list-unstyled field-info-list">
+   
+          <li>
+            <strong>工程性质:</strong>{{dataService.fireCheck.project.property | projectPropertyLabel}}  <span *ngIf="dataService.fireCheck.project.property == 'MODIFY'"> - {{dataService.fireCheck.project.modifyType | projectModifyTypeLabel}}</span>
+          </li>
+          <li>
+            <strong>工程类别:</strong>{{dataService.fireCheck.project.type | projectTypeLabel}} {{dataService.fireCheck.project.floorType | floorTypeLabel}} {{dataService.fireCheck.project.typeLevel | projectTypeLevelLabel}}
+          </li>
+          <li>
+            <strong>受理/备案凭证文号:</strong>{{dataService.fireCheck.file}}
+          </li>
+          <li>
+            <strong>火灾危险性:</strong>{{dataService.fireCheck.danger | projectFireDangerLevel}}
+          </li>
+          <li>
+            <strong>结构型式:</strong>{{dataService.fireCheck.project.structure | structLabel}} <ng-container *ngIf="!dataService.fireCheck.project.structure"> - </ng-container>
+          </li>
+          <li>
+            <strong>地上/地下层数:</strong> <ng-container *ngIf="!dataService.fireCheck.project.groundCount"> - </ng-container> {{dataService.fireCheck.project.groundCount | number}} / {{dataService.fireCheck.project.underCount | number}} <ng-container *ngIf="!dataService.fireCheck.project.underCount"> - </ng-container>  <ng-container *ngIf="dataService.fireCheck.project.height"> <strong>高度:</strong> {{dataService.fireCheck.project.height |number}} </ng-container>
+          </li>
+          <li>
+            <strong>占地/建筑面积:</strong> <ng-container *ngIf="!dataService.fireCheck.project.landArea"> - </ng-container>{{dataService.fireCheck.project.landArea | number}}m<sup>2</sup> / <ng-container *ngIf="!dataService.fireCheck.project.area"> - </ng-container>{{dataService.fireCheck.project.area | number}}m<sup>2</sup>
+          </li>
+          <li>
+            <strong>地址:</strong>{{dataService.fireCheck.project.address}}
+          </li>
+          <li>
+            <strong>联系方式:</strong> <fa-icon *ngIf="dataService.fireCheck.contracts" [icon]="faUserTie"></fa-icon> {{dataService.fireCheck.contracts}} <fa-icon *ngIf="dataService.fireCheck.tel" [icon]="faPhone"></fa-icon> {{dataService.fireCheck.tel}}
+          </li>
+
+          
+        </ul>
+      </mat-card-content>
+
+    </mat-card>
+  </div>
+
+</div>

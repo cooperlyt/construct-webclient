@@ -2,6 +2,17 @@ export declare class ProcessDefinition {
   id: string;
   name: string;
   key: string;
+  category:string;
+  description:string;
+  version:number;
+  resource:string;
+  deploymentId:string;
+  diagram:string;
+  suspended: string;
+  tenantId:string;
+  versionTag:string;
+  historyTimeToLive:number;
+  startableInTasklist:boolean;
 }
 
 export declare class ProcessInstance {

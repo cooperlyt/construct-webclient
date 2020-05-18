@@ -94,6 +94,7 @@ enum ProjectTypeClass{
 
 
 
+
 const PROJECT_TYPES: {[key:string]:{label: string, group:ProjectTypeClass, needFloor: boolean, needStruct: boolean}} = {
 
     CIVIL_HOUSE: {label: "住宅", group: ProjectTypeClass.CIVIL, needFloor:true , needStruct: true },

@@ -1,9 +1,39 @@
 
-task view
+<div class="repohead">
 
-{{fireTask.task.id}}
+  <div class="d-flex mb-4 px-3">
 
-{{fireTask.fireCheck | json}}
+    <div class="flex-auto min-width-0 width-fit mr-3">
+      <h1 class="private  d-flex flex-wrap flex-items-center break-word float-none ">
+        <span class="flex-self-stretch" octicon="flame" style="margin-top: -2px;">
+
+        </span>
+        <strong class=" ml-2 flex-self-stretch" >
+          {{dataService.fireCheck?.project.name}}
+        </strong>
+        <span class="path-divider flex-self-stretch"> / </span>
+        <span class="mr-2 flex-self-stretch">
+          {{dataService.fireCheck?.project.property | projectPropertyLabel}}  <span *ngIf="dataService.fireCheck?.project.property == 'MODIFY'"> <span class="path-divider flex-self-stretch"> / </span> {{dataService.fireCheck?.project.modifyType | projectModifyTypeLabel}}</span>
+          
+        </span>
+
+        <span class="Label Label--outline v-align-middle ">{{dataService.fireCheck?.inRandom ? '抽中' : '未抽中'}}</span>
+        
+      </h1>
+    </div>
+    <ul class="pagehead-actions flex-shrink-0 ">
+      <li>
+        <button mat-stroked-button>
+          <span octicon="person" [width]="14" height="14" style="line-height: 1px;"></span>
+          接收业务</button>
+      </li>
+      <li><button mat-stroked-button>
+        <span octicon="pencil" [width]="14" height="14" style="line-height: 1px;"></span>
+        办理业务</button>
+      </li>
+
+    </ul>
+  </div>
 
 
 <nav mat-tab-nav-bar style="margin-bottom: 25px;">
@@ -21,9 +51,8 @@ task view
       要件/附件
   </a>
 
-  <a mat-tab-link routerLink="projects" disabled="true" routerLinkActive #rlc="routerLinkActive" [active]="rlc.isActive">
-    业务办理
-  </a>  
+
 
 </nav>
+</div>
 <router-outlet></router-outlet>

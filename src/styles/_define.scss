@@ -65,10 +65,17 @@
     padding-right: 8px!important;
 }
 
+.px-3 {
+    padding-right: 16px!important;
+}
+
 .pb-4, .py-4 {
     padding-bottom: 1.5rem !important;
     padding-top: 1.5rem !important;
 }
+
+
+
 
 .pb-3 {
     padding-bottom: 16px!important;
@@ -109,6 +116,10 @@
 
 .pl-2, .px-2 {
     padding-left: 8px!important;
+}
+
+.pl-3, .px-3 {
+    padding-left: 16px!important;
 }
 
 .pr-0, .px-0 {
@@ -204,6 +215,10 @@
     color: #586069!important;
 }
 
+.bg-gray-light {
+    background-color: #fafbfc!important;
+}
+
 .white-text, .text-white {
     color: #fff !important;
 }
@@ -215,6 +230,10 @@
 .btn-block {
     display: block;
     width: 100%;
+}
+
+.min-width-0 {
+    min-width: 0!important;
 }
 
 .width-full {
@@ -297,6 +316,10 @@
     justify-content: flex-end;
     align-items: center;
       
+}
+
+.flex-self-stretch {
+    align-self: stretch!important;
 }
 
 .badge {

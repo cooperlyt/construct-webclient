@@ -74,9 +74,9 @@ imports:[
     ConfirmDialogModule,
     MatSlideToggleModule,
     OcticonModule,
+    MatExpansionModule,
     SharedDataModule,
     CorpSelectModule,
-    MatExpansionModule,
     DescriptFieldModule]
 })
 export class ProjectModule{}
