@@ -1,0 +1,121 @@
+
+<div class="row" *ngIf="!loadding">
+
+
+
+
+  <div class="col-md-3">
+
+    <nav class="menu border d-none d-md-block" style="position: -webkit-sticky;
+    position: sticky;top:25px;">
+      <a class="menu-item" (click)="onDocumentSelected()"
+      [class.selected]="!selectedCategory">
+        浏览全部
+      </a>
+      <a class="menu-item" [class.selected]="selectedCategory?.id === doc.id"
+      (click)="onDocumentSelected(doc.id)"
+      *ngFor="let doc of fileCategorys">
+        {{doc.name}}
+      </a>
+
+    </nav>
+  </div>
+
+
+  <div class="col-md-9">
+    <div *ngIf="selectedCategory" class="border-bottom">
+      <div class="d-flex flex-column flex-md-row flex-justify-between  pb-1 position-relative">
+        <div>
+          <h3>{{selectedCategory? selectedCategory.name : '全部文件'}}</h3>
+
+        </div>
+        <ul *ngIf="selectedCategory" class="pagehead-actions flex-shrink-0">
+          <li>
+            <!-- accept="image/*" -->
+              <input (change)="onFileChange($event)" style="display: none;" type="file" multiple #file>
+
+              <button (click)="file.click()" mat-stroked-button class="small-button">
+                <span octicon="file-directory" style="line-height: 1px !important; margin-right: 2px;"></span>
+                文件
+              </button>
+        
+
+          </li>
+          <li>
+            <button mat-stroked-button class="small-button">
+              <span octicon="device-camera" style="line-height: 1px !important;  margin-right: 2px;"></span>
+              拍照
+            </button>
+          </li>
+
+
+        </ul>
+      </div>
+
+      <p class="Subhead-description" >
+        {{ selectedCategory.description}}
+      </p>
+    </div>
+
+    <section *ngIf="selectedCategory" class="file-wall">
+
+
+      <div *ngFor="let file of selectedCategory.files" [style.flex-grow]="file.width * 200 / file.height" [style.width.px]="file.width * 200 / file.height">
+        <i [style.padding-bottom.%]="file.height / file.width * 100"></i>
+        <a *ngIf="file.isImage" (click)="openPreview(file.id)">
+          <img [src]="file.thumbnailUrl" (load)="file.loadSize($event);">
+        </a>
+        <div *ngIf="!file.isImage" class="application-file-thumb img-thumbnail">
+          <div class="file-icon">
+            <fa-icon [icon]="faFileDownload" size="8x"></fa-icon>
+          </div>
+          <div class="file-actions">
+            <button mat-mini-fab color="warn" ><mat-icon>delete</mat-icon></button>
+       
+          </div>
+          
+    
+        </div>
+      </div>
+
+      <div *ngFor="let file of selectedCategory.uploading" style="background-color: #4dabf7;">
+        <!-- background is image -->
+         {{file.progress}} %
+      </div>
+    </section>
+
+    <div *ngIf="!selectedCategory">
+
+      <div *ngFor="let doc of noEmptyDocs">
+        <div class="border-bottom mt-4 pb-1">
+          <h3>{{doc.name}}</h3>
+        </div>
+  
+        <section  class="file-wall">
+          <div *ngFor="let file of doc.files" [style.flex-grow]="file.width * 200 / file.height" [style.width.px]="file.width * 200 / file.height">
+            <i [style.padding-bottom.%]="file.height / file.width * 100"></i>
+            <a *ngIf="file.isImage" (click)="openPreview(file.id)">
+              <img [src]="file.thumbnailUrl" (load)="file.loadSize($event);">
+            </a>
+            <div *ngIf="!file.isImage" class="application-file-thumb img-thumbnail">
+              <div class="file-icon">
+                <fa-icon [icon]="faFileDownload" size="8x"></fa-icon>
+              </div>
+              <div class="file-actions">
+                <button mat-mini-fab color="warn" ><mat-icon>delete</mat-icon></button>
+           
+              </div>
+        
+            </div>
+          </div>
+
+
+        </section>
+
+      </div>
+
+    </div>
+  </div>
+
+
+</div>

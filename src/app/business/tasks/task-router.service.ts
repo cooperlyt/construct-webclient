@@ -5,7 +5,7 @@ import { Task } from '../schemas';
 
 
 const TASK_VIEW_PATH: {[key:string]:string} = {
-  fire_check_view:'/task/fire'
+  fire_check_view:'fire'
 }
 
 
@@ -21,7 +21,7 @@ export class TaskRouterService {
   view(task:Task){
     this._service.getTaskExtensions(task.processDefinitionId,task.taskDefinitionKey,TASK_VIEW_DEFINE_KEY).subscribe(val => {
       console.log('task route to ' + val + '->' + TASK_VIEW_PATH[val]);
-      this._router.navigate([TASK_VIEW_PATH[val],'info'],{queryParams:{tid: task.id}});
+      this._router.navigate(['task',TASK_VIEW_PATH[val],task.id]);
     });
   }
 

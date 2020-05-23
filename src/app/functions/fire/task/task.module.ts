@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { FireTaskViewComponent, FireCheckProjectInfoComponent } from './task-view.component';
+import { FireTaskViewComponent, FireCheckProjectInfoComponent, FireCheckDocumentComponent } from './task-view.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -26,17 +26,23 @@ import { SharedDataModule } from 'src/app/shared/data/data.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FireCheckSchemasModule } from '../schemas';
+import { BusinessDocumentModule } from 'src/app/business/document/document-files.component';
 
 
 const routes: Routes =[
-  {path: '' , component: FireTaskViewComponent, children:[
-    {path:'info', component: FireCheckProjectInfoComponent}
+  {path: ':tid' , component: FireTaskViewComponent, children:[
+    {path:'', component: FireCheckProjectInfoComponent},
+    {path:'document', component: FireCheckDocumentComponent}
   ]},
 ]
 
 
 @NgModule({
-  declarations:[FireTaskViewComponent, FireCheckProjectInfoComponent],
+  declarations:[
+    FireTaskViewComponent, 
+    FireCheckProjectInfoComponent,
+    FireCheckDocumentComponent
+  ],
   imports:[
     RouterModule.forChild(routes),
     CommonModule,
@@ -64,7 +70,8 @@ const routes: Routes =[
     OcticonModule,
     MatExpansionModule,
     SharedDataModule,
-    FireCheckSchemasModule
+    FireCheckSchemasModule,
+    BusinessDocumentModule
   ]
 })
 export class FireTaskModule {}

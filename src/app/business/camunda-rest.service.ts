@@ -1,9 +1,9 @@
 
 import { catchError, map, tap, switchMap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpEventType } from "@angular/common/http";
 import { Observable, of } from 'rxjs';
-import { Task, ProcessDefinition, ProcessInstance } from './schemas';
+import { Task, ProcessDefinition, ProcessInstance, BusinessDocument, BusinessFile } from './schemas';
 import { environment } from 'src/environments/environment';
 
 @Injectable({providedIn: 'root'})
@@ -133,5 +133,39 @@ export class CamundaRestService {
   getTaskExtensions(processDefinitionId: string , taskDefinitionKey: string , key: string):Observable<string>{
     const endpoint = `${this.apapterRestUrl}utils/define/process/${processDefinitionId}/task/${taskDefinitionKey}/extensions/${key}`;
     return this.http.get<string>(endpoint,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
+  }
+
+  //Business api
+
+  getBusinessDocuments(businessId: number):Observable<BusinessDocument[]>{
+    return this.http.get<BusinessDocument[]>(`${environment.apiUrl}/camundasvr/master/doc/business/${businessId}`);
+  }
+
+
+  public upload(documentId:number, data:any):Observable<{status:string,progress?:number, file?: BusinessFile, message?: string }>{
+
+    return this.http.post<any>(`${environment.fileUrl}upload/`,data,{
+      headers: {"Content-Type" :  !!data.type ? data.type : 'application/octet-stream'},
+      reportProgress: true, observe: 'events'
+    }).pipe(
+
+      switchMap((event) => {
+      switch (event.type) {
+        case HttpEventType.UploadProgress:
+          const progress = Math.round(100 * event.loaded / event.total);
+          return of({status: 'progress', progress: progress});
+        case HttpEventType.Response:
+         console.log( );
+          return this.http.post<BusinessFile>(
+            `${environment.apiUrl}/camundasvr/master/doc/${documentId}/file/add`,
+            {id:event.body.fid,type:event.body.mime,size:event.body.size,extName:data.name.substr(data.name.lastIndexOf('.') + 1)}).pipe(
+              map((file) => ({status: 'complete', file : file }))
+            )
+        default:
+          return of({status: 'other',message: `Unhandled event: ${event.type}`}) ;
+      }
+    })
+    
+    )
   }
 }

@@ -48,3 +48,24 @@ export declare class Task {
   formKey: string;
   tenantId: string;
 }
+
+export class BusinessFile{
+  id:string;
+  md5:string;
+  time:Date;
+  type:string;
+  size:number;
+  extName:string;
+}
+
+export class BusinessDocumentBase{
+  id: number;
+  name:string;
+  description: string;
+  need: boolean;
+  pageCount: number;
+}
+
+export class BusinessDocument extends BusinessDocumentBase{
+  files: BusinessFile[];
+}

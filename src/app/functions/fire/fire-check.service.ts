@@ -10,7 +10,7 @@ export class FireCheckService{
   constructor(private _http: HttpClient) { }
   
   create(fireCheck: FireCheck): Observable<string>{
-    return this._http.post<string>(`${environment.apiUrl}/construct-fire/manager/apply`,fireCheck, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
+    return this._http.post<string>(`${environment.apiUrl}/construct-fire/manager/apply`,fireCheck);
   }
 
   fireCheck(id: number): Observable<FireCheck>{

@@ -10,7 +10,7 @@ export class FireTaskViewComponent implements OnInit{
 
   constructor(public dataService: FireTaskDataService,
     private _route: ActivatedRoute,_func: FunctionPageBar){
-      this._route.queryParams.subscribe(queryParams => dataService.load(queryParams['tid']).subscribe(complete => {if (complete) _func.loadTitle(dataService.processDefinition.name + ' / ' + dataService.task.name)}));
+      this._route.params.subscribe(params => dataService.load(params['tid']).subscribe(complete => {if (complete) _func.loadTitle(dataService.processDefinition.name + ' / ' + dataService.task.name)}));
   }
 
   ngOnInit(): void {
@@ -20,25 +20,33 @@ export class FireTaskViewComponent implements OnInit{
 }
 
 
-@Component({selector:"fire-task-view-info",templateUrl:"./base-info.html", styleUrls:['./info.scss']})
+@Component({selector:"fire-task-view-info",
+  templateUrl:"./base-info.html", styleUrls:['./info.scss']})
 export class FireCheckProjectInfoComponent implements OnInit{
-
-
   faUserTie = faUserTie;
   faPhone = faPhone;
   
   constructor(public dataService: FireTaskDataService){}
 
   ngOnInit(): void {
-
   }
-
 }
 
-export class FireCheckTableComponent implements OnInit{
-  
+@Component({selector:"fire-task-document", 
+  template:`<business-document-files *ngIf="!dataService.loadding" [businessId]="dataService.processInstance.businessKey"></business-document-files>`})
+export class FireCheckDocumentComponent implements OnInit{
+
+  constructor(public dataService: FireTaskDataService){}
+
   ngOnInit(): void {
-    throw new Error("Method not implemented.");
   }
 
 }
+
+// export class FireCheckTableComponent implements OnInit{
+  
+//   ngOnInit(): void {
+//     throw new Error("Method not implemented.");
+//   }
+
+// }

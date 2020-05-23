@@ -993,6 +993,11 @@
   resolved "https://registry.npm.taobao.org/@istanbuljs/schema/download/@istanbuljs/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
   integrity sha1-JlIL8Jq+SlZEzVQU43ElqJVCQd0=
 
+"@kolkov/ngx-gallery@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npm.taobao.org/@kolkov/ngx-gallery/download/@kolkov/ngx-gallery-1.2.0.tgz#b12ef61a087b9e69fec3fc3d9e791da065b5ba00"
+  integrity sha1-sS72Ggh7nmn+w/w9nnkdoGW1ugA=
+
 "@ngtools/webpack@9.0.7":
   version "9.0.7"
   resolved "https://registry.npm.taobao.org/@ngtools/webpack/download/@ngtools/webpack-9.0.7.tgz?cache=0&sync_timestamp=1584589112463&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ngtools%2Fwebpack%2Fdownload%2F%40ngtools%2Fwebpack-9.0.7.tgz#2d9397544afcf503530eafc764c64d40a99fa070"
@@ -3594,6 +3599,11 @@ follow-redirects@^1.0.0:
   dependencies:
     debug "^3.0.0"
 
+font-awesome@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.npm.taobao.org/font-awesome/download/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
+  integrity sha1-j6jPBBGhoxr9B7BtKQK7n8gVoTM=
+
 for-in@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/for-in/download/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
@@ -3837,6 +3847,11 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   version "4.2.3"
   resolved "https://registry.npm.taobao.org/graceful-fs/download/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
   integrity sha1-ShL/G2A3bvCYYsIJPt2Qgyi+hCM=
+
+hammerjs@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.npm.taobao.org/hammerjs/download/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
+  integrity sha1-BO93hiz/K7edMPdpIJWTAiK/YPE=
 
 handle-thing@^2.0.0:
   version "2.0.0"

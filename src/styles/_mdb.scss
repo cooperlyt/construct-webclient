@@ -231,9 +231,19 @@ ul.striped li {
 }
 
 
-
+.img-thumbnail {
+    padding: .25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    max-width: 100%;
+    height: auto;
+}
 
 .mat-select-panel .search-box{
     padding: 16px 16px;
 }   
 
+.small-button.mat-button-base{
+    line-height: 26px !important;
+}
