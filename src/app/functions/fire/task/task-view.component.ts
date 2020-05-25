@@ -33,7 +33,7 @@ export class FireCheckProjectInfoComponent implements OnInit{
 }
 
 @Component({selector:"fire-task-document", 
-  template:`<business-document-files *ngIf="!dataService.loadding" [businessId]="dataService.processInstance.businessKey"></business-document-files>`})
+  template:`<business-document-files *ngIf="!dataService.loadding" [taskId]="dataService.taskId" [editable]="dataService.isClaim" [businessId]="dataService.processInstance.businessKey"></business-document-files>`})
 export class FireCheckDocumentComponent implements OnInit{
 
   constructor(public dataService: FireTaskDataService){}

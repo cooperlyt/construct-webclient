@@ -1,10 +1,11 @@
 
 import { catchError, map, tap, switchMap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpEventType } from "@angular/common/http";
+import { HttpClient, HttpEventType, HttpParams } from "@angular/common/http";
 import { Observable, of } from 'rxjs';
-import { Task, ProcessDefinition, ProcessInstance, BusinessDocument, BusinessFile } from './schemas';
+import { Task, ProcessDefinition, ProcessInstance, BusinessDocument, BusinessFile, BusinessDocumentBase } from './schemas';
 import { environment } from 'src/environments/environment';
+import { CustomEncoder } from '../shared/custom-encoder';
 
 @Injectable({providedIn: 'root'})
 export class CamundaRestService {
@@ -128,21 +129,43 @@ export class CamundaRestService {
 
 
   //Adapter api
-  private apapterRestUrl = `${environment.apiUrl}/camundasvr/adapter/`;
+  private adapterRestUrl = `${environment.apiUrl}/camundasvr/adapter/`;
 
   getTaskExtensions(processDefinitionId: string , taskDefinitionKey: string , key: string):Observable<string>{
-    const endpoint = `${this.apapterRestUrl}utils/define/process/${processDefinitionId}/task/${taskDefinitionKey}/extensions/${key}`;
+    const endpoint = `${this.adapterRestUrl}utils/define/process/${processDefinitionId}/task/${taskDefinitionKey}/extensions/${key}`;
     return this.http.get<string>(endpoint,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
   }
 
   //Business api
 
   getBusinessDocuments(businessId: number):Observable<BusinessDocument[]>{
-    return this.http.get<BusinessDocument[]>(`${environment.apiUrl}/camundasvr/master/doc/business/${businessId}`);
+    return this.http.get<BusinessDocument[]>(`${environment.apiUrl}/camundasvr/master/business/${businessId}/doc`);
   }
 
+  editDocumentInfo(taskId:string, data: BusinessDocumentBase, docId?: number):Observable<BusinessDocument>{
+    return this.http.post<BusinessDocument>(`${this.adapterRestUrl}task/${taskId}/doc/${docId ? docId + '/edit' : 'add' }`,data)
+  }
 
-  public upload(documentId:number, data:any):Observable<{status:string,progress?:number, file?: BusinessFile, message?: string }>{
+  deleteDocument(taskId:string, docId:number):Observable<number>{
+    return this.http.delete<number>(`${this.adapterRestUrl}task/${taskId}/doc/${docId}/del`, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'}).pipe(
+      map(result => Number(result))
+    );
+  }
+
+  deleteFile(taskId:string, fileId: string):Observable<string>{
+    return this.http.delete<string>(`${this.adapterRestUrl}task/${taskId}/file/${fileId}/del`,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
+  }
+
+  sortFile(taskId: string, fileId: string, before?: string):Observable<any>{
+    let params = new HttpParams({encoder: new CustomEncoder()});
+    if (before){
+        params = params.append('before',before);
+    }
+
+    return this.http.put(`${this.adapterRestUrl}task/${taskId}/file/${fileId}/order`,null,{params: params,headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
+  }
+
+  public upload(taskId:string, documentId:number, data:any):Observable<{status:string,progress?:number, file?: BusinessFile, message?: string }>{
 
     return this.http.post<any>(`${environment.fileUrl}upload/`,data,{
       headers: {"Content-Type" :  !!data.type ? data.type : 'application/octet-stream'},
@@ -157,7 +180,7 @@ export class CamundaRestService {
         case HttpEventType.Response:
          console.log( );
           return this.http.post<BusinessFile>(
-            `${environment.apiUrl}/camundasvr/master/doc/${documentId}/file/add`,
+            `${this.adapterRestUrl}task/${taskId}/doc/${documentId}/file/add`,
             {id:event.body.fid,type:event.body.mime,size:event.body.size,extName:data.name.substr(data.name.lastIndexOf('.') + 1)}).pipe(
               map((file) => ({status: 'complete', file : file }))
             )
@@ -168,4 +191,6 @@ export class CamundaRestService {
     
     )
   }
+
+  
 }

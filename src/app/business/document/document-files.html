@@ -5,31 +5,50 @@
 
 
   <div class="col-md-3">
+    <div style="position: -webkit-sticky;
+      position: sticky;top:25px;">
 
-    <nav class="menu border d-none d-md-block" style="position: -webkit-sticky;
-    position: sticky;top:25px;">
-      <a class="menu-item" (click)="onDocumentSelected()"
-      [class.selected]="!selectedCategory">
-        浏览全部
-      </a>
-      <a class="menu-item" [class.selected]="selectedCategory?.id === doc.id"
-      (click)="onDocumentSelected(doc.id)"
-      *ngFor="let doc of fileCategorys">
-        {{doc.name}}
-      </a>
 
-    </nav>
+      <nav class="menu border d-none d-md-block" >
+        <a class="menu-item" (click)="onDocumentSelected()"
+        [class.selected]="!selectedCategory">
+          浏览全部
+        </a>
+        <a class="menu-item" [class.selected]="selectedCategory?.id === doc.id"
+        (click)="onDocumentSelected(doc.id)"
+        *ngFor="let doc of fileCategorys">
+          {{doc.name}}
+        </a>
+
+      </nav>
+
+      <button *ngIf="editable" (click)="newCategory()" mat-stroked-button>
+        添加附件种类
+      </button>
+
+    </div>
+
+
   </div>
 
 
   <div class="col-md-9">
     <div *ngIf="selectedCategory" class="border-bottom">
       <div class="d-flex flex-column flex-md-row flex-justify-between  pb-1 position-relative">
-        <div>
-          <h3>{{selectedCategory? selectedCategory.name : '全部文件'}}</h3>
+        <div style="display: flex;justify-content: flex-start; align-items: center;">
+          <mat-menu #categoryOperationMenu="matMenu">
+            <button mat-menu-item (click)="editCategory()" [disabled]="selectedCategory.need">编辑分类</button>
+            <button mat-menu-item (click)="delCategory()" [disabled]="selectedCategory.need">删除分类</button>
+    
+          </mat-menu>
+          <button [matMenuTriggerFor]="categoryOperationMenu" class="small-button" mat-icon-button *ngIf="editable && !selectedCategory.need"><mat-icon>more_vert</mat-icon></button> 
+          
+          <h3 style="margin-top: 4px;"> 
+              {{selectedCategory.name}}
+          </h3>
 
         </div>
-        <ul *ngIf="selectedCategory" class="pagehead-actions flex-shrink-0">
+        <ul *ngIf="selectedCategory && editable" class="pagehead-actions flex-shrink-0">
           <li>
             <!-- accept="image/*" -->
               <input (change)="onFileChange($event)" style="display: none;" type="file" multiple #file>
@@ -47,8 +66,6 @@
               拍照
             </button>
           </li>
-
-
         </ul>
       </div>
 
@@ -57,24 +74,28 @@
       </p>
     </div>
 
-    <section *ngIf="selectedCategory" class="file-wall">
+    <section [dragula]="editable ? 'FILE_LIST' : null " [(dragulaModel)]="selectedCategory.files" *ngIf="selectedCategory" class="file-wall">
 
 
-      <div *ngFor="let file of selectedCategory.files" [style.flex-grow]="file.width * 200 / file.height" [style.width.px]="file.width * 200 / file.height">
+      <div class="zoom" *ngFor="let file of selectedCategory.files" [style.flex-grow]="file.width * 200 / file.height" [style.width.px]="file.width * 200 / file.height">
         <i [style.padding-bottom.%]="file.height / file.width * 100"></i>
         <a *ngIf="file.isImage" (click)="openPreview(file.id)">
-          <img [src]="file.thumbnailUrl" (load)="file.loadSize($event);">
+          <img draggable="false" [src]="file.thumbnailUrl" (load)="file.loadSize($event);">
         </a>
         <div *ngIf="!file.isImage" class="application-file-thumb img-thumbnail">
-          <div class="file-icon">
-            <fa-icon [icon]="faFileDownload" size="8x"></fa-icon>
-          </div>
-          <div class="file-actions">
-            <button mat-mini-fab color="warn" ><mat-icon>delete</mat-icon></button>
+          <a [href]="file.url" [target]="file.isPdf ? 'blank' : '_self'" [attr.download]="!file.isPdf">
+
+            <div class="file-icon">
+              <fa-icon [icon]="faFileDownload" size="8x"></fa-icon>
+            </div>
+            <div class="file-label">
+              {{file.type}}
+            </div>
        
-          </div>
-          
-    
+          </a>
+        </div>
+        <div *ngIf="editable" class="file-actions">
+            <button mat-mini-fab color="warn" (click)="delFile(file.id)" ><mat-icon>delete</mat-icon></button>
         </div>
       </div>
 
@@ -92,20 +113,21 @@
         </div>
   
         <section  class="file-wall">
-          <div *ngFor="let file of doc.files" [style.flex-grow]="file.width * 200 / file.height" [style.width.px]="file.width * 200 / file.height">
+          <div class="zoom" *ngFor="let file of doc.files" [style.flex-grow]="file.width * 200 / file.height" [style.width.px]="file.width * 200 / file.height">
             <i [style.padding-bottom.%]="file.height / file.width * 100"></i>
             <a *ngIf="file.isImage" (click)="openPreview(file.id)">
-              <img [src]="file.thumbnailUrl" (load)="file.loadSize($event);">
+              <img draggable="false" [src]="file.thumbnailUrl" (load)="file.loadSize($event);">
             </a>
             <div *ngIf="!file.isImage" class="application-file-thumb img-thumbnail">
+              <a [href]="file.url" [target]="file.isPdf ? 'blank' : '_self'" [attr.download]="!file.isPdf">
+
               <div class="file-icon">
                 <fa-icon [icon]="faFileDownload" size="8x"></fa-icon>
+              </div>    
+              <div class="file-label">
+                {{file.type}}
               </div>
-              <div class="file-actions">
-                <button mat-mini-fab color="warn" ><mat-icon>delete</mat-icon></button>
-           
-              </div>
-        
+              </a>
             </div>
           </div>
 

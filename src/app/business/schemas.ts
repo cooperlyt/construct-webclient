@@ -59,11 +59,11 @@ export class BusinessFile{
 }
 
 export class BusinessDocumentBase{
-  id: number;
+  id?: number;
   name:string;
-  description: string;
-  need: boolean;
-  pageCount: number;
+  description?: string;
+  need?: boolean;
+  pageCount?: number;
 }
 
 export class BusinessDocument extends BusinessDocumentBase{

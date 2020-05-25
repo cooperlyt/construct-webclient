@@ -247,3 +247,19 @@ ul.striped li {
 .small-button.mat-button-base{
     line-height: 26px !important;
 }
+
+.small-button.mat-icon-button{
+    width: 26px !important;
+    height: 26px !important;
+}
+
+.zoom:hover img, .zoom:hover video {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+
+.zoom img, .zoom video {
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+}

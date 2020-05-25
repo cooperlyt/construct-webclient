@@ -6,6 +6,7 @@ import { NgxGalleryModule, NgxGalleryComponent, NgxGalleryOptions, NgxGalleryIma
 import { CommonModule } from '@angular/common';
 import 'hammerjs';
 import { HammerModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 export declare class ContextNgxGalleryImage extends NgxGalleryImage{
   id: string;
@@ -41,14 +42,15 @@ export class FilePreviewOverlayComponent {
   loading:boolean;
 
   galleryOptions: NgxGalleryOptions[] = [
-    { "image": false, "thumbnails": false, "width": "0", "height": "0" ,"previewZoom": true, "previewRotate": true, actions:[{icon:'fa fa-trash',onClick:this.buttonClick},{icon:'fa fa-download',onClick:this.buttonClick}]},
+    { "image": false, "thumbnails": false, "width": "0", "height": "0" ,"previewZoom": true, "previewRotate": true, "previewDownload": false, actions:[{icon:'fa fa-arrow-circle-down',onClick:this.downloadClick.bind(this)}]},
     { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
     { "breakpoint": 300, "width": "100%", "height": "200px", "thumbnailsColumns": 2 },
   ];
   galleryImages: ContextNgxGalleryImage[];
 
   constructor(public dialogRef: FilePreviewOverlayRef,
-    @Inject(FILE_PREVIEW_DIALOG_DATA) public image: ViewImage){
+    @Inject(FILE_PREVIEW_DIALOG_DATA) public image: ViewImage,
+    private http: HttpClient){
       this.galleryImages = image.images;
 
     }
@@ -75,8 +77,21 @@ export class FilePreviewOverlayComponent {
     this.dialogRef.close();
   }
 
-  buttonClick(){
+  private downloadUrl(url: string) {
+    let a: any = document.createElement('a');
+    a.href = url;
+    a.download = 'aa.png';
+    document.body.appendChild(a);
+    a.style = 'display: none';
+    a.click();
+    a.remove();
+  };
 
+
+  downloadClick(event: Event, index: number){
+
+    let urlImage = this.galleryImages[index].url;
+    this.downloadUrl(urlImage);
   }
   
 }
