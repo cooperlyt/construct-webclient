@@ -33,7 +33,8 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angu
 import { switchMap, catchError } from 'rxjs/operators';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { ToastrService } from 'ngx-toastr';
-
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 const applicationFileImg = 'data:image/png;base64,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';
 
@@ -52,7 +53,7 @@ class FileItem extends BusinessFile{
 
   getThumbnailUrl(size: string): string{
     if (this.isImage){
-      return `${environment.fileUrl}img/${size}/${this.id}.${this.fileExt}`;
+      return `${environment.fileUrl}/img/${size}/${this.id}.${this.fileExt}`;
     }else{
       return applicationFileImg;
     }
@@ -75,7 +76,7 @@ class FileItem extends BusinessFile{
   }
 
   get url():string{
-    return this.isImage ? this.origUrl : this.isPdf ? `${environment.fileUrl}pdf/${this.id}.pdf` :  `${environment.fileUrl}file/${this.id}.${this.fileExt}`;
+    return this.isImage ? this.origUrl : this.isPdf ? `${environment.fileUrl}/pdf/${this.id}.pdf` :  `${environment.fileUrl}/file/${this.id}.${this.fileExt}`;
   }
 
   get fileExt(): string{
@@ -235,6 +236,8 @@ export class BusinessDocumentFilesComponent implements OnInit{
   fileCategorys: FileCategory[] = [];
 
 
+
+
   //uploading: UploadingFile[] = [];
 
   private uploadSubject  = new Subject<FileItem>();
@@ -246,7 +249,8 @@ export class BusinessDocumentFilesComponent implements OnInit{
     private previewDialog: FilePreviewOverlayService,
     public dialog: MatDialog,
     private dragulaService: DragulaService,
-    private _toastr: ToastrService){
+    private _toastr: ToastrService,
+    private sanitizer: DomSanitizer){
       this.uploadSubject.subscribe(file => {
         //this.uploading = this.uploading.filter(item => item.fid !== file.file.id);
         
@@ -384,6 +388,8 @@ export class BusinessDocumentFilesComponent implements OnInit{
    
   }
 
+  
+
   delFile(fid:string){
     this.dialog.open(ConfirmDialogComponent, {width: '400px', data: {title:'删除确认',description:'删除文件确认!',result: fid}}).afterClosed().subscribe(result => {
       if (result){
@@ -395,6 +401,40 @@ export class BusinessDocumentFilesComponent implements OnInit{
       }
     })
   }
+
+
+  iframe:SafeResourceUrl;
+  fileChangeListening: boolean = false;
+
+  //TODO change application to local port
+  connectListening(): void {
+    this.fileChangeListening = true;
+    this._camundaService.getFileChangeEvent().subscribe(
+      message => {
+        console.log(message); 
+        let n : {doc: number, files: BusinessFile[]} = JSON.parse(message.data);
+        let doc = this.fileCategorys.find(item => item.id === n.doc)
+        if (doc){
+          n.files.forEach(file => doc.files.push(new FileItem(file)));
+        }
+      },
+      (err) => {
+        console.log(err); 
+        this.fileChangeListening = false;
+      })
+
+  }
+
+
+
+  callCamera(){
+    this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl("ExtendsCamera://-key='" + this.selectedCategory.id + "' -title='" + this.selectedCategory.name + "'");
+    console.log("call camera:" + "ExtendsCamera://-key='" + this.selectedCategory.id + "' -title='" + this.selectedCategory.name + "'");
+    if (!this.fileChangeListening){
+      this.connectListening();
+    }
+  }
+
 }
 
 // @Injectable()
@@ -427,7 +467,8 @@ export class BusinessDocumentFilesComponent implements OnInit{
     MatDialogModule,
     OcticonModule,
     FilePreviewModule,
-    DragulaModule
+    DragulaModule,
+    MatButtonToggleModule
   ],
   declarations:[
     BusinessDocumentFilesComponent,

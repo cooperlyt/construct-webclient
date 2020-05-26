@@ -10,7 +10,7 @@ export class RemoteFileService{
 
   public upload(data){
 
-    return this.httpClient.post<any>(`${environment.fileUrl}upload/`,data,{
+    return this.httpClient.post<any>(`${environment.fileUrl}/upload/`,data,{
       headers: {"Content-Type" : data.type},
       reportProgress: true, observe: 'events'
     }).pipe(map((event) => {

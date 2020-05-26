@@ -6,13 +6,14 @@ import { Observable, of } from 'rxjs';
 import { Task, ProcessDefinition, ProcessInstance, BusinessDocument, BusinessFile, BusinessDocumentBase } from './schemas';
 import { environment } from 'src/environments/environment';
 import { CustomEncoder } from '../shared/custom-encoder';
+import { SseService } from '../tools/sse.service';
 
 @Injectable({providedIn: 'root'})
 export class CamundaRestService {
   private engineRestUrl = `${environment.apiUrl}/camundasvr/rest/`;
   
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private sseService: SseService) {}
 
   claimTask(id:string, userId:string):Observable<any>{
     return this.http.post(`${this.engineRestUrl}task/${id}/claim`,{userId:userId});
@@ -165,9 +166,19 @@ export class CamundaRestService {
     return this.http.put(`${this.adapterRestUrl}task/${taskId}/file/${fileId}/order`,null,{params: params,headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
   }
 
+  testFileEnent(id:number):Observable<any>{
+    return this.http.get(`${environment.fileUrl}/camundasvr/publish/doc/${id}/file/add/test`,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'})
+  }
+
+
+  getFileChangeEvent():Observable<any>{
+    return this.sseService.getServerSentEvent(`${environment.apiUrl}/camundasvr/publish/stream/file`);
+  }
+
+
   public upload(taskId:string, documentId:number, data:any):Observable<{status:string,progress?:number, file?: BusinessFile, message?: string }>{
 
-    return this.http.post<any>(`${environment.fileUrl}upload/`,data,{
+    return this.http.post<any>(`${environment.fileUrl}/upload/`,data,{
       headers: {"Content-Type" :  !!data.type ? data.type : 'application/octet-stream'},
       reportProgress: true, observe: 'events'
     }).pipe(

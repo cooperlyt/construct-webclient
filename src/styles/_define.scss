@@ -97,6 +97,10 @@
     margin-right: auto!important;
 }
 
+.mb-2{
+    margin-bottom: 8px !important;
+}
+
 .mb-4, .my-4 {
     margin-bottom: 1.5rem !important;
 }
@@ -300,6 +304,10 @@
     justify-content: space-between!important;
 }
 
+.flex-justify-space-around{
+    justify-content: space-around!important;
+}
+
 .flex-items-baseline {
     align-items: baseline!important;
 }
@@ -311,6 +319,8 @@
 .flex-justify-start {
     justify-content: flex-start!important;
 }
+
+
 
 .flex-right-center{
 
@@ -385,6 +395,14 @@
 
     .d-md-none {
         display: none!important;
+    }
+
+    .flex-md-justify-end{
+        justify-content: space-around!important;
+    }
+
+    .flex-md-row{
+        flex-direction: row!important;
     }
 }
 

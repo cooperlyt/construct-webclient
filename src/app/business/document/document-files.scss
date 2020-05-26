@@ -9,7 +9,7 @@
   }
 }
 
-.file-wall>div{
+.file-wall>div , .file-wall .thumbnail{
   margin: 2px;
   // background-color: #4dabf7;
   overflow: hidden;
@@ -26,12 +26,12 @@
   display: none;
 }
 
-.file-wall>div:hover  .file-actions{
+.file-wall>div:hover  .file-actions , .file-wall .thumbnail:hover  .file-actions{
   display:block;
 }
 
 
-.file-wall>div img{
+.file-wall>div img , .file-wall .thumbnail img{
   position: absolute;
   top: 0;
   width: 100%;

@@ -263,3 +263,19 @@ ul.striped li {
     -webkit-transition: all .2s linear;
     transition: all .2s linear;
 }
+
+
+
+
+  @media only screen and (max-width: 600px) {
+
+    .cdk-overlay-connected-position-bounding-box {
+        left: 0 !important;
+    }
+    
+    .menu-screen {
+      position: fixed;
+      max-width: unset !important;
+      width: 100vw;
+    } 
+  }

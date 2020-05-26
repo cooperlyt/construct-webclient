@@ -5,27 +5,57 @@
 
 
   <div class="col-md-3">
-    <div style="position: -webkit-sticky;
+
+
+    <div class="px-2 pt-2 d-flex d-md-none flex-items-center mb-4">
+      <mat-menu #categoryOperation="matMenu" class="menu-screen">
+        <button mat-menu-item (click)="newCategory()">添加</button>
+        <button mat-menu-item [disabled]="!selectedCategory" (click)="editCategory()">修改</button>
+        <button mat-menu-item [disabled]="!selectedCategory" (click)="delCategory()">删除 </button>
+      </mat-menu>
+       <button *ngIf="editable" mat-button [matMenuTriggerFor]="categoryOperation"><mat-icon>menu</mat-icon></button> 
+       
+       <mat-menu #categorySelectMenu="matMenu" class="menu-screen">
+        <button mat-menu-item (click)="onDocumentSelected()">浏览全部</button>
+        <button mat-menu-item [class.selected]="selectedCategory?.id === doc.id"
+          *ngFor="let doc of fileCategorys" (click)="onDocumentSelected(doc.id)">{{doc.name}}</button>
+       </mat-menu>
+       <button [matMenuTriggerFor]="categorySelectMenu" class="flex-auto" mat-stroked-button>分类</button> 
+    </div>
+
+    <div class="d-none d-md-block" style="position: -webkit-sticky;
       position: sticky;top:25px;">
 
 
-      <nav class="menu border d-none d-md-block" >
+      <nav class="menu border " >
         <a class="menu-item" (click)="onDocumentSelected()"
         [class.selected]="!selectedCategory">
           浏览全部
         </a>
         <a class="menu-item" [class.selected]="selectedCategory?.id === doc.id"
-        (click)="onDocumentSelected(doc.id)"
-        *ngFor="let doc of fileCategorys">
+          *ngFor="let doc of fileCategorys" (click)="onDocumentSelected(doc.id)">
           {{doc.name}}
         </a>
 
       </nav>
 
-      <button *ngIf="editable" (click)="newCategory()" mat-stroked-button>
-        添加附件种类
+      <div *ngIf="editable" style="display: flex; justify-content: space-between ;padding: 5px 10px;">
+
+      
+      <button  color="warn" [disabled]="!selectedCategory" (click)="delCategory()" mat-mini-fab>
+        <mat-icon>delete</mat-icon>
       </button>
 
+
+
+      <button  color="accent" [disabled]="!selectedCategory" (click)="editCategory()"mat-mini-fab>
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button  color="primary" (click)="newCategory()" mat-mini-fab>
+        <mat-icon>add</mat-icon>
+      </button>
+      </div>
     </div>
 
 
@@ -36,19 +66,13 @@
     <div *ngIf="selectedCategory" class="border-bottom">
       <div class="d-flex flex-column flex-md-row flex-justify-between  pb-1 position-relative">
         <div style="display: flex;justify-content: flex-start; align-items: center;">
-          <mat-menu #categoryOperationMenu="matMenu">
-            <button mat-menu-item (click)="editCategory()" [disabled]="selectedCategory.need">编辑分类</button>
-            <button mat-menu-item (click)="delCategory()" [disabled]="selectedCategory.need">删除分类</button>
-    
-          </mat-menu>
-          <button [matMenuTriggerFor]="categoryOperationMenu" class="small-button" mat-icon-button *ngIf="editable && !selectedCategory.need"><mat-icon>more_vert</mat-icon></button> 
-          
+      
           <h3 style="margin-top: 4px;"> 
               {{selectedCategory.name}}
           </h3>
 
         </div>
-        <ul *ngIf="selectedCategory && editable" class="pagehead-actions flex-shrink-0">
+        <ul style="display:flex;  justify-content:flex-end;" *ngIf="selectedCategory && editable" class="pagehead-actions flex-shrink-0">
           <li>
             <!-- accept="image/*" -->
               <input (change)="onFileChange($event)" style="display: none;" type="file" multiple #file>
@@ -61,7 +85,7 @@
 
           </li>
           <li>
-            <button mat-stroked-button class="small-button">
+            <button (click)="callCamera()" mat-stroked-button class="small-button">
               <span octicon="device-camera" style="line-height: 1px !important;  margin-right: 2px;"></span>
               拍照
             </button>
@@ -74,10 +98,16 @@
       </p>
     </div>
 
-    <section [dragula]="editable ? 'FILE_LIST' : null " [(dragulaModel)]="selectedCategory.files" *ngIf="selectedCategory" class="file-wall">
+    <div *ngIf="selectedCategory">
 
-
-      <div class="zoom" *ngFor="let file of selectedCategory.files" [style.flex-grow]="file.width * 200 / file.height" [style.width.px]="file.width * 200 / file.height">
+    <section  *ngIf="editable" dragula="FILE_LIST" [(dragulaModel)]="selectedCategory.files" class="file-wall">
+      <ng-container *ngTemplateOutlet="items"></ng-container>
+    </section>
+    <section *ngIf="!editable" class="file-wall" >
+      <ng-container *ngTemplateOutlet="items"></ng-container>
+    </section>
+    <ng-template  #items>
+      <div  class="zoom" *ngFor="let file of selectedCategory.files" [style.flex-grow]="file.width * 200 / file.height" [style.width.px]="file.width * 200 / file.height">
         <i [style.padding-bottom.%]="file.height / file.width * 100"></i>
         <a *ngIf="file.isImage" (click)="openPreview(file.id)">
           <img draggable="false" [src]="file.thumbnailUrl" (load)="file.loadSize($event);">
@@ -103,7 +133,10 @@
         <!-- background is image -->
          {{file.progress}} %
       </div>
-    </section>
+    </ng-template>
+
+    </div>
+
 
     <div *ngIf="!selectedCategory">
 

@@ -35,7 +35,7 @@ export class AuthenticationService {
       headers: new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
       'Authorization': 'Basic '+btoa(`${environment.clientId}:${environment.clientPassword}`)})
     }
-    return this._http.post(`${environment.apiUrl}/auth/oauth/token`, 
+    return this._http.post(`${environment.apiUrl}/authenticationservice/oauth/token`, 
       params.toString(), httpOptions).pipe(
         tap( (res:any) => {
           localStorage.setItem('refresh_token',res.refresh_token);
@@ -81,7 +81,7 @@ export class AuthenticationService {
       headers: new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
       'Authorization': 'Basic '+btoa(`${environment.clientId}:${environment.clientPassword}`)})
     }
-    return this._http.post(`${environment.apiUrl}/auth/oauth/token`, 
+    return this._http.post(`${environment.apiUrl}/authenticationservice/oauth/token`, 
       params.toString(), httpOptions).pipe(
         share(),
         catchError(err => {

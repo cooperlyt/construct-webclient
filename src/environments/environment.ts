@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.1.21:5555/api',
+  apiUrl: 'http://192.168.1.21:5555',
   clientId: 'archives',
   clientPassword: 'thisissecret',
-  fileUrl: 'http://192.168.1.21:6699/',
+  fileUrl: 'http://192.168.1.21:6699',
 
   title: '建设工程审批系统'
 };

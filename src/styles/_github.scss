@@ -89,7 +89,15 @@ dd {
     vertical-align: middle;
 }
 
-
+.select-menu-button:after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: -2px;
+    content: "";
+    border: 4px solid transparent;
+    border-top-color: currentcolor;
+}
 
 .select-menu-button-gravatar {
     float: left;
