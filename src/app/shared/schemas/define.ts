@@ -21,7 +21,7 @@ export enum JoinType{
     Design = "设计单位",
     Construct = "施工单位",
     Supervisor = "工程监理", 
-    FireCheck = "消防质检",
+    FireCheck = "消防检测",
     LandExploration = "土地勘查",
 }
 

@@ -1,5 +1,5 @@
 import { OnInit, Component } from '@angular/core';
-import { Project } from 'src/app/shared/data/project';
+import { Project } from 'src/app/shared/schemas/project';
 import { ActivatedRoute } from '@angular/router';
 import { FunctionPageBar } from 'src/app/shared/function-items/function-items';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

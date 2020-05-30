@@ -24,6 +24,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { OcticonModule } from '../tools/octicon/octicon.directive';
 import { Routes, RouterModule } from '@angular/router';
 import { RelativeTimeModule } from '../tools/pipe/relative-time.pipe';
+import { TaskCompleteDialog } from './tasks/task-complete.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 const routes: Routes =[
@@ -31,7 +33,7 @@ const routes: Routes =[
 ]
 
 @NgModule({
-  declarations:[TasksComponent],
+  declarations:[TasksComponent,TaskCompleteDialog],
   imports:[
     CommonModule,
     ReactiveFormsModule,
@@ -54,9 +56,11 @@ const routes: Routes =[
     ConfirmDialogModule,
     MatSlideToggleModule,
     OcticonModule,
+    MatDialogModule,
     RouterModule.forChild(routes),
     RelativeTimeModule
-  ]
+  ],
+  entryComponents:[TaskCompleteDialog]
 })
 export class BusinessModule{
 

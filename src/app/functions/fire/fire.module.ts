@@ -21,7 +21,7 @@ import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialo
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 import { RouterModule, Routes } from '@angular/router';
-import { SharedDataModule } from 'src/app/shared/data/data.module';
+import { SharedDataModule } from 'src/app/shared/schemas/data.module';
 import { FireCheckCreateComponent } from './create.component';
 import { ProjectResolver } from 'src/app/shared/resolver/project.resolver';
 

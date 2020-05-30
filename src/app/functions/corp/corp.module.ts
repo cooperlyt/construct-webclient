@@ -28,7 +28,7 @@ import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialo
 import { CorpProjectsComponent, CorpBusinessComponent, CorpInfoComponent, CorpDetailsComponent } from './corp-details.component';
 import { CorpListResolver } from './corp-list.resolver';
 import { CorpComponent, CorpEditComponent } from './corp.component';
-import { SharedDataModule } from 'src/app/shared/data/data.module';
+import { SharedDataModule } from 'src/app/shared/schemas/data.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CorpService } from '../../shared/remote-services/corp.service';
 import { map } from 'rxjs/operators';

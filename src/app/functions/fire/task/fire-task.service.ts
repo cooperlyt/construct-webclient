@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FireCheck } from '../schemas';
 import { Task, ProcessInstance, ProcessDefinition } from 'src/app/business/schemas';
-import { CamundaRestService } from 'src/app/business/camunda-rest.service';
+import { CamundaRestService, TaskDetails } from 'src/app/business/camunda-rest.service';
 import { FireCheckService } from '../fire-check.service';
 import { Observable, forkJoin, Subject, BehaviorSubject } from 'rxjs';
 import { switchMap, map, tap, mergeMap, takeUntil } from 'rxjs/operators';
@@ -14,18 +14,14 @@ export class FireTaskDataService implements OnDestroy{
   private behaviorSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private camundaService:CamundaRestService,
-    private authService: AuthenticationService,
     private fireService:FireCheckService){}
 
 
   private _destroyed = new Subject();
 
   taskId: string;
-  task:Task;
-  processInstance: ProcessInstance;
-  processDefinition: ProcessDefinition;
+  task: TaskDetails;
   fireCheck: FireCheck;
-  userInfo: UserInfo;
 
   loadding: boolean = false;
 
@@ -33,50 +29,29 @@ export class FireTaskDataService implements OnDestroy{
     //let taskId = route.queryParams['tid'];
     this.taskId = taskId;
     this.loadding = true;
-    this.camundaService.getTask(taskId).pipe(
+
+    this.camundaService.getTaskDetails(taskId).pipe(
       takeUntil(this._destroyed),
       tap(task => this.task = task),
-      switchMap(task => (this.camundaService.getProcessInstance(task.processInstanceId).pipe(
-        takeUntil(this._destroyed),
-        tap(process => this.processInstance = process),
-        switchMap(process => forkJoin(this.fireService.fireCheck(Number(process.businessKey)).pipe(takeUntil(this._destroyed)),
-          this.authService.getUserInfo(),
-          this.camundaService.getProcessDefinitionById(process.definitionId).pipe(takeUntil(this._destroyed))).pipe(takeUntil(this._destroyed)))
-      )))
-    ).subscribe(
-      res => {
-        this.fireCheck = res[0]; 
-        this.userInfo = res[1];
-        this.processDefinition = res[2];
-        this.loadding = false;
-        this.behaviorSubject.next(true);
-      }
-    )
+      switchMap(task => this.fireService.fireCheck(Number(task.processInstance.businessKey)))
+    ).subscribe(fire => {
+      this.fireCheck = fire;
+      this.loadding = false;
+      this.behaviorSubject.next(true);
+    });
     return this.behaviorSubject.asObservable();
   }
 
-  get isClaim():boolean{
-    if (this.loadding){
-      return false;
-    }else{
-      return this.task.assignee === this.userInfo.user_name;
-    }
-  }
-
-  get isCanClaim():boolean{
-    if (this.load){
-      return false;
-    }else{
-      return  !this.task.assignee ;
-    }
-  }
-
   claim(){
-    this.camundaService.claimTask(this.taskId,this.userInfo.user_name);
+    this.camundaService.claimTask(this.taskId,this.task.auth.user_name).pipe(
+      switchMap(() => this.camundaService.getTask(this.taskId))
+    ).subscribe(task => this.task.task = task);
   }
 
   unclaim(){
-    this.camundaService.unclaimTask(this.taskId);
+    this.camundaService.unclaimTask(this.taskId).pipe(
+      switchMap(() => this.camundaService.getTask(this.taskId))
+    ).subscribe(task => this.task.task = task);
   }
 
   data():Observable<boolean>{

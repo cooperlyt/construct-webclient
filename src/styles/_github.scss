@@ -261,7 +261,7 @@ dd {
     border: 0!important;
 }
 
-.notifications-list-item:hover .notification-list-item-actions .btn:hover {
+.notifications-list-item:hover .notification-list-item-actions .btn:hover:not(:disabled) {
     color: #24292e!important;
     background-color: #e1e4e8!important;
 }

@@ -114,4 +114,8 @@ export class AuthenticationService {
     //return this._http.get(`${environment.apiUrl}/auth/auth/user`);
   }
 
+  getRemoteUserName(id:string):Observable<{user_name:string,name:string}>{
+    return this._http.get<{user_name:string, name:string}>(`${environment.apiUrl}/authenticationservice/auth/user/${id}/name`);
+  }
+
 }

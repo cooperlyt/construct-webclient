@@ -10,7 +10,7 @@ export class FireTaskViewComponent implements OnInit{
 
   constructor(public dataService: FireTaskDataService,
     private _route: ActivatedRoute,_func: FunctionPageBar){
-      this._route.params.subscribe(params => dataService.load(params['tid']).subscribe(complete => {if (complete) _func.loadTitle(dataService.processDefinition.name + ' / ' + dataService.task.name)}));
+      this._route.params.subscribe(params => dataService.load(params['tid']).subscribe(complete => {if (complete) _func.loadTitle(dataService.task.processDefine.name + ' / ' + dataService.task.task.name)}));
   }
 
   ngOnInit(): void {
@@ -33,7 +33,7 @@ export class FireCheckProjectInfoComponent implements OnInit{
 }
 
 @Component({selector:"fire-task-document", 
-  template:`<business-document-files *ngIf="!dataService.loadding" [taskId]="dataService.taskId" [editable]="dataService.isClaim" [businessId]="dataService.processInstance.businessKey"></business-document-files>`})
+  template:`<business-document-files *ngIf="!dataService.loadding" [taskId]="dataService.taskId" [editable]="dataService.task.isClaim" [businessId]="dataService.task.processInstance.businessKey"></business-document-files>`})
 export class FireCheckDocumentComponent implements OnInit{
 
   constructor(public dataService: FireTaskDataService){}

@@ -7,6 +7,7 @@
     </label>
   </div>
 
+
   <div class="Box-body p-0">
     <ul class="list-style-none bg-gray">
       <li *ngFor="let task of tasks " [class.notification-unread]="!task.assignee || task.assignee === userId "
@@ -76,9 +77,9 @@
 
               </span>
             </button> -->
-            <button class="btn px-2">
+            <button class="btn px-2" (click)="completeTask(task)" [disabled]="task.assignee !== userId">
               <span class="text-center d-inline-block" octicon="pencil" style="width:16px"> 
-
+                
               </span>
             </button>
           </li>

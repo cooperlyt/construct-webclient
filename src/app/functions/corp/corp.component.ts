@@ -11,8 +11,8 @@ import { SearchFunctionBase, SearchCondition, FunctionPageBar, PageFunctionBase 
 import { ActivatedRoute } from '@angular/router';
 
 
-import { Corp, CorpInfo, CorpReg, CorpBusiness } from 'src/app/shared/data/corp';
-import { DataUtilsService, JoinType } from 'src/app/shared/data/define';
+import { Corp, CorpInfo, CorpReg, CorpBusiness } from 'src/app/shared/schemas/corp';
+import { DataUtilsService, JoinType } from 'src/app/shared/schemas/define';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { CorpService } from '../../shared/remote-services/corp.service';

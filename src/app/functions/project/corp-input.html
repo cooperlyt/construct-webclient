@@ -1,0 +1,103 @@
+<mat-accordion formGroupName="corp" class="example-headers-align" multi>
+  <mat-expansion-panel  [id]="editCorps[i].reg.property + '-' + editCorps[i].corp.code" *ngFor="let corp of corpsForm; let i=index">
+    <mat-expansion-panel-header [formGroupName]="i">
+      <mat-panel-title>
+        {{editCorps[i].reg.property | joinTypeLabel}} - {{editCorps[i].corp.info.name}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{editCorps[i].corp.info.groupIdType | groupCardLabel}}: {{editCorps[i].corp.info.groupId}}
+        <mat-icon>account_circle</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <button type="button" (click)="delCorp(i)" mat-icon-button color="warn" >
+      <mat-icon>delete</mat-icon>
+    </button>
+
+           
+    <div class="row">
+
+      <mat-form-field class="col-sm-4">
+        <mat-label>
+          外埠队伍审批手续
+        </mat-label>
+        <input matInput formControlName="outsideTeamFile">
+      </mat-form-field>
+      
+      <div class="check-edit-field col-sm-5">
+        <mat-checkbox formControlName="outLevel" (change)="outLevelCheckChange(i)">
+        </mat-checkbox>
+        <div class="checked-input">
+        <mat-form-field >
+          <mat-label>
+            越级审批文号
+          </mat-label>
+  
+          <input  matInput formControlName="outLevelFile">
+        </mat-form-field>
+        </div>
+      </div>
+
+
+
+
+    <mat-form-field class="col-sm-4">
+      <mat-label>
+          联系人
+      </mat-label>
+      <input matInput formControlName="contacts">
+    </mat-form-field>
+
+    <mat-form-field class="col-sm-4">
+      <mat-label>
+        联系电话
+      </mat-label>
+      <input matInput formControlName="tel">
+    </mat-form-field>
+
+  </div>
+
+  </mat-expansion-panel>
+
+
+</mat-accordion>
+
+
+
+<ng-container >
+  <mat-card>
+    <mat-card-content>
+      <div *ngIf="!existsDeveloper" class="mat-error">
+        *至少要包含一个开发单位
+      </div>
+      <div class="row">
+        <corp-select class="col-sm-6" [formControl]="corpCtl">
+        </corp-select>
+
+
+        <mat-form-field class="col-sm-3">
+          <mat-label>
+            参建类型
+          </mat-label>
+          <mat-select [(ngModel)]="selectReg" [disabled]="!selectCorp">
+            <mat-option>--</mat-option>
+            <ng-container *ngIf="selectCorp">
+              <mat-option *ngFor="let reg of selectCorp.regs" [value]="reg"> {{reg.property | joinTypeLabel}}</mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="col-sm-3  flex-right-center">
+          <button [disabled]="!newCorpValid" (click)="addNewCorp()" mat-raised-button color="primary">添加参建单位</button>
+        </div>
+      </div>
+
+      <div class="mat-error" *ngIf="selectReg && !newCorpValid">
+        此参建单位已添加!不可重复添加重复添加同一类型的同一参建单位.
+      </div>
+
+    </mat-card-content>
+
+
+  </mat-card>
+</ng-container>

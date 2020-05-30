@@ -2,18 +2,44 @@
 import { catchError, map, tap, switchMap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpEventType, HttpParams } from "@angular/common/http";
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { Task, ProcessDefinition, ProcessInstance, BusinessDocument, BusinessFile, BusinessDocumentBase } from './schemas';
 import { environment } from 'src/environments/environment';
 import { CustomEncoder } from '../shared/custom-encoder';
 import { SseService } from '../tools/sse.service';
+import { AuthenticationService, UserInfo } from '../auth/authentication.service';
+
+
+export class TaskDetails{
+  constructor(
+    public auth: UserInfo,
+    public task: Task,
+    
+    public processInstance: ProcessInstance,
+    public processDefine: ProcessDefinition,
+    public assignee:string){}
+
+
+    get isClaim():boolean{
+
+      return this.task.assignee === this.auth.user_name;
+ 
+    }
+  
+    get isCanClaim():boolean{
+      return  !this.task.assignee;//  && (this.task.assignee !==  this.auth.user_name) ;
+
+    }
+}
 
 @Injectable({providedIn: 'root'})
 export class CamundaRestService {
   private engineRestUrl = `${environment.apiUrl}/camundasvr/rest/`;
   
 
-  constructor(private http: HttpClient,private sseService: SseService) {}
+  constructor(private http: HttpClient,
+    private sseService: SseService,
+    private authService: AuthenticationService) {}
 
   claimTask(id:string, userId:string):Observable<any>{
     return this.http.post(`${this.engineRestUrl}task/${id}/claim`,{userId:userId});
@@ -26,6 +52,23 @@ export class CamundaRestService {
   getTask(id:string): Observable<Task>{
     return this.http.get<Task>(`${this.engineRestUrl}task/${id}`);
   }
+
+  getTaskDetails(id: string):Observable<TaskDetails>{
+     return this.authService.getUserInfo().pipe(
+      switchMap(auth =>  this.getTask(id).pipe(
+        switchMap(task => forkJoin(
+            of(auth),
+            of(task),
+            this.getProcessInstance(task.processInstanceId),
+            this.getProcessDefinitionById(task.processDefinitionId),
+            !task.assignee ? of(task.assignee) : task.assignee === auth.user_name ? of(auth.name) : this.authService.getRemoteUserName(task.assignee).pipe(map(user => user.name))
+          )
+        )
+      )),
+      map(res => (new TaskDetails(res[0],res[1],res[2],res[3],res[4])))
+    );
+  }
+  
 
   getProcessInstance(id:string):Observable<ProcessInstance>{
     return this.http.get<ProcessInstance>(`${this.engineRestUrl}process-instance/${id}`);

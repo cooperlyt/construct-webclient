@@ -1,5 +1,5 @@
 import { OnInit, Component } from '@angular/core';
-import { Project, JoinCorp } from 'src/app/shared/data/project';
+import { Project, JoinCorp } from 'src/app/shared/schemas/project';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from 'src/app/shared/remote-services/project.service';
 import { ToastrService } from 'ngx-toastr';

@@ -1,0 +1,163 @@
+<div formGroupName="info">
+  <div class="row">
+    <mat-form-field class="col-sm-2">
+      <mat-label>
+        工程性质
+      </mat-label>
+      <mat-select formControlName="property" required>
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let property of dataUtils.projectProperties" [value]="property.key">
+            {{property.label}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('property').hasError('required')">
+        请选择工程性质
+      </mat-error>
+
+    </mat-form-field>
+
+
+    <mat-form-field class="col-sm-8">
+      <mat-label>
+        项目名称
+      </mat-label>
+      <input matInput formControlName="name" required>
+      <mat-error *ngIf="form.get('name').hasError('required')">
+        企业名称 <strong>不能为空</strong>
+      </mat-error>
+      <mat-error *ngIf="form.get('name').hasError('maxlength')">
+        名称长度不能超过 <strong>256</strong>
+      </mat-error>
+    </mat-form-field>
+
+
+  </div>
+
+
+  <div class="row">
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        工程类别
+      </mat-label>
+      <mat-select formControlName="type" required>
+        <mat-option>--</mat-option>
+        <mat-optgroup *ngFor="let group of dataUtils.projectTypeGroups" [label]="group.name"> 
+          <mat-option *ngFor="let type of group.types" [value]="type.key">
+            {{type.value.label}}
+          </mat-option>
+        </mat-optgroup>
+      </mat-select>
+
+      <mat-error *ngIf="form.get('type').hasError('required')">
+        请选择工程类别
+      </mat-error>
+    </mat-form-field>
+
+
+
+
+    <mat-form-field class="col-sm-2">
+      <mat-label>
+        类别
+      </mat-label>
+      <mat-select formControlName="typeLevel" >
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let level of dataUtils.projectTypeLevels" [value]="level.key">
+          {{level.label}}
+        </mat-option>
+
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        重点工程级别
+      </mat-label>
+      <mat-select formControlName="importantType" required>
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let type of dataUtils.importantTypes" [value]="type.key">
+          {{type.label}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('importantType').hasError('required')">
+        请选择重点工程级别
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-sm-4">
+      <mat-label>
+        重点工程文号
+      </mat-label>
+      <input matInput formControlName="importantFile">
+      <mat-error *ngIf="form.get('importantFile').hasError('maxlength')">
+        名称长度不能超过 <strong>32</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        工程造价(万元)
+      </mat-label>
+      <input matInput type="number" formControlName="costs">
+    </mat-form-field>
+
+  </div>
+
+
+  <div class="row">
+
+
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        占地面积(平方米)
+      </mat-label>
+      <input matInput type="number" formControlName="landArea">
+    </mat-form-field>
+
+
+
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        计划开工日期
+      </mat-label>
+      <input matInput  [matDatepicker]="beginDate" formControlName="beginDate">
+      <mat-datepicker-toggle matSuffix [for]="beginDate"></mat-datepicker-toggle>
+      <mat-datepicker  #beginDate></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        计划竣工日期
+      </mat-label>
+      <input matInput  [matDatepicker]="completeDate" formControlName="completeDate">
+      <mat-datepicker-toggle matSuffix [for]="completeDate"></mat-datepicker-toggle>
+      <mat-datepicker  #completeDate></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="col-sm-6">
+      <mat-label>
+        招标情况
+      </mat-label>
+      <input matInput formControlName="tender">
+      <mat-error *ngIf="form.get('name').hasError('maxlength')">
+        长度不能超过 <strong>32</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col-sm-12">
+      <mat-label>
+        项目地址
+      </mat-label>
+      <input matInput formControlName="address">
+      <mat-error *ngIf="form.get('address').hasError('maxlength')">
+        长度不能超过 <strong>512</strong>
+      </mat-error>
+    </mat-form-field>
+
+
+
+  </div>
+
+</div>

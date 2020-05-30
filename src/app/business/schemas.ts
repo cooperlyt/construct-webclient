@@ -25,7 +25,7 @@ export declare class ProcessInstance {
   tenantId: string;
 }
 
-export declare class Task {
+export  class Task{
   id: string;
   name: string;
   assignee: string;

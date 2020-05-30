@@ -22,7 +22,7 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
-import { SharedDataModule } from 'src/app/shared/data/data.module';
+import { SharedDataModule } from 'src/app/shared/schemas/data.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FireCheckSchemasModule } from '../schemas';

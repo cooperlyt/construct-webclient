@@ -56,4 +56,8 @@ export class TasksComponent implements OnInit {
     ).subscribe(tasks => this.tasks = tasks);
   }
 
+  completeTask(task: Task){
+    this._taskRoute.complete(task);
+  }
+
 }

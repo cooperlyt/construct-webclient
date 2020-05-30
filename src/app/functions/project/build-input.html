@@ -1,0 +1,34 @@
+
+    <mat-form-field class="col-sm-4">
+      <mat-label>
+        结构
+      </mat-label>
+      <mat-select formControlName="structure">
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let struct of dataUtils.projectStructures" [value]="struct.key">
+          {{struct.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        地上层数
+      </mat-label>
+      <input matInput type="number" min="0" step="1" formControlName="groundCount">
+    </mat-form-field>
+
+
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        地下层数
+      </mat-label>
+      <input matInput type="number" min="0" step="1" formControlName="underCount">
+    </mat-form-field>
+
+    <mat-form-field class="col-sm-2">
+      <mat-label>
+        高度
+      </mat-label>
+      <input matInput type="number" formControlName="height">
+    </mat-form-field>

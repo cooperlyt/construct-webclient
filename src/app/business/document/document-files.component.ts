@@ -1,6 +1,5 @@
 import { Input, OnInit, Component, NgModule, Injectable, ViewChild, Inject } from '@angular/core';
 import { CamundaRestService } from '../camunda-rest.service';
-import { RemoteFileService } from 'src/app/shared/remote-services/file.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BusinessDocument, BusinessFile, BusinessDocumentBase } from '../schemas';
 import { CommonModule } from '@angular/common';
@@ -27,7 +26,7 @@ import { environment } from 'src/environments/environment';
 
 
 import { FilePreviewModule, FilePreviewOverlayService, ContextNgxGalleryImage } from 'src/app/tools/file-preview/file-preview.component';
-import { Subject, of, Subscription } from 'rxjs';
+import { Subject, of, Subscription, forkJoin } from 'rxjs';
 import { faFile, faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { switchMap, catchError } from 'rxjs/operators';
@@ -343,6 +342,7 @@ export class BusinessDocumentFilesComponent implements OnInit{
   private openCategoryEditDialog(data: BusinessDocumentBase){
     const dialogRef = this.dialog.open(CategoryEditDialogComponent,{width:'600px',disableClose: true,data: data});
 
+  
     dialogRef.afterClosed().pipe(
     
       switchMap(result =>  !result ? of(result) : this._camundaService.editDocumentInfo(this.taskId,result,data.id) )

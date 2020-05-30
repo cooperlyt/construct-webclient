@@ -1,5 +1,5 @@
 import { Resolve } from '@angular/router';
-import { Project } from 'src/app/shared/data/project';
+import { Project } from 'src/app/shared/schemas/project';
 import { Injectable } from '@angular/core';
 import { ProjectService } from 'src/app/shared/remote-services/project.service';
 

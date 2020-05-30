@@ -1,0 +1,50 @@
+<ngx-ui-loader></ngx-ui-loader>
+
+<div class="Subhead">
+  <h2 class="Subhead-heading">创建项目备案</h2>
+
+  <p class="Subhead-description">
+      每个建设项目可以添加多个参建单位,至少要包含一个开发单位.
+  </p>
+
+
+
+</div>
+
+<div class="edit-content">
+
+
+<div class="paper-page" >
+
+
+  <form id="project-form" [formGroup]="regForm"  (ngSubmit)="onSubmit()">
+    <mat-card>
+
+      <mat-card-header>
+        <mat-card-title>基本信息</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content >
+
+        <project-info-input></project-info-input>
+
+
+      </mat-card-content>
+    </mat-card>
+
+    <project-corp-input></project-corp-input>
+
+
+  </form>
+
+
+  <hr/>
+
+<!--  -->
+<button mat-raised-button color="primary" [disabled]="!regForm.valid || !existsDeveloper" form="project-form"  type="submit" >
+  建立项目备案
+</button>
+</div>
+
+
+</div>

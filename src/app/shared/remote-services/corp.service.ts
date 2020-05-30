@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CorpBusiness, Corp } from 'src/app/shared/data/corp';
+import { CorpBusiness, Corp } from 'src/app/shared/schemas/corp';
 import { environment } from 'src/environments/environment';
 import { PageResult } from 'src/app/shared/page-result';
 import { CustomEncoder } from 'src/app/shared/custom-encoder';

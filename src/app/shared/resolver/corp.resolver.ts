@@ -1,5 +1,5 @@
 import { Resolve } from '@angular/router';
-import { Corp } from 'src/app/shared/data/corp';
+import { Corp } from 'src/app/shared/schemas/corp';
 
 import { Injectable } from '@angular/core';
 import { CorpService } from 'src/app/shared/remote-services/corp.service';

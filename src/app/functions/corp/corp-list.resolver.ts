@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Resolve } from '@angular/router';
-import { Corp } from 'src/app/shared/data/corp';
+import { Corp } from 'src/app/shared/schemas/corp';
 import { CorpService } from '../../shared/remote-services/corp.service';
 import { PageResult } from 'src/app/shared/page-result';
 
