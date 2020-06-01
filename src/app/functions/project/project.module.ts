@@ -31,11 +31,11 @@ import { DescriptFieldModule } from 'src/app/tools/descript-field/descript-field
 import {MatExpansionModule} from '@angular/material/expansion';
 import { ProjectEditResolver } from './project-edit.resolver';
 import { ProjectResolver } from 'src/app/shared/resolver/project.resolver';
-import { ProjectInfoInputComponent, ProjectCorpInputComponent, CreateProjectComponent } from './project-edit.component';
+import { ProjectInfoInputComponent, ProjectCorpInputComponent, CreateProjectComponent, ProjectBuildComponent } from './project-edit.component';
 
 const routes:Routes = [
     {path: "", component: ProjectComponent,runGuardsAndResolvers: 'paramsOrQueryParamsChange', resolve: {projects: ProjectSearchResolver}},
-    {path: "edit", component: CreateProjectComponent},
+    {path: "create/:type", component: CreateProjectComponent},
     {path: "edit/:pid", component: ProjectEditComponent, resolve: {project: ProjectEditResolver }},
     {path: "details/:pid",component: ProjectDetailsComponent,children:[
         {path: "info", component: ProjectInfoComponent, resolve: {project: ProjectResolver}},
@@ -52,7 +52,7 @@ const routes:Routes = [
     ProjectInfoInputComponent,
     ProjectCorpInputComponent,
     CreateProjectComponent,
-
+    ProjectBuildComponent
 ],
 imports:[
     RouterModule.forChild(routes),

@@ -53,18 +53,18 @@ export declare class JoinCorpAndReg{
 
 export declare class BuildRegInfo{
     operation: string;//emum
-    code: number;
-    info: BuildInfo;
+    code?: number;
+    info?: BuildInfo;
 }
 
 export declare class BuildInfo{
     name: string;
     structure: string; //enum
-    upCount:number;
+    onCount:number;
     underCount: number;
     landArea: number;
-    upArea:number;
-    downArea:number;
+    onArea:number;
+    underArea:number;
     height:number;
 }
 

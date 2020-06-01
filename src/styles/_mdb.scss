@@ -265,7 +265,17 @@ ul.striped li {
 }
 
 
-
+  
+  .example-headers-align .mat-expansion-panel-header-title,
+  .example-headers-align .mat-expansion-panel-header-description {
+    flex-basis: 0;
+  }
+  
+  .example-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+  }
+  
 
   @media only screen and (max-width: 600px) {
 

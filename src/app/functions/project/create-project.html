@@ -1,7 +1,7 @@
 <ngx-ui-loader></ngx-ui-loader>
 
 <div class="Subhead">
-  <h2 class="Subhead-heading">创建项目备案</h2>
+  <h2 class="Subhead-heading">项目备案 - {{type | projectPropertyLabel}}工程</h2>
 
   <p class="Subhead-description">
       每个建设项目可以添加多个参建单位,至少要包含一个开发单位.
@@ -11,7 +11,7 @@
 
 </div>
 
-<div class="edit-content">
+<div class="edit-content" *ngIf="!loading">
 
 
 <div class="paper-page" >
@@ -26,15 +26,16 @@
 
       <mat-card-content >
 
-        <project-info-input></project-info-input>
-
+        <project-info-input  [type]="type"></project-info-input>
 
       </mat-card-content>
     </mat-card>
 
+
+    <project-build-input [type]="type"></project-build-input>
+
+
     <project-corp-input></project-corp-input>
-
-
   </form>
 
 

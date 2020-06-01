@@ -1,39 +1,19 @@
 <div formGroupName="info">
-  <div class="row">
-    <mat-form-field class="col-sm-2">
-      <mat-label>
-        工程性质
-      </mat-label>
-      <mat-select formControlName="property" required>
-        <mat-option>--</mat-option>
-        <mat-option *ngFor="let property of dataUtils.projectProperties" [value]="property.key">
-            {{property.label}}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="form.get('property').hasError('required')">
-        请选择工程性质
-      </mat-error>
 
-    </mat-form-field>
-
-
-    <mat-form-field class="col-sm-8">
-      <mat-label>
-        项目名称
-      </mat-label>
-      <input matInput formControlName="name" required>
-      <mat-error *ngIf="form.get('name').hasError('required')">
-        企业名称 <strong>不能为空</strong>
-      </mat-error>
-      <mat-error *ngIf="form.get('name').hasError('maxlength')">
-        名称长度不能超过 <strong>256</strong>
-      </mat-error>
-    </mat-form-field>
-
-
+  <div class="row" *ngIf="type === 'MODIFY'">
+    <div class="col-sm-2">
+      <mat-checkbox formControlName="modifyFit">装修</mat-checkbox>
+    </div>
+    <div class="col-sm-2">
+      <mat-checkbox formControlName="modifyWarm">保温</mat-checkbox>
+    </div>
+    <div class="col-sm-3">
+      <mat-checkbox formControlName="modifyUse">改变用途</mat-checkbox>
+    </div>
+    
+    
+    
   </div>
-
-
   <div class="row">
     <mat-form-field class="col-sm-3">
       <mat-label>
@@ -54,8 +34,6 @@
     </mat-form-field>
 
 
-
-
     <mat-form-field class="col-sm-2">
       <mat-label>
         类别
@@ -68,7 +46,23 @@
 
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field class="col-sm-7">
+      <mat-label>
+        项目名称
+      </mat-label>
+      <input matInput formControlName="name" required>
+      <mat-error *ngIf="form.get('name').hasError('required')">
+        企业名称 <strong>不能为空</strong>
+      </mat-error>
+      <mat-error *ngIf="form.get('name').hasError('maxlength')">
+        名称长度不能超过 <strong>256</strong>
+      </mat-error>
+    </mat-form-field>
+
+
   </div>
+
 
   <div class="row">
     <mat-form-field class="col-sm-3">
@@ -96,28 +90,24 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="col-sm-3">
+
+
+
+
+    <mat-form-field class="col-sm-12">
       <mat-label>
-        工程造价(万元)
+        项目地址
       </mat-label>
-      <input matInput type="number" formControlName="costs">
+      <input matInput formControlName="address" required>
+      <mat-error *ngIf="form.get('address').hasError('maxlength')">
+        长度不能超过 <strong>512</strong>
+      </mat-error>
+      <mat-error *ngIf="form.get('address').hasError('required')">
+        地址 <strong>不能为空</strong>
+      </mat-error>
     </mat-form-field>
 
-  </div>
-
-
-  <div class="row">
-
-
-    <mat-form-field class="col-sm-3">
-      <mat-label>
-        占地面积(平方米)
-      </mat-label>
-      <input matInput type="number" formControlName="landArea">
-    </mat-form-field>
-
-
-
+   
     <mat-form-field class="col-sm-3">
       <mat-label>
         计划开工日期
@@ -136,6 +126,24 @@
       <mat-datepicker  #completeDate></mat-datepicker>
     </mat-form-field>
 
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        占地面积(平方米)
+      </mat-label>
+      <input matInput type="number" formControlName="landArea">
+    </mat-form-field>
+
+  </div>
+
+
+  <div class="row">
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        工程造价(万元)
+      </mat-label>
+      <input matInput type="number" formControlName="costs">
+    </mat-form-field>
+
     <mat-form-field class="col-sm-6">
       <mat-label>
         招标情况
@@ -146,15 +154,6 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="col-sm-12">
-      <mat-label>
-        项目地址
-      </mat-label>
-      <input matInput formControlName="address">
-      <mat-error *ngIf="form.get('address').hasError('maxlength')">
-        长度不能超过 <strong>512</strong>
-      </mat-error>
-    </mat-form-field>
 
 
 

@@ -41,7 +41,7 @@
     <mat-card>
       <mat-card-header>
         <mat-card-title [class.line-through]="!project.enable">
-          {{project.info.info.name}}
+          {{project.info.name}}
         </mat-card-title>
         <mat-card-subtitle [class.line-through]="!project.enable">
           {{project.info.regTime | date:'yyyy年MM月dd日'}} / {{project.code}}
@@ -50,39 +50,30 @@
 
       <mat-card-content>
         <ul class="striped list-unstyled field-info-list">
-          <li *ngIf="project.info.info.importantType != 'NORMAL'">
-            <strong>{{project.info.info.importantType | improtantTypeLabel}}</strong> [{{project.info.info.importantFile}}]
+          <li *ngIf="project.info.importantType != 'NORMAL'">
+            <strong>{{project.info.importantType | improtantTypeLabel}}</strong> [{{project.info.importantFile}}]
           </li>
           <li>
-            <strong>工程性质</strong>{{project.info.info.property | projectPropertyLabel}}  <span *ngIf="project.info.info.property == 'MODIFY'"> - {{project.info.info.modifyType | projectModifyTypeLabel}}</span>
+            <strong>工程性质</strong>{{project.info.property | projectPropertyLabel}}  <span *ngIf="project.info.property == 'MODIFY'"> -</span>
           </li>
           <li>
-            <strong>工程类别:</strong>{{project.info.info.type | projectTypeLabel}} {{project.info.info.floorType | floorTypeLabel}} {{project.info.info.typeLevel | projectTypeLevelLabel}}
+            <strong>工程类别:</strong>{{project.info.type | projectTypeLabel}}  {{project.info.typeLevel | projectTypeLevelLabel}}
           </li>
+
+
+
           <li>
-            <strong>结构型式:</strong>{{project.info.info.structure | structLabel}} <ng-container *ngIf="!project.info.info.structure"> - </ng-container>
-          </li>
-          <li>
-            <strong>地上/地下层数:</strong> <ng-container *ngIf="!project.info.info.groundCount"> - </ng-container> {{project.info.info.groundCount | number}} / {{project.info.info.underCount | number}} <ng-container *ngIf="!project.info.info.underCount"> - </ng-container>  <ng-container *ngIf="project.info.info.height"> <strong>高度:</strong> {{project.info.info.height |number}} </ng-container>
-          </li>
-          <li>
-            <strong>占地/建筑面积:</strong> <ng-container *ngIf="!project.info.info.landArea"> - </ng-container>{{project.info.info.landArea | number}}m<sup>2</sup> / <ng-container *ngIf="!project.info.info.area"> - </ng-container>{{project.info.info.area | number}}m<sup>2</sup>
+            <strong>计划开工/竣工:</strong> <ng-container *ngIf="!project.info.beginDate"> - </ng-container>{{project.info.beginDate | date:'yyyy年MM月dd日'}} / {{project.info.completeDate | date:'yyyy年MM月dd日'}}<ng-container *ngIf="!project.info.completeDate"> - </ng-container>
           </li>
 
           <li>
-            <strong>计划开工/竣工:</strong> <ng-container *ngIf="!project.info.info.beginDate"> - </ng-container>{{project.info.info.beginDate | date:'yyyy年MM月dd日'}} / {{project.info.info.completeDate | date:'yyyy年MM月dd日'}}<ng-container *ngIf="!project.info.info.completeDate"> - </ng-container>
+            <strong>工程造价:</strong> <ng-container *ngIf="!project.info.costs"> - </ng-container>{{project.info.costs | number}}万元 <ng-container *ngIf="project.info.tender"> <strong>招标情况:</strong> {{project.info.tender}} </ng-container>
           </li>
 
           <li>
-            <strong>工程造价:</strong> <ng-container *ngIf="!project.info.info.costs"> - </ng-container>{{project.info.info.costs | number}}万元 <ng-container *ngIf="project.info.info.tender"> <strong>招标情况:</strong> {{project.info.info.tender}} </ng-container>
+            <strong>地址:</strong>{{project.info.address}}
           </li>
-
-          <li>
-            <strong>地址:</strong>{{project.info.info.address}}
-          </li>
-          <li>
-            <strong>备注:</strong>{{project.info.info.memo}}
-          </li>
+      
           
         </ul>
       </mat-card-content>

@@ -18,7 +18,14 @@
     </div>
 
     <div class="actions">
-        <button routerLink="edit" mat-icon-button color="primary"  aria-label="Example icon-button with a menu">
+        <mat-menu #createMenu="matMenu">
+            <button [routerLink]="['create','NEW']" mat-menu-item>新建</button>
+            <button [routerLink]="['create','MODIFY']"  mat-menu-item>改建</button>
+            <button [routerLink]="['create','BIG']"  mat-menu-item>扩建</button>
+            <button [routerLink]="['create','MOVE']"  mat-menu-item>迁建</button>
+            <button [routerLink]="['create','TEMP']"  mat-menu-item>临建</button>
+          </mat-menu>
+        <button  [matMenuTriggerFor]="createMenu" mat-icon-button color="primary"  aria-label="Example icon-button with a menu">
             <mat-icon>add</mat-icon>
         </button>
     </div>
