@@ -998,6 +998,13 @@
   resolved "https://registry.npm.taobao.org/@kolkov/ngx-gallery/download/@kolkov/ngx-gallery-1.2.0.tgz#b12ef61a087b9e69fec3fc3d9e791da065b5ba00"
   integrity sha1-sS72Ggh7nmn+w/w9nnkdoGW1ugA=
 
+"@ncstate/sat-popover@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.npm.taobao.org/@ncstate/sat-popover/download/@ncstate/sat-popover-4.0.0.tgz#7684c435f7bfc8261ace919055f7ffab4a1996e3"
+  integrity sha1-doTENfe/yCYazpGQVff/q0oZluM=
+  dependencies:
+    tslib "^1.9.0"
+
 "@ngtools/webpack@9.0.7":
   version "9.0.7"
   resolved "https://registry.npm.taobao.org/@ngtools/webpack/download/@ngtools/webpack-9.0.7.tgz?cache=0&sync_timestamp=1584589112463&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ngtools%2Fwebpack%2Fdownload%2F%40ngtools%2Fwebpack-9.0.7.tgz#2d9397544afcf503530eafc764c64d40a99fa070"

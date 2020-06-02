@@ -277,6 +277,21 @@ ul.striped li {
   }
   
 
+h3.docs-api-h3 {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 32px;
+    margin: 40px 0 20px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+
+    .mat-checkbox label{
+        font-weight: 400;
+    }
+    
+}
+
+
   @media only screen and (max-width: 600px) {
 
     .cdk-overlay-connected-position-bounding-box {

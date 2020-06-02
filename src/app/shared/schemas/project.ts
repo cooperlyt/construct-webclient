@@ -6,6 +6,9 @@ export declare class JoinCorpInfo{
     groupIdType: GroupIdType;
     groupId: string;
     level: number;
+    ownerName: string;
+    ownerIdType: string;
+    ownerId: string;
 }
 
 export declare class JoinCorp{
@@ -17,6 +20,7 @@ export declare class JoinCorp{
     contacts:string;
     tel:string;
     info:JoinCorpInfo;
+
     // reg?: ProjectCorpReg;
 }
 

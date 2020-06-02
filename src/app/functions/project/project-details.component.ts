@@ -1,5 +1,5 @@
 import { OnInit, Component } from '@angular/core';
-import { Project, JoinCorp } from 'src/app/shared/schemas/project';
+import { Project, JoinCorp, BuildRegInfo } from 'src/app/shared/schemas/project';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from 'src/app/shared/remote-services/project.service';
 import { ToastrService } from 'ngx-toastr';
@@ -8,10 +8,15 @@ import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-di
 import { empty } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { faUserTie, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { PageFunctionBase, FunctionPageBar } from 'src/app/shared/function-items/function-items';
 
 
 @Component({selector: "project-details", templateUrl: "./details.html"})
-export class ProjectDetailsComponent implements OnInit{
+export class ProjectDetailsComponent extends PageFunctionBase implements OnInit{
+
+    constructor(_route: ActivatedRoute, _func: FunctionPageBar){
+        super(_route,_func);
+    }
     ngOnInit(): void {
     }
 
@@ -26,6 +31,9 @@ export class ProjectInfoComponent implements OnInit{
     project: Project;
 
     statusWaiting: boolean = false;
+
+    builds: BuildRegInfo[];
+    delBuilds: BuildRegInfo[];
 
     constructor(private _route: ActivatedRoute, 
         private _service: ProjectService,
@@ -58,7 +66,12 @@ export class ProjectInfoComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        this._route.data.subscribe(data => this.project = data.project)
+        this._route.data.subscribe(data => {
+            console.log(data);
+            this.project = data.project;
+            this.builds = this.project.builds.filter(build => build.operation != 'DELETE');
+            this.delBuilds = this.project.builds.filter(build => build.operation == 'DELETE');
+        })
     }
 }
 

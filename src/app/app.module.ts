@@ -1,4 +1,4 @@
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -64,7 +64,6 @@ import { DragulaModule } from 'ng2-dragula';
     FooterComponent
   ],
   imports: [
-    BrowserModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

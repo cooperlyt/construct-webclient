@@ -24,6 +24,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedDataModule } from 'src/app/shared/schemas/data.module';
 import { FireCheckCreateComponent } from './create.component';
 import { ProjectResolver } from 'src/app/shared/resolver/project.resolver';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -43,6 +45,7 @@ const routes: Routes =[
     MatCardModule,
     MatInputModule,
     MatSelectModule,
+    MatCheckboxModule,
     MatMenuModule,
     MatDatepickerModule,
     MatMomentDateModule,

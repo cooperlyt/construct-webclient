@@ -56,11 +56,9 @@
             <strong>工程类别:</strong>{{dataService.fireCheck.project.type | projectTypeLabel}} {{dataService.fireCheck.project.floorType | floorTypeLabel}} {{dataService.fireCheck.project.typeLevel | projectTypeLevelLabel}}
           </li>
           <li>
-            <strong>受理/备案凭证文号:</strong>{{dataService.fireCheck.file}}
+            <strong>受理/备案凭证文号:</strong>{{dataService.fireCheck.applyFile}}
           </li>
-          <li>
-            <strong>火灾危险性:</strong>{{dataService.fireCheck.danger | projectFireDangerLevel}}
-          </li>
+  
           <li>
             <strong>结构型式:</strong>{{dataService.fireCheck.project.structure | structLabel}} <ng-container *ngIf="!dataService.fireCheck.project.structure"> - </ng-container>
           </li>
