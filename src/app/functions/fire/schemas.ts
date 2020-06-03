@@ -59,6 +59,11 @@ enum FitPart{
   OTHER="其他"
 }
 
+enum ApplyType{
+  First="验收申请",
+  Review="复查申请"
+}
+
 export enum WarmType{
   A = "",
   A1 = "",
@@ -75,23 +80,23 @@ export declare class FireCheckProjectCorp{
   tel:string;
   property:string;
   code:number;
+  ownerName:string;
+  ownerIdType:string;
+  ownerId:string;
 }
 
 export declare class FireCheckProject{
   name:string;
   address: string;
   type: string;
-  modifyType: string;
-  typeLevel:number;
-  floorType:string;
-  structure: string;
   property: string;
-  height: number;
-  importantType: string;
-  area: number;
   landArea: number;
-  groundCount: number;
-  underCount: number;
+  importantType: string;
+  
+  modifyFit:boolean;
+  modifyWarm:boolean;
+  modifyUse:boolean;
+ 
   corps: FireCheckProjectCorp[];
 }
 
@@ -220,6 +225,13 @@ export class FireFitPartPipe implements PipeTransform{
   }
 }
 
+@Pipe({name:'fileApplyType'})
+export class ApplyTypePipe implements PipeTransform{
+  transform(value:string) {
+    return ApplyType[value];
+  }
+}
+
 
 
 @Injectable({providedIn: 'root'})
@@ -251,7 +263,8 @@ export class DataDefine {
     UsePropertyPipe,
     TinTypePipe,
     TinLayoutPipe,
-    FireFitPartPipe
+    FireFitPartPipe,
+    ApplyTypePipe
 
   ], exports:[
     ProjectFireDangerLevelPipe,
@@ -260,6 +273,7 @@ export class DataDefine {
     UsePropertyPipe,
     TinTypePipe,
     TinLayoutPipe,
-    FireFitPartPipe
+    FireFitPartPipe,
+    ApplyTypePipe
   ]})
 export class FireCheckSchemasModule{}

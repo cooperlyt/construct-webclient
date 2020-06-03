@@ -180,6 +180,10 @@ export class CamundaRestService {
     return this.http.get<string>(endpoint,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
   }
 
+  getAllTaskExtensions(processDefinitionId: string , taskDefinitionKey: string):Observable<any>{
+    return this.http.get<string>(`${this.adapterRestUrl}utils/define/process/${processDefinitionId}/task/${taskDefinitionKey}/extensions`);
+  }
+
   //Business api
 
   getBusinessDocuments(businessId: number):Observable<BusinessDocument[]>{

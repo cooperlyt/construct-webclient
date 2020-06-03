@@ -103,7 +103,6 @@ export class FireCheckCreateComponent implements OnInit{
       this.businessForm = this._fb.group({
         corp:[,Validators.required],
         corpProperty:[],
-        type: [, Validators.maxLength(16)],
         property:[],
         projectCode: [this.project.code],
         contracts:[, Validators.maxLength(64)],

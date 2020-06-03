@@ -1,0 +1,14 @@
+<h1 mat-dialog-title ><strong>{{task.name}}</strong> - 完成</h1>
+<div mat-dialog-content>
+  <p>{{task.description}}</p>
+
+  <mat-form-field>
+    <label>审核意见</label>
+    <textarea #commentInput matInput></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()" cdkFocusInitial>取消</button>
+  <button mat-button  color="warn" [mat-dialog-close]="{id: task.id, checked:false , comment:commentInput.value }" >不同意</button>
+  <button mat-button color="primary" [mat-dialog-close]="{id: task.id, checked:true , comment:commentInput.value }" >同意</button>
+</div>

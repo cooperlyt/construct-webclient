@@ -14,13 +14,7 @@
 
       <h3 class="docs-api-h3">基本信息</h3>
       <div class="row">
-      <mat-form-field class="col-sm-4">
-        <mat-label>受理类型</mat-label>
-        <input matInput formControlName="type">
-        <mat-error *ngIf="businessForm.get('type').hasError('maxlength')">
-          最大长度不能超过<strong>16</strong>
-        </mat-error>
-      </mat-form-field>
+
 
       <mat-form-field class="col-sm-8">
         <mat-label>申请单位</mat-label>
@@ -57,7 +51,7 @@
       </mat-form-field>
 
 
-        <mat-form-field class="col-sm-8">
+        <mat-form-field class="col-sm-4">
           <mat-label>联系人</mat-label>
           <input matInput formControlName="contracts">
           <mat-error *ngIf="businessForm.get('contracts').hasError('maxlength')">
