@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CamundaRestService } from '../camunda-rest.service';
 import { Router } from '@angular/router';
-import { Task } from '../schemas';
+import { Task, Variables } from '../schemas';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -57,12 +57,21 @@ export class TaskRouterService {
         this._router.navigate(['task',TASK_VIEW_PATH[properties.edit],task.id]);
 
       }else if (properties.check){
+        let variables = new Variables();
+        if (properties.reapply){
+          variables.putVariable(properties.reapply,{value:false})
+        }
+
+        variables
         this.dialog.open(TaskCheckDialog,{
           width: '400px',
           data: task
         }).afterClosed().subscribe(result => {
           if (result){
-            this._service.postCompleteTask(result.id, !properties.reapply ? {variables:{[properties.check]: result.checked, ['comment']: result.comment}} : {variables: {[properties.reapply]:false , [properties.check]: result.checked, ['comment']: result.comment}}).subscribe(() =>{
+            variables.putVariable(properties.check,{value: result.checked});
+            variables.putVariable("comment", {value: result.comment});
+            console.log(variables)
+            this._service.postCompleteTask(result.id, variables).subscribe(() =>{
                 if (completePage){
                   this._router.navigate(['task',task.id]);
                 }
@@ -75,7 +84,7 @@ export class TaskRouterService {
           data: task
         }).afterClosed().subscribe(id => {
           if (id){
-            this._service.postCompleteTask(id, !properties.reapply ? {variables:{}} : {variables: {[properties.reapply]:false}}).subscribe(() =>{
+            this._service.postCompleteTask(id, !properties.reapply ? {variables:{}} : {variables: {[properties.reapply]:{value: false}}}).subscribe(() =>{
                 if (completePage){
                   this._router.navigate(['task',task.id]);
                 }

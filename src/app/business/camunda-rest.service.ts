@@ -78,9 +78,24 @@ export class CamundaRestService {
     return this.http.get<ProcessDefinition>(`${this.engineRestUrl}process-definition/${id}`);
   }
 
-  getTasks(): Observable<Task[]> {
-    const endpoint = `${this.engineRestUrl}task?sortBy=created&sortOrder=desc`; //&maxResults=10
-    return this.http.get<any>(endpoint).pipe(
+  getTasks(key?:string): Observable<Task[]> {
+
+    if (key){
+      return this.http.post<any>(`${this.engineRestUrl}task`,{processVariables:[{name:"_key",value: `%${key}%`,operator:"like"}]}).pipe(
+        tap(form => this.log(`fetched tasks`)),
+        catchError(this.handleError("getTasks", []))
+      );
+    }else{
+      return this.http.get<any>(`${this.engineRestUrl}task?sortBy=created&sortOrder=desc`).pipe(
+        tap(form => this.log(`fetched tasks`)),
+        catchError(this.handleError("getTasks", []))
+      );
+    }
+
+  }
+
+  getTaskByBusinessKey(key:string):Observable<Task[]>{
+    return this.http.get<any>(`${this.engineRestUrl}task?processInstanceBusinessKey=${key}&sortBy=created&sortOrder=desc`).pipe(
       tap(form => this.log(`fetched tasks`)),
       catchError(this.handleError("getTasks", []))
     );

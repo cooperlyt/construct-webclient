@@ -6,6 +6,7 @@ import { FireCheckService } from '../fire-check.service';
 import { Observable, forkJoin, Subject, BehaviorSubject } from 'rxjs';
 import { switchMap, map, tap, mergeMap, takeUntil } from 'rxjs/operators';
 import { AuthenticationService, UserInfo } from 'src/app/auth/authentication.service';
+import { TaskRouterService } from 'src/app/business/tasks/task-router.service';
 
 
 @Injectable()
@@ -14,6 +15,7 @@ export class FireTaskDataService implements OnDestroy{
   private behaviorSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private camundaService:CamundaRestService,
+    private taskRouteService: TaskRouterService,
     private fireService:FireCheckService){}
 
 
@@ -64,6 +66,9 @@ export class FireTaskDataService implements OnDestroy{
     this._destroyed.complete();
   }
 
+  completeTask():void{
+    this.taskRouteService.complete(this.task.task);
+  }
 
 
 }

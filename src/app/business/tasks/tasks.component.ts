@@ -15,25 +15,34 @@ export class TasksComponent implements OnInit {
 
   userId: string;
 
+  key: string = null;
+
   constructor(
     private _taskRoute: TaskRouterService,
     private _camundaService: CamundaRestService,
     private _authService: AuthenticationService,
     private _route: ActivatedRoute, _func: FunctionPageBar){
     _func.loadSearch({title:'业务办理',search: true}).subscribe(key => this.doSearch(key)); 
+
   }
 
   ngOnInit(): void {
+    this._route.queryParams.subscribe(params => {
+      this.key = params["key"]
+      this.refreshTasks();
+    })
     this._authService.getUserInfo().subscribe(user => this.userId = user.user_name);
-    this.refreshTasks();
   }
 
   doSearch(key: SearchCondition):void{
-    
+    this.key = key.key;
+    if (key.now){
+      this.refreshTasks(); 
+    }
   }
   
   refreshTasks(){
-    this._camundaService.getTasks().subscribe(tasks => this.tasks = tasks);
+    this._camundaService.getTasks(this.key).subscribe(tasks => this.tasks = tasks);
   }
 
   view(task: Task):void{

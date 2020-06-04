@@ -69,3 +69,17 @@ export class BusinessDocumentBase{
 export class BusinessDocument extends BusinessDocumentBase{
   files: BusinessFile[];
 }
+
+export class Variable {
+  value: any;
+  type?: string;
+}
+
+export class Variables {
+  variables: {[key:string]:Variable} = {};
+  withVariablesInReturn?:boolean;
+
+  putVariable(key:string,variable:Variable){
+    this.variables[key] = variable;
+  }
+}

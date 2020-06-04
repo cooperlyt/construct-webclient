@@ -113,6 +113,7 @@ export class ProjectEditComponent extends PageFunctionBase implements OnInit{
     onSubmit(){
         console.log(this.regForm.value);
         this._ngxService.start();
+        console.log(this.regForm.value);
         this.service.patchProject(this.regForm.value, this.project ? this.project.code : null).pipe(catchError(err=>{
             this._ngxService.stop();
             this._toastr.error("请联系管理员或请稍后再试！","存储数据失败");

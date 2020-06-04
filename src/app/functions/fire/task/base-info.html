@@ -74,6 +74,7 @@
     </mat-expansion-panel>
     </mat-accordion>
 
+    {{dataService.fireCheck.builds | json}}
 
     <mat-card>
       <mat-card-header>
@@ -81,6 +82,62 @@
           建筑物
         </mat-card-title>
       </mat-card-header>
+
+      <mat-card-content>
+        <table style="width: 100%;" mat-table [dataSource]="dataService.fireCheck.builds" >
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>名称</th>
+            <td mat-cell *matCellDef="let element;">
+              {{element.info?.name}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="structure">
+            <th mat-header-cell *matHeaderCellDef>结构型式</th>
+            <td mat-cell *matCellDef="let element">{{element.info?.structure | structLabel}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="count">
+            <th mat-header-cell *matHeaderCellDef>层数(地上/地下)</th>
+            <td mat-cell *matCellDef="let element"> <span *ngIf="!element.info?.onCount">-</span>{{element.info.onCount | number}} / <span *ngIf="!element.info.underCount">-</span>{{element.info.underCount | number}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="area">
+            <th mat-header-cell *matHeaderCellDef>面积(地上/地下)</th>
+            <td mat-cell *matCellDef="let element"> <span *ngIf="!element.info?.onArea">-</span> {{element.info.onArea | number}} / <span *ngIf="!element.info.underArea">-</span>{{element.info.underArea | number}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="loadArea">
+            <th mat-header-cell *matHeaderCellDef>占地面积</th>
+            <td mat-cell *matCellDef="let element"><span *ngIf="!element.info.landArea">-</span> {{element.info.landArea | number}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="height">
+            <th mat-header-cell *matHeaderCellDef>建筑高度</th>
+            <td mat-cell *matCellDef="let element"><span *ngIf="!element.info.height">-</span>{{element.info.height | number}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="rating">
+            <th mat-header-cell *matHeaderCellDef>耐火等级*</th>
+            <td mat-cell *matCellDef="let element;">
+              {{element.info.rating | fireRatingLevel}}
+
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="danger">
+            <th mat-header-cell *matHeaderCellDef>火灾危险性*</th>
+            <td mat-cell *matCellDef="let element; ">
+              {{element.info.fireDangerLevel}}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['name','structure','count','area','loadArea','height','rating','danger']"></tr>
+          <tr mat-row *matRowDef="let row; columns:['name','structure','count','area','loadArea','height','rating','danger'];"></tr>
+
+        </table>
+      </mat-card-content>
     </mat-card>
   </div>
 
@@ -88,7 +145,6 @@
     <mat-card *ngIf="dataService.fireCheck">
       <mat-card-header>
         <mat-card-title >
-          {{dataService.fireCheck.type}}
           {{dataService.fireCheck.type | fileApplyType}}
         </mat-card-title>
         <mat-card-subtitle>
@@ -145,39 +201,93 @@
     </mat-card>
 
 
-    <mat-card>
+    <mat-card *ngIf="dataService.fireCheck.tin">
       <mat-card-header>
         <mat-card-title>
           储罐
         </mat-card-title>
       </mat-card-header>
+      <mat-card-content>
+        <ul class="striped list-unstyled field-info-list">
+          <li>
+            <strong>位置:</strong>{{dataService.fireCheck.tin.location}}
+          </li>
+
+          <li>
+            <strong>总容量:</strong> {{dataService.fireCheck.tin.area | number}}
+          </li>
+          <li>
+            <strong>设置形式:</strong> {{dataService.fireCheck.tin.type | fireTinType}}
+          </li>
+          <li>
+            <strong>储存形式:</strong>{{dataService.fireCheck.tin.layout | fireTinLayout}}
+          </li>
+          <li>
+            <strong>储存物名称:</strong> {{dataService.fireCheck.tin.name}}
+          </li>
+        </ul>
+      </mat-card-content>
     </mat-card>
 
-    <mat-card>
+    <mat-card *ngIf="dataService.fireCheck.square">
       <mat-card-header>
         <mat-card-title>
           堆场
         </mat-card-title>
       </mat-card-header>
+      <mat-card-content>
+        <ul class="striped list-unstyled field-info-list">
+          <li>
+            <strong>储量:</strong> {{dataService.fireCheck.square.area | number}}
+          </li>
+          <li>
+            <strong>储存物名称:</strong> {{dataService.fireCheck.square.name}}
+          </li>
+        </ul>
+      </mat-card-content>
     </mat-card>
 
-
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>
-          建筑保温
-        </mat-card-title>
-      </mat-card-header>
-    </mat-card>
-
-
-    <mat-card>
+    <mat-card *ngIf="dataService.fireCheck.fit">
       <mat-card-header>
         <mat-card-title>
           装修工程
         </mat-card-title>
       </mat-card-header>
+      <mat-card-content>
+        <ul class="striped list-unstyled field-info-list">
+          <li>
+            <strong>部位:</strong> {{dataService.fireCheck.fit.part | fireFitPart}}
+          </li>
+          <li>
+            <strong>面积:</strong> {{dataService.fireCheck.fit.area  | number}}
+          </li>
+          <li>
+            <strong>层数:</strong> {{dataService.fireCheck.fit.layers | number}}
+          </li>
+        </ul>
+      </mat-card-content>
     </mat-card>
+
+    <mat-card *ngIf="dataService.fireCheck.warm">
+      <mat-card-header>
+        <mat-card-title>
+          建筑保温
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul class="striped list-unstyled field-info-list">
+          <li>
+            <strong>材料类别:</strong>{{dataService.fireCheck.warm.type}}
+          </li>
+          <li>
+            <strong>层数:</strong> {{dataService.fireCheck.warm.layers | number}}
+          </li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+
+
+
   </div>
 
 </div>

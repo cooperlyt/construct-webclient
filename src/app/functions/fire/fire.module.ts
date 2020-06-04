@@ -22,20 +22,22 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedDataModule } from 'src/app/shared/schemas/data.module';
-import { FireCheckCreateComponent } from './create.component';
+import { FireCheckCreateComponent, FireCheckCreatedComponent } from './create.component';
 import { ProjectResolver } from 'src/app/shared/resolver/project.resolver';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BusinessKeyTasksResolver } from 'src/app/business/tasks/business-key-tasks.resolver';
+import { FireCheckResolver } from './fire-check.resolver';
 
 
 
 
 const routes: Routes =[
-  {path: 'create/:pid' , component: FireCheckCreateComponent, resolve:{project: ProjectResolver}}
+  {path: 'create/:pid' , component: FireCheckCreateComponent, resolve:{project: ProjectResolver}},
+  {path: 'created/:id', component: FireCheckCreatedComponent, resolve:{tasks: BusinessKeyTasksResolver, check: FireCheckResolver}}
 ]
 
 @NgModule({
-  declarations:[FireCheckCreateComponent],
+  declarations:[FireCheckCreateComponent,FireCheckCreatedComponent],
   imports:[
     CommonModule,
     ReactiveFormsModule,

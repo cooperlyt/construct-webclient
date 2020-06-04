@@ -26,6 +26,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { RelativeTimeModule } from '../tools/pipe/relative-time.pipe';
 import {MatDialogModule} from '@angular/material/dialog';
 import { TaskCheckDialog, TaskCompleteDialog } from './tasks/task-router.service';
+import { SafeHtmlModule } from '../tools/pipe/safe-html.pipe';
 
 
 const routes: Routes =[
@@ -59,6 +60,7 @@ const routes: Routes =[
     MatDialogModule,
     RouterModule.forChild(routes),
     RelativeTimeModule,
+    SafeHtmlModule
   ],
   entryComponents:[TaskCompleteDialog,TaskCheckDialog]
 })

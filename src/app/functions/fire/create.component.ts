@@ -3,18 +3,38 @@ import { Project, BuildInfo, JoinCorp } from 'src/app/shared/schemas/project';
 import { ActivatedRoute } from '@angular/router';
 import { FunctionPageBar } from 'src/app/shared/function-items/function-items';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { DataDefine } from './schemas';
+import { DataDefine, FireCheck } from './schemas';
 import { FireCheckService } from './fire-check.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatSelectChange } from '@angular/material/select';
+import { Task } from 'src/app/business/schemas';
 
 
 const EXTRA_SMALL_WIDTH_BREAKPOINT = 768;
 const SMALL_WIDTH_BREAKPOINT = 992;
 
+@Component({
+  selector:"fire-check-created",
+  templateUrl:"./created.html",
+})
+export class FireCheckCreatedComponent implements OnInit{
+
+  check: FireCheck;
+  tasks: Task;
+
+  constructor(private _route: ActivatedRoute){}
+
+  ngOnInit(): void {
+    this._route.data.subscribe(data => {
+      this.check = data.check;
+      this.tasks = data.tasks;
+    })
+  }
+
+}
 
 @Component({
   selector:"fire-check-create",

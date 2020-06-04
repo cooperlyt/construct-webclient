@@ -1,5 +1,6 @@
 
 
+
 <div class="Box mx-0 mt-0 mb-3 task-list ">
   <div class="Box-header d-flex flex-items-center py-2 pl-md-0 pl-3">
     <label class="h6 pl-0 pl-md-4">
@@ -34,12 +35,13 @@
                   <p class="m-0 f6 flex-auto">
                       {{task.name}}
                       <span class="text-normal text-gray-light">
-                        #1
+                        
                       </span>
                   </p>
                 </div>
-                <p class="m-0 text-normal pr-2 pr-md-0">
+                <p [innerHTML]="task.description | safeHtml" class="m-0 text-normal pr-2 pr-md-0">
                   #{{task | json}}
+                  
                 </p>
               </div>
 
