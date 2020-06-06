@@ -225,7 +225,7 @@ export class FireFitPartPipe implements PipeTransform{
   }
 }
 
-@Pipe({name:'fileApplyType'})
+@Pipe({name:'fireApplyTypelabel'})
 export class ApplyTypePipe implements PipeTransform{
   transform(value:string) {
     return ApplyType[value];

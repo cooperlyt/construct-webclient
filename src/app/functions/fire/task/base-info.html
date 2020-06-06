@@ -74,8 +74,6 @@
     </mat-expansion-panel>
     </mat-accordion>
 
-    {{dataService.fireCheck.builds | json}}
-
     <mat-card>
       <mat-card-header>
         <mat-card-title>
@@ -121,7 +119,7 @@
           <ng-container matColumnDef="rating">
             <th mat-header-cell *matHeaderCellDef>耐火等级*</th>
             <td mat-cell *matCellDef="let element;">
-              {{element.info.rating | fireRatingLevel}}
+              {{element.rating | fireRatingLevel}}
 
             </td>
           </ng-container>
@@ -129,7 +127,7 @@
           <ng-container matColumnDef="danger">
             <th mat-header-cell *matHeaderCellDef>火灾危险性*</th>
             <td mat-cell *matCellDef="let element; ">
-              {{element.info.fireDangerLevel}}
+              {{element.danger | fireDangerLevel}}
             </td>
           </ng-container>
 
@@ -145,7 +143,7 @@
     <mat-card *ngIf="dataService.fireCheck">
       <mat-card-header>
         <mat-card-title >
-          {{dataService.fireCheck.type | fileApplyType}}
+          {{dataService.fireCheck.type | fireApplyTypelabel}}
         </mat-card-title>
         <mat-card-subtitle>
           {{dataService.fireCheck.id}}

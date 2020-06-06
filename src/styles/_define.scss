@@ -43,6 +43,9 @@
 .p-0 {
     padding: 0!important;
 }
+.p-4 {
+    padding: 1.5rem !important;
+}
 
 .bottom-0 {
     bottom: 0!important;
@@ -101,6 +104,10 @@
     margin-bottom: 8px !important;
 }
 
+.mb-3, .my-3 {
+    margin-bottom: 1rem !important;
+}
+
 .mb-4, .my-4 {
     margin-bottom: 1.5rem !important;
 }
@@ -133,6 +140,9 @@
 }
 .pt-0, .py-0 {
     padding-top: 0!important;
+}
+.pt-4, .py-4 {
+    padding-top: 1.5rem !important;
 }
 .ml-0, .mx-0 {
     margin-left: 0!important;
@@ -275,6 +285,10 @@
 .circle {
     border-radius: 50%!important;
 }
+
+
+.border-primary{border-color:#007bff !important}.border-secondary{border-color:#6c757d !important}.border-success{border-color:#28a745 !important}.border-info{border-color:#33b5e5 !important}.border-warning{border-color:#ffc107 !important}.border-danger{border-color:#dc3545 !important}.border-light{border-color:#f8f9fa !important}.border-dark{border-color:#343a40 !important}.border-white{border-color:#fff !important}.rounded-sm{border-radius:.2rem !important}.rounded{border-radius:.25rem !important}.rounded-top{border-top-left-radius:.25rem !important;border-top-right-radius:.25rem !important}.rounded-right{border-top-right-radius:.25rem !important;border-bottom-right-radius:.25rem !important}.rounded-bottom{border-bottom-right-radius:.25rem !important;border-bottom-left-radius:.25rem !important}.rounded-left{border-top-left-radius:.25rem !important;border-bottom-left-radius:.25rem !important}.rounded-lg{border-radius:.3rem !important}.rounded-circle{border-radius:50% !important}.rounded-pill{border-radius:50rem !important}.rounded-0{border-radius:0 !important}
+
 // flex
 
 .flex-center {
@@ -324,7 +338,10 @@
     justify-content: flex-start!important;
 }
 
-
+.justify-content-center {
+    -ms-flex-pack: center !important;
+    justify-content: center !important;
+}
 
 .flex-right-center{
 
@@ -408,6 +425,10 @@
     .flex-md-row{
         flex-direction: row!important;
     }
+
+    .text-md-left {
+        text-align: left !important;
+    }
 }
 
 @media (min-width: $small-breakpoint-width){
@@ -432,7 +453,11 @@
 }
 
 //mdb color
+.rgba-black-slight,.rgba-black-slight:after{background-color:rgba(0,0,0,0.1)}.rgba-black-light,.rgba-black-light:after{background-color:rgba(0,0,0,0.3)}.rgba-black-strong,.rgba-black-strong:after{background-color:rgba(0,0,0,0.7)}
 
+.blue-gradient {
+    background: linear-gradient(40deg,#45cafc,#303f9f) !important;
+}
 
 .mdb-color.lighten-4{background-color:#b1bace !important}
 .mdb-color.lighten-3{background-color:#929fba !important}

@@ -1,6 +1,6 @@
 import { OnInit, Component } from '@angular/core';
 import { Project, BuildInfo, JoinCorp } from 'src/app/shared/schemas/project';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, Resolve } from '@angular/router';
 import { FunctionPageBar } from 'src/app/shared/function-items/function-items';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { DataDefine, FireCheck } from './schemas';
@@ -11,10 +11,15 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatSelectChange } from '@angular/material/select';
 import { Task } from 'src/app/business/schemas';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { ToastrService } from 'ngx-toastr';
+import { CamundaRestService } from 'src/app/business/camunda-rest.service';
+import { TaskRouterService } from 'src/app/business/tasks/task-router.service';
 
 
 const EXTRA_SMALL_WIDTH_BREAKPOINT = 768;
 const SMALL_WIDTH_BREAKPOINT = 992;
+
 
 @Component({
   selector:"fire-check-created",
@@ -23,9 +28,10 @@ const SMALL_WIDTH_BREAKPOINT = 992;
 export class FireCheckCreatedComponent implements OnInit{
 
   check: FireCheck;
-  tasks: Task;
+  tasks: Task[];
 
-  constructor(private _route: ActivatedRoute){}
+  constructor(private _route: ActivatedRoute,
+    private _taskRouter: TaskRouterService){}
 
   ngOnInit(): void {
     this._route.data.subscribe(data => {
@@ -33,6 +39,11 @@ export class FireCheckCreatedComponent implements OnInit{
       this.tasks = data.tasks;
     })
   }
+
+  viewTask(i:number){
+    this._taskRouter.view(this.tasks[i]);
+  }
+  
 
 }
 
@@ -61,7 +72,10 @@ export class FireCheckCreateComponent implements OnInit{
     public dataDefine: DataDefine,
     private _fb: FormBuilder,
     private _route: ActivatedRoute,
+    private _router: Router,
     private _fireCheckService: FireCheckService,
+    private _uiLoader: NgxUiLoaderService,
+    private _toastr: ToastrService,
     breakpoints: BreakpointObserver,
     _func: FunctionPageBar) {
       _func.loadTitle('建设工程消防验收');
@@ -84,8 +98,17 @@ export class FireCheckCreateComponent implements OnInit{
 
 
   onSubmit(){
-    console.log(this.businessForm.value);
-    this._fireCheckService.create(this.businessForm.value).subscribe(val => (console.log(val)));
+    this._uiLoader.start();
+    this._fireCheckService.create(this.businessForm.value).subscribe(
+      val => {
+        this._router.navigate(['../../','created',val.id],{relativeTo: this._route});
+      },
+      err => {
+        this._uiLoader.stop();
+        this._toastr.error("请联系管理员或请稍后再试！","存储数据失败");
+        console.log(err);
+      }
+      );
   }
 
   
