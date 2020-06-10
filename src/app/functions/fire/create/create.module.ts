@@ -26,8 +26,9 @@ import { FireCheckCreateComponent, FireCheckCreatedComponent } from './create.co
 import { ProjectResolver } from 'src/app/shared/resolver/project.resolver';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { BusinessKeyTasksResolver } from 'src/app/business/tasks/business-key-tasks.resolver';
-import { FireCheckResolver } from './fire-check.resolver';
-import { FireCheckSchemasModule } from './schemas';
+import { FireCheckResolver } from '../fire-check.resolver';
+import { FireCheckSchemasModule } from '../schemas';
+import { FireCheckSearchComponent } from '../search.module';
 
 
 

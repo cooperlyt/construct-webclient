@@ -3,8 +3,8 @@ import { Project, BuildInfo, JoinCorp } from 'src/app/shared/schemas/project';
 import { ActivatedRoute, Router, Resolve } from '@angular/router';
 import { FunctionPageBar } from 'src/app/shared/function-items/function-items';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { DataDefine, FireCheck } from './schemas';
-import { FireCheckService } from './fire-check.service';
+import { DataDefine, FireCheck } from '../schemas';
+import { FireCheckService } from '../fire-check.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
@@ -15,6 +15,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ToastrService } from 'ngx-toastr';
 import { CamundaRestService } from 'src/app/business/camunda-rest.service';
 import { TaskRouterService } from 'src/app/business/tasks/task-router.service';
+import { environment } from 'src/environments/environment';
 
 
 const EXTRA_SMALL_WIDTH_BREAKPOINT = 768;
@@ -29,6 +30,8 @@ export class FireCheckCreatedComponent implements OnInit{
 
   check: FireCheck;
   tasks: Task[];
+
+  reportUrl = `${environment.fileUrl}/pdf/`;
 
   constructor(private _route: ActivatedRoute,
     private _taskRouter: TaskRouterService){}
@@ -99,7 +102,7 @@ export class FireCheckCreateComponent implements OnInit{
 
   onSubmit(){
     this._uiLoader.start();
-    this._fireCheckService.create(this.businessForm.value).subscribe(
+    this._fireCheckService.create({info: this.businessForm.value}).subscribe(
       val => {
         this._router.navigate(['../../','created',val.id],{relativeTo: this._route});
       },
@@ -142,24 +145,25 @@ export class FireCheckCreateComponent implements OnInit{
       this.project = data.project;
       this.builds = this.project.builds.map(build => build.info);
 
-
       this.businessForm = this._fb.group({
-        corp:[,Validators.required],
-        corpProperty:[],
-        property:[],
-        projectCode: [this.project.code],
-        contracts:[, Validators.maxLength(64)],
-        tel:[,Validators.maxLength(16)],
+          corp:[,Validators.required],
+          corpProperty:[],
+          property:[],
+          projectCode: [this.project.code],
+          contracts:[, Validators.maxLength(64)],
+          tel:[,Validators.maxLength(16)],
+          special:[,Validators.required],
+          applyFile:[,Validators.maxLength(32)],
+          fireFile:[,Validators.maxLength(32)],
+          constructFile:[,Validators.maxLength(32)],
+  
+          part:[],
+          memo:[,Validators.maxLength(1024)],
+          oldUse:[,Validators.maxLength(16)],
+          builds:this._fb.array([])
 
-        applyFile:[,Validators.maxLength(32)],
-        fireFile:[,Validators.maxLength(32)],
-        constructFile:[,Validators.maxLength(32)],
+      });
 
-        part:[],
-        memo:[,Validators.maxLength(1024)],
-        oldUse:[,Validators.maxLength(16)],
-        builds:this._fb.array([])
-      })
 
       this.builds = this.project.builds.map(build => build.info);
       this.project.builds.forEach(build => {

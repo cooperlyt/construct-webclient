@@ -5,7 +5,7 @@ import { Task, Variables } from '../schemas';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Component({selector:'dialog-task-complete', templateUrl:'./task-complete-dialog.html'})
 export class TaskCompleteDialog{
@@ -44,6 +44,13 @@ export class TaskRouterService {
 
   constructor(private _service: CamundaRestService,private _router: Router,private dialog: MatDialog ){}
 
+  private taskChange$ = new Subject<boolean>();
+
+
+  connectTaskChange(): Observable<boolean>{
+    return this.taskChange$.asObservable();
+  }
+
   view(task:Task){
     this._service.getTaskExtensions(task.processDefinitionId,task.taskDefinitionKey,TASK_VIEW_DEFINE_KEY).subscribe(val => {
       console.log('task route to ' + val + '->' + TASK_VIEW_PATH[val]);
@@ -73,7 +80,9 @@ export class TaskRouterService {
             console.log(variables)
             this._service.postCompleteTask(result.id, variables).subscribe(() =>{
                 if (completePage){
-                  this._router.navigate(['task',task.id]);
+                  this._router.navigate([completePage]);
+                }else{
+                  this.taskChange$.next(true);
                 }
             })
           }
@@ -86,7 +95,9 @@ export class TaskRouterService {
           if (id){
             this._service.postCompleteTask(id, !properties.reapply ? {variables:{}} : {variables: {[properties.reapply]:{value: false}}}).subscribe(() =>{
                 if (completePage){
-                  this._router.navigate(['task',task.id]);
+                  this._router.navigate([completePage]);
+                }else{
+                  this.taskChange$.next(true);
                 }
             })
           }

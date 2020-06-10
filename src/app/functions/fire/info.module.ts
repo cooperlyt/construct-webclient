@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { FireTaskViewComponent, FireCheckProjectInfoComponent, FireCheckDocumentComponent, FireTaskCompletedComponent } from './task-view.component';
+import { NgModule, Component, OnInit, Input } from '@angular/core';
+import { FireCheck, FireCheckSchemasModule } from './schemas';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,38 +17,31 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
-import { SharedDataModule } from 'src/app/shared/schemas/data.module';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { FireCheckSchemasModule } from '../schemas';
+import { SharedDataModule } from 'src/app/shared/schemas/data.module';
 import { BusinessDocumentModule } from 'src/app/business/document/document-files.component';
-import { BusinessKeyTasksResolver } from 'src/app/business/tasks/business-key-tasks.resolver';
-import { FireCheckResolver } from '../fire-check.resolver';
-import { FireCheckInfoModule } from '../info.module';
+import { faUserTie, faPhone } from '@fortawesome/free-solid-svg-icons';
+
+@Component({selector:'fire-check-info',templateUrl:'./fire-check-info.html'})
+export class FireCheckInfoComponent{
+
+  faUserTie = faUserTie;
+  faPhone = faPhone;
+  
+  @Input()
+  fireCheck: FireCheck;
 
 
-const routes: Routes =[
-  {path : 'completed/:id' , component: FireTaskCompletedComponent, resolve:{tasks: BusinessKeyTasksResolver, check: FireCheckResolver}},
-  {path: ':tid' , component: FireTaskViewComponent, children:[
-    {path:'', component: FireCheckProjectInfoComponent},
-    {path:'document', component: FireCheckDocumentComponent}
-  ]},
-]
-
+}
 
 @NgModule({
-  declarations:[
-    FireTaskViewComponent, 
-    FireCheckProjectInfoComponent,
-    FireCheckDocumentComponent,
-    FireTaskCompletedComponent
-  ],
+  declarations:[FireCheckInfoComponent],
   imports:[
-    RouterModule.forChild(routes),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -76,8 +68,12 @@ const routes: Routes =[
     MatExpansionModule,
     SharedDataModule,
     FireCheckSchemasModule,
-    BusinessDocumentModule,
-    FireCheckInfoModule
+    BusinessDocumentModule
+  ],
+  exports:[
+    FireCheckInfoComponent
   ]
 })
-export class FireTaskModule {}
+export class FireCheckInfoModule{
+
+}

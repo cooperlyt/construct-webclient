@@ -23,7 +23,7 @@ export class TasksComponent implements OnInit {
     private _authService: AuthenticationService,
     private _route: ActivatedRoute, _func: FunctionPageBar){
     _func.loadSearch({title:'业务办理',search: true}).subscribe(key => this.doSearch(key)); 
-
+    _taskRoute.connectTaskChange().subscribe(() => this.refreshTasks());
   }
 
   ngOnInit(): void {

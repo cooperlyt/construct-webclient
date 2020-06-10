@@ -30,6 +30,44 @@
       </mat-form-field>
 
       <mat-form-field class="col-sm-4">
+        <mat-label>类型</mat-label>
+        <mat-select formControlName="special" required>
+          <mat-option>---</mat-option>
+          
+          <mat-option  [value]="false">普通工程-备案</mat-option>
+          <mat-option  [value]="true">特殊工程-验收</mat-option>
+        </mat-select>
+        <mat-error *ngIf="businessForm.get('special').hasError('required')">
+            请选择类型
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-sm-4">
+        <mat-label>消防设计备案凭证文号</mat-label>
+        <input matInput formControlName="fireFile">
+        <mat-error *ngIf="businessForm.get('fireFile').hasError('maxlength')">
+          最大长度不能超过<strong>32</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-sm-4">
+        <mat-label>建筑工程施工许可证明文件编号</mat-label>
+        <input matInput formControlName="constructFile">
+        <mat-error *ngIf="businessForm.get('constructFile').hasError('maxlength')">
+          最大长度不能超过<strong>32</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-sm-4">
+        <mat-label>原有用途</mat-label>
+        <input matInput formControlName="oldUse">
+            
+        <mat-error *ngIf="businessForm.get('oldUse').hasError('maxlength')">
+          最大长度不能超过<strong>16</strong>
+      </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-sm-4">
         <mat-label>使用性质</mat-label>
         <mat-select formControlName="property">
           <mat-option>---</mat-option>
@@ -42,14 +80,7 @@
       </mat-form-field>
 
 
-      <mat-form-field class="col-sm-4">
-        <mat-label>原有用途</mat-label>
-        <input matInput formControlName="oldUse">
-            
-        <mat-error *ngIf="businessForm.get('oldUse').hasError('maxlength')">
-          最大长度不能超过<strong>16</strong>
-      </mat-error>
-      </mat-form-field>
+
 
 
         <mat-form-field class="col-sm-4">
@@ -72,40 +103,27 @@
       </div>
 
 
-      <div class="row">
 
-      <mat-form-field class="col-sm-4">
+
+      <!-- <mat-form-field class="col-sm-4">
         <mat-label>受理/备案凭证文号</mat-label>
         <input matInput formControlName="applyFile">
         <mat-error *ngIf="businessForm.get('applyFile').hasError('maxlength')">
           最大长度不能超过<strong>32</strong>
         </mat-error>
-      </mat-form-field>
-
-
-        <mat-form-field class="col-sm-4">
-          <mat-label>消防设计备案凭证文号</mat-label>
-          <input matInput formControlName="fireFile">
-          <mat-error *ngIf="businessForm.get('fireFile').hasError('maxlength')">
-            最大长度不能超过<strong>32</strong>
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field class="col-sm-4">
-          <mat-label>建筑工程施工许可证明文件编号</mat-label>
-          <input matInput formControlName="constructFile">
-          <mat-error *ngIf="businessForm.get('constructFile').hasError('maxlength')">
-            最大长度不能超过<strong>32</strong>
-          </mat-error>
-        </mat-form-field>
-
-      </div>
+      </mat-form-field> -->
 
 
 
 
-      <h3 class="docs-api-h3">装修工程</h3>
+
+
+
+
+
+      <h3 *ngIf="project.info.modifyFit" class="docs-api-h3">装修工程</h3>
       <div *ngIf="project.info.modifyFit" formGroupName="fit" class="row">
+  
         <mat-form-field class="col-sm-4">
           <mat-label>部位</mat-label>
           <mat-select formControlName="part" required>
@@ -127,7 +145,7 @@
       </div>
 
 
-      <h3 class="docs-api-h3">建筑保温</h3>
+      <h3 *ngIf="project.info.modifyWarm" class="docs-api-h3">建筑保温</h3>
       <div *ngIf="project.info.modifyWarm" formGroupName="warm" class="row">
         <mat-form-field class="col-sm-4">
           <mat-label>材料类别</mat-label>

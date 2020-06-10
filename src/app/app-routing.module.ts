@@ -55,7 +55,11 @@ const routes: Routes = [
               },
               {
                 path: 'fire',
-                loadChildren: () => import('./functions/fire/fire.module').then(m => m.FireModule)
+                loadChildren: () => import('./functions/fire/create/create.module').then(m => m.FireModule)
+              },
+              {
+                path: 'fire-business',
+                loadChildren: () => import('./functions/fire/search.module').then(m => m.FireCheckModule)
               }
             ]
           }

@@ -67,7 +67,7 @@ export class FireTaskDataService implements OnDestroy{
   }
 
   completeTask():void{
-    this.taskRouteService.complete(this.task.task);
+    this.taskRouteService.complete(this.task.task, `/task/fire/completed/${this.fireCheck.id}` );
   }
 
 

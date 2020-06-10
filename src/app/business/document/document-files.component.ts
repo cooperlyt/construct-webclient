@@ -250,6 +250,7 @@ export class BusinessDocumentFilesComponent implements OnInit{
     private dragulaService: DragulaService,
     private _toastr: ToastrService,
     private sanitizer: DomSanitizer){
+      
       this.uploadSubject.subscribe(file => {
         //this.uploading = this.uploading.filter(item => item.fid !== file.file.id);
         
@@ -261,19 +262,6 @@ export class BusinessDocumentFilesComponent implements OnInit{
           }
         })
       })
-
-
-    this.subs.add(dragulaService.dropModel("FILE_LIST")
-      .subscribe(({sourceModel, targetModel, item}) => {
-        const index = targetModel.indexOf(item);
-        _camundaService.sortFile(this.taskId,item.id, (index <= 0) ? null : targetModel[index - 1].id)
-        .pipe(catchError(err => { 
-          _toastr.error('排序发生错误!');  
-          this.ngOnInit();
-          return of(null); }))
-        .subscribe();
-      })
-    );
 
   }
 
@@ -297,6 +285,19 @@ export class BusinessDocumentFilesComponent implements OnInit{
     this._camundaService.getBusinessDocuments(this.businessId).subscribe(
       data => { this.fileCategorys = data.map(doc => new FileCategory(doc)); this.loadding = false;}
     )
+    if (this.taskId){
+      this.subs.add(this.dragulaService.dropModel("FILE_LIST")
+      .subscribe(({sourceModel, targetModel, item}) => {
+        const index = targetModel.indexOf(item);
+        this._camundaService.sortFile(this.taskId,item.id, (index <= 0) ? null : targetModel[index - 1].id)
+        .pipe(catchError(err => { 
+          this._toastr.error('排序发生错误!');  
+          this.ngOnInit();
+          return of(null); }))
+        .subscribe();
+      })
+    );
+    }
   }
 
 

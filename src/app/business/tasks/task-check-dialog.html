@@ -1,6 +1,6 @@
 <h1 mat-dialog-title ><strong>{{task.name}}</strong> - 完成</h1>
 <div mat-dialog-content>
-  <p>{{task.description}}</p>
+  <div [innerHTML]="task.description | safeHtml"></div>
 
   <mat-form-field>
     <label>审核意见</label>

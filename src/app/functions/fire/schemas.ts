@@ -60,8 +60,8 @@ enum FitPart{
 }
 
 enum ApplyType{
-  First="验收申请",
-  Review="复查申请"
+  First="申请",
+  Review="复查"
 }
 
 export enum WarmType{
@@ -96,6 +96,7 @@ export declare class FireCheckProject{
   modifyFit:boolean;
   modifyWarm:boolean;
   modifyUse:boolean;
+  corpSummary: any;
  
   corps: FireCheckProjectCorp[];
 }
@@ -143,12 +144,26 @@ export declare class CheckBuild{
 
 }
 
+export declare class Report{
+  id: string;
+  name: string;
+}
+
 export declare class FireCheck{
   id:number;
   status: string;
-  projectCode: number;
   applyTime: Date;
   regTime: Date;
+  type: string;
+  memo: string;
+  info: FireCheckInfo;
+  reports: Report[];
+}
+
+export declare class FireCheckInfo{
+  id:number;
+  special: boolean;
+  projectCode: number;
   applyFile: string;
   fireFile: string;
   contracts: string;
@@ -159,9 +174,7 @@ export declare class FireCheck{
   source: string;
   inRandom: boolean;
   property:string;
-  type: string;
-  part: boolean;
-  memo: string;
+  part: boolean; 
   conclusion: string;
   oldUse: string;
   project: FireCheckProject;
