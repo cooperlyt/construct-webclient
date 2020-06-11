@@ -44,7 +44,7 @@
 
           <div class="mt-n1">
               <div class="f4 text-normal">
-                  <a class="v-align-middle"  [routerLink]="'details/' + item.id + '/info'">
+                  <a class="v-align-middle"  [routerLink]="item.id ">
                     {{item.id}} / <span >{{item.info.project.name}}</span> 
                   </a>
        
@@ -87,8 +87,8 @@
 <div class="px-2 context-view-master" *ngIf="checks.empty">
   <div class="blankslate flex-auto" >
       <span octicon="search" class="blankslate-icon" width="32"></span>
-      <h3>没有找到符合条件的参建单位。</h3>
-      你可以 <a routerLink="edit"> 创建 </a> 参建单位
+      <h3>没有找到符合条件的业务。</h3>
+  
   </div>
 </div>
 

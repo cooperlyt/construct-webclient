@@ -33,6 +33,7 @@ export class FireCheckService{
     if (dir){
       params = params.append('dir',dir);
     }
+    console.log(params);
     return this._http.get<PageResult<FireCheck>>(`${environment.apiUrl}/construct-fire/manager/search`,{params: params});
   }
 }

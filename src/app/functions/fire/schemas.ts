@@ -17,7 +17,7 @@ const FireRatingLevel:{[k:number]:string} = {
 
 
  enum CheckStatus{
-  Prepare = "准备中",
+  // Prepare = "准备中",
   Running = "运行中",
   Qualified = "验收合格",
   Unqualified = "验收不合格",
@@ -168,6 +168,10 @@ export declare class FireCheckInfo{
   fireFile: string;
   contracts: string;
   constructFile: string;
+  constructFileDate: Date;
+  designFile:string
+  designFileDate:Date;
+
   tel: string;
   corp: number;
   corpProperty: string;

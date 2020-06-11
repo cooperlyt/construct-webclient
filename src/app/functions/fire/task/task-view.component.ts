@@ -43,7 +43,7 @@ export class FireTaskViewComponent implements OnInit{
 
   constructor(public dataService: FireTaskDataService,
     private _route: ActivatedRoute,_func: FunctionPageBar){
-      this._route.params.subscribe(params => dataService.load(params['tid']).subscribe(complete => {if (complete) _func.loadTitle(dataService.task.processDefine.name + ' / ' + dataService.task.task.name)}));
+      this._route.params.subscribe(params => dataService.load(params['tid']).subscribe(complete => {if (complete) _func.loadTitle(`建设工程消防${dataService.fireCheck.info.special ? '验收' : '备案'} / ${dataService.task.task.name}`)}));
   }
 
 

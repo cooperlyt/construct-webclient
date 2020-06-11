@@ -42,6 +42,48 @@
         </mat-error>
       </mat-form-field>
 
+      </div>
+
+      <div class="row">
+      
+        <mat-form-field class="col-sm-8">
+          <mat-label>施工图审查机构出具的综合审查合格书、技术咨询报告等审查意见文号</mat-label>
+          <input matInput formControlName="designFile">
+          <mat-error *ngIf="businessForm.get('designFile').hasError('maxlength')">
+            最大长度不能超过<strong>32</strong>
+          </mat-error>
+        </mat-form-field>
+        
+  
+        <mat-form-field class="col-sm-4">
+          <mat-label>审核日期</mat-label>
+          <input matInput  [matDatepicker]="designFileDatepicker" formControlName="designFileDate">
+          <mat-datepicker-toggle matSuffix [for]="designFileDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker  #designFileDatepicker></mat-datepicker>
+        </mat-form-field>  
+      </div>
+      
+      <div class="row">
+        <mat-form-field class="col-sm-8">
+          <mat-label>建筑工程施工许可证明文件编号</mat-label>
+          <input matInput formControlName="constructFile">
+          <mat-error *ngIf="businessForm.get('constructFile').hasError('maxlength')">
+            最大长度不能超过<strong>32</strong>
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="col-sm-4">
+          <mat-label>审核日期</mat-label>
+          <input matInput  [matDatepicker]="constructFileDatepicker" formControlName="constructFileDate">
+          <mat-datepicker-toggle matSuffix [for]="constructFileDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker  #constructFileDatepicker></mat-datepicker>
+        </mat-form-field>  
+      </div>
+
+
+
+      <div class="row">
+
       <mat-form-field class="col-sm-4">
         <mat-label>消防设计备案凭证文号</mat-label>
         <input matInput formControlName="fireFile">
@@ -50,22 +92,6 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="col-sm-4">
-        <mat-label>建筑工程施工许可证明文件编号</mat-label>
-        <input matInput formControlName="constructFile">
-        <mat-error *ngIf="businessForm.get('constructFile').hasError('maxlength')">
-          最大长度不能超过<strong>32</strong>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="col-sm-4">
-        <mat-label>原有用途</mat-label>
-        <input matInput formControlName="oldUse">
-            
-        <mat-error *ngIf="businessForm.get('oldUse').hasError('maxlength')">
-          最大长度不能超过<strong>16</strong>
-      </mat-error>
-      </mat-form-field>
 
       <mat-form-field class="col-sm-4">
         <mat-label>使用性质</mat-label>
@@ -78,6 +104,17 @@
             请选择使用性质
         </mat-error> -->
       </mat-form-field>
+
+
+      <mat-form-field class="col-sm-4">
+        <mat-label>原有用途</mat-label>
+        <input matInput formControlName="oldUse">
+            
+        <mat-error *ngIf="businessForm.get('oldUse').hasError('maxlength')">
+          最大长度不能超过<strong>16</strong>
+      </mat-error>
+      </mat-form-field>
+
 
 
 
@@ -101,6 +138,7 @@
         </mat-form-field>
 
       </div>
+
 
 
 
@@ -269,6 +307,15 @@
         <div class="col-sm-12">
           <table style="width: 100%;" mat-table [dataSource]="builds" formArrayName="builds">
 
+
+            <ng-container matColumnDef="selected">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                <mat-checkbox  formControlName="selected"></mat-checkbox>
+              </td>
+            </ng-container>
+
+
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>名称</th>
               <td mat-cell *matCellDef="let element;">
@@ -304,7 +351,7 @@
             <ng-container matColumnDef="rating">
               <th mat-header-cell *matHeaderCellDef>耐火等级*</th>
               <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
-                <mat-form-field style="width: 70px;">
+                <mat-form-field *ngIf="buildForm.controls[i].value.selected" style="width: 70px;">
                   <mat-select formControlName="rating" required>
                     <mat-option>---</mat-option>
                     <mat-option *ngFor="let rating of dataDefine.ratingLevels" [value]="rating.key">{{rating.label}}</mat-option>
@@ -317,7 +364,7 @@
             <ng-container matColumnDef="danger">
               <th mat-header-cell *matHeaderCellDef>火灾危险性*</th>
               <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
-                <mat-form-field style="width: 70px;">
+                <mat-form-field *ngIf="buildForm.controls[i].value.selected" style="width: 70px;">
                   <mat-select formControlName="danger" required>
                     <mat-option>---</mat-option>
                     <mat-option *ngFor="let danger of dataDefine.danerLevels" [value]="danger.key">{{danger.label}}</mat-option>

@@ -21,7 +21,10 @@
             <strong>消防设计备案凭证文号:</strong> {{fireCheck.info.fireFile}}
           </li>
           <li>
-            <strong>建筑工程施工许可证明文件编号:</strong> {{fireCheck.info.constructFile}}
+            <strong style="font-size: 12px;">建筑工程施工许可证明文件编号:</strong> <span *ngIf="!fireCheck.info.constructFile"> - </span> {{fireCheck.info.constructFile}} <strong *ngIf="fireCheck.info.constructFileDate">审批日期</strong> {{fireCheck.info.constructFileDate | date:'yyyy年MM月dd日'}}
+          </li>
+          <li>
+            <strong style="font-size: 8px;">施工图审查机构出具的综合审查合格书、技术咨询报告等审查意见文号</strong>  <span *ngIf="!fireCheck.info.designFile"> - </span>  {{fireCheck.info.designFile}} <strong *ngIf="fireCheck.info.designFileDate">审批日期</strong>  {{fireCheck.info.designFileDate | date:'yyyy年MM月dd日'}}
           </li>
           <li>
             <strong>受理/备案凭证文号:</strong> {{fireCheck.info.applyFile}}
