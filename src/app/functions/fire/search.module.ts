@@ -30,6 +30,7 @@ import { SearchFunctionBase, FunctionPageBar } from 'src/app/shared/function-ite
 import { FireCheckResolver } from './fire-check.resolver';
 import { FireCheckInfoModule } from './info.module';
 import { BusinessDocumentModule } from 'src/app/business/document/document-files.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class FireCheckSearchResolver implements Resolve<PageResult<FireCheck>>{
@@ -45,7 +46,7 @@ export class FireCheckSearchResolver implements Resolve<PageResult<FireCheck>>{
     
 }
 
-@Component({templateUrl:'./search.html'})
+@Component({templateUrl:'./search.html', styleUrls:['./search.scss']})
 export class FireCheckSearchComponent extends SearchFunctionBase implements OnInit{
 
 
@@ -68,6 +69,7 @@ export class FireCheckSearchComponent extends SearchFunctionBase implements OnIn
 
   ngOnInit(): void {
     this._route.data.subscribe(data => this.checks = data.checks)
+    this._route.queryParams.subscribe(params => this.status = params['status'])
   }
 
   onStatusChange(status?: string){
@@ -77,7 +79,6 @@ export class FireCheckSearchComponent extends SearchFunctionBase implements OnIn
     }else{
       this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,status: status}, queryParamsHandling: 'merge'})
     }
-
 
   }
 
@@ -100,6 +101,8 @@ export class FireCheckDataService {
 @Component({templateUrl: './details.html',providers:[FireCheckDataService]})
 export class FireCheckDetailsComponent implements OnInit{
 
+  reportUrl = `${environment.fileUrl}/pdf/`;
+  
   constructor(public dataService: FireCheckDataService,
     private route: ActivatedRoute){}
 

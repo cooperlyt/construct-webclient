@@ -17,8 +17,8 @@
           
         </span> -->
 
-        <span class="Label Label--outline v-align-middle ">{{dataService.fireCheck?.info.inRandom ? '抽中' : '未抽中'}}</span>
-        
+
+        <span style="margin-left: 5px;" [class.badge-info]="dataService.fireCheck?.status === 'Running'" [class.badge-danger]="dataService.fireCheck?.status === 'Unqualified'" [class.badge-success]="dataService.fireCheck?.status === 'Qualified'" [class.badge-warning]="dataService.fireCheck?.status === 'NoAccept'" [class.badge-default]="dataService.fireCheck?.status === 'Abort'" class="badge badge-info badge-pill">{{dataService.fireCheck?.status | fireCheckStatus}}</span> 
       </h1>
     </div>
     <ul class="pagehead-actions flex-shrink-0 d-flex flex-justify-space-around flex-md-justify-end" >

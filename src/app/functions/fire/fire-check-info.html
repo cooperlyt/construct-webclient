@@ -34,6 +34,10 @@
             <strong>情况说明:</strong> {{fireCheck.memo}}
           </li>
 
+          <li>
+            <strong>检查意见</strong> {{fireCheck.opinion}}
+          </li>
+
           <li *ngIf="fireCheck.status == 'Unqualified' || fireCheck.status == 'Qualified'">
             <strong>验收结论:</strong> {{fireCheck.info.conclusion}}
           </li>
@@ -146,7 +150,7 @@
     <mat-card *ngIf="fireCheck">
       <mat-card-header>
         <mat-card-title >
-          {{fireCheck.info.special ? '验收' : '备案'}}{{fireCheck.type | fireApplyTypelabel}}
+          {{fireCheck.info.special ? '验收' : '备案'}}<span *ngIf="!fireCheck.info.special">{{fireCheck.type | fireApplyTypelabel}} </span> <span *ngIf="!fireCheck.info.special" class="Label Label--outline v-align-middle ">{{fireCheck?.info.inRandom ? '抽中' : '未抽中'}}</span>
         </mat-card-title>
         <mat-card-subtitle>
           {{fireCheck.id}}

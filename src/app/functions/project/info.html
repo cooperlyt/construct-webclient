@@ -86,7 +86,7 @@
           {{project.info.name}}
         </mat-card-title>
         <mat-card-subtitle [class.line-through]="!project.enable">
-          {{project.regTime | date:'yyyy年MM月dd日'}} / {{project.code}}
+           {{project.code}}
         </mat-card-subtitle>
       </mat-card-header>
 
@@ -118,6 +118,9 @@
 
           <li>
             <strong>招标情况</strong> {{project.info.tender}}
+          </li>
+          <li>
+            <strong>备案时间</strong> {{project.regTime | date:'yyyy年MM月dd日'}}
           </li>
           <li>
             <strong>地址:</strong>{{project.info.address}}

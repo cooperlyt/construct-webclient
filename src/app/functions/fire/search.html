@@ -45,29 +45,35 @@
           <div class="mt-n1">
               <div class="f4 text-normal">
                   <a class="v-align-middle"  [routerLink]="item.id ">
-                    {{item.id}} / <span >{{item.info.project.name}}</span> 
+                    {{item.id}} / <span >{{item.info.project.name}} - {{item.info.special ? '验收' : (item.type === 'First') ? '备案' : '备案复查'}}</span><span *ngIf="!item.info.special && (item.type === 'First')" >{{item.info.inRandom ? ' - 抽中' : ' - 未抽中'}}</span>
+                    <span style="margin-left: 5px;" [class.badge-info]="item.status === 'Running'" [class.badge-danger]="item.status === 'Unqualified'" [class.badge-success]="item.status === 'Qualified'" [class.badge-warning]="item.status === 'NoAccept'" [class.badge-default]="item.status === 'Abort'" class="badge badge-info badge-pill">{{item.status | fireCheckStatus}}</span>     
                   </a>
        
               </div>
               <p class="mb-1">
-                  {{item.info.project.address}}  
+                {{item.info.part ? '部分验收' :  ''}}    {{item.info.property | fireUseProperty}}   {{item.info.project.address}}
               </p>
               <div>
 
-                  <div>
-                      <!-- <mat-chip-list>
-                          <mat-chip *ngFor="let type of dataUtil.splitTypeLabel(item.types)" color="primary" selected>{{type}}</mat-chip>
-                      </mat-chip-list> -->
-                 
-                      {{item.info.project.corpSummary | json}}
-                  </div>
-                  <!-- <div class="d-flex flex-wrap text-small text-gray">
-                      <div class="mr-3">
-                
-                      </div>
-                  </div> -->
-              </div>
 
+                <div class="corp-badges">
+
+                    <a [routerLink]="'/function/corp/details/' + corp.code + '/info'" *ngFor="let corp of item.info.project.corpSummary" class="badge" [class.badge-primary]="corp.property == 'Developer'" [class.badge-default]="corp.property != 'Developer'">
+                        {{corp.property | joinTypeLabel}} - {{corp.name}}
+                    </a>
+                    
+               
+                </div>
+                <div class="d-flex flex-wrap text-small text-gray">
+                    <div class="mr-3">
+                        申请时间:{{item.applyTime | date:'yyyy年MM月dd日'}}
+                    </div>
+                    <div class="mr-3">
+                        审批时间:{{item.regTime | date:'yyyy年MM月dd日'}}
+                    </div>
+                </div> 
+      
+              </div>
           </div>
       </li>
   </ul>
@@ -99,7 +105,7 @@
           <li *ngFor="let s of dataDefine.checkStatus" >
               <a (click)="onStatusChange(s.key)"  class="filter-item" [class.selected]="s.key == status">
                   <span *ngIf="s.key == status" octicon="x" class="float-right"></span>
-                  {{s.label}}
+                  {{s.label}} 
               </a>
           </li>
       </ul>     

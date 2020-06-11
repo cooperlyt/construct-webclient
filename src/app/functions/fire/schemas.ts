@@ -156,6 +156,7 @@ export declare class FireCheck{
   regTime: Date;
   type: string;
   memo: string;
+  opinion: string;
   info: FireCheckInfo;
   reports: Report[];
 }
