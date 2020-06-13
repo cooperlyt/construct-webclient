@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable, Inject } from '@angular/core';
 import { PageFunctionBase, FunctionPageBar } from 'src/app/shared/function-items/function-items';
 import { CorpService } from '../../shared/remote-services/corp.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Corp } from 'src/app/shared/schemas/corp';
+import { ActivatedRoute, Router, Resolve } from '@angular/router';
+import { Corp, CorpEmployee } from 'src/app/shared/schemas/corp';
 import {DataUtilsService } from 'src/app/shared/schemas/define';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
-import { catchError } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import { empty } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 
 @Component({
@@ -89,6 +90,56 @@ export class CorpProjectsComponent implements OnInit{
     }
 }
 
+@Component({
+  selector: 'corp-employee',
+  templateUrl: './employee.html'
+})
+export class CorpEmployeeComponent implements OnInit{
+
+  constructor(private _route: ActivatedRoute, public dialog: MatDialog,
+    private _toastr: ToastrService,
+    private corpServices: CorpService){}
+
+  employees: CorpEmployee[];
+  corpId: number;
+
+  ngOnInit(): void {
+    this._route.data.subscribe(data => this.employees = data.employees);
+    this._route.parent.params.subscribe(params => this.corpId = params['cid']);
+  }
+
+  resetPassword(username: string){
+    this.dialog.open(ConfirmDialogComponent,{width:'400px',role:'alertdialog',data:{title:'重置密码', description: '密码将重置为电话号码!' , result: username }})
+    .afterClosed().subscribe(result => {
+      if (result){
+        this.corpServices.resetEmployeePassword(result).subscribe(() => {
+          this._toastr.info("密码已重置为电话号码!","密码已重置");
+        })
+      }
+     
+    });
+
+  }
+
+  newEmployee(){
+    this.dialog.open(CorpEmployeeEditorDialogComponent,{
+      width: '600px',
+      disableClose: true,
+      data: {}
+    }).afterClosed().subscribe(result => {
+      if (result){
+        console.log(result);
+        this.corpServices.addEmployee(this.corpId,result).pipe(
+          switchMap(() => this.corpServices.listCorpEmployee(this.corpId))
+        )
+        .subscribe(result => this.employees = result)
+ 
+      }
+    })
+  }
+
+}
+
 
 @Component({
     selector: 'corp-details',
@@ -103,4 +154,31 @@ export class CorpDetailsComponent extends PageFunctionBase{
     }
   
 
+}
+
+@Component({
+  selector: 'corp-employee-edit-dialog',
+  templateUrl: './employee-editor-dialog.html'
+})
+export class CorpEmployeeEditorDialogComponent {
+
+  employeeForm: FormGroup;
+
+  constructor(public dialogRef: MatDialogRef<ConfirmDialogComponent>,
+    private _fb: FormBuilder,public dataUtils: DataUtilsService,
+    @Inject(MAT_DIALOG_DATA) public data: CorpEmployee) {
+      this.employeeForm = this._fb.group({
+        name:[data.name, [Validators.required,Validators.maxLength(32)]],
+        phone:[data.phone, [Validators.required, Validators.maxLength(16)]],
+        idType:[data.idType, Validators.required],
+        idNumber:[data.idNumber, Validators.maxLength(32)],
+      });
+  }
+
+  onCancelClick(): void {
+    this.dialogRef.close();
+  }
+
+
+  
 }

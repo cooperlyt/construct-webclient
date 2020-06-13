@@ -51,3 +51,15 @@ export declare class CorpBusiness{
     regs: BusinessReg[];
     code: string;
 }
+
+export declare class CorpEmployee{
+    id: number;
+    valid: boolean;
+    username: string;
+    name: string;
+    phone: string;
+    idType: string;
+    idNumber: string;
+    manager: boolean;
+    
+}

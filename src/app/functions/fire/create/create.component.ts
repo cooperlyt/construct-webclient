@@ -212,25 +212,26 @@ export class FireCheckCreateComponent implements OnInit{
         buildItem.valueChanges
         .pipe(startWith(null), pairwise())
         .subscribe(([prev, next]: [any, any])=> {
-          if (!prev || (prev.selected !== next.selected)){
-
-            let control = this.buildForm.controls.find(c => c.get('code').value === next.code);
+          if (this.businessForm.get("part").value){
+            if (!prev || (prev.selected !== next.selected)){
+              let control = this.buildForm.controls.find(c => c.get('code').value === next.code);
+              if (next.selected){
           
-            if (next.selected){
-        
-              control.get("rating").setValidators(Validators.required);
-              control.get("rating").updateValueAndValidity();
-              control.get("danger").setValidators(Validators.required);
-              control.get("danger").updateValueAndValidity();
-              console.log('add validators');
-            }else{
-              control.get("rating").clearValidators();
-              control.get("rating").updateValueAndValidity();
-              control.get("danger").clearValidators();
-              control.get("danger").updateValueAndValidity();
-              console.log('clear validators');
+                control.get("rating").setValidators(Validators.required);
+                control.get("rating").updateValueAndValidity();
+                control.get("danger").setValidators(Validators.required);
+                control.get("danger").updateValueAndValidity();
+                console.log('add validators');
+              }else{
+                control.get("rating").clearValidators();
+                control.get("rating").updateValueAndValidity();
+                control.get("danger").clearValidators();
+                control.get("danger").updateValueAndValidity();
+                console.log('clear validators');
+              }
             }
           }
+
         })
 
         this.buildForm.push(buildItem);

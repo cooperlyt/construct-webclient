@@ -1,7 +1,7 @@
 import { NgModule, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Routes, RouterModule, CanActivate, Router, ActivatedRoute } from '@angular/router';
+import { Routes, RouterModule, CanActivate, Router, ActivatedRoute, Resolve } from '@angular/router';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
@@ -25,7 +25,7 @@ import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 
 
-import { CorpProjectsComponent, CorpBusinessComponent, CorpInfoComponent, CorpDetailsComponent } from './corp-details.component';
+import { CorpProjectsComponent, CorpBusinessComponent, CorpInfoComponent, CorpDetailsComponent, CorpEmployeeComponent, CorpEmployeeEditorDialogComponent } from './corp-details.component';
 import { CorpListResolver } from './corp-list.resolver';
 import { CorpComponent, CorpEditComponent } from './corp.component';
 import { SharedDataModule } from 'src/app/shared/schemas/data.module';
@@ -34,6 +34,8 @@ import { CorpService } from '../../shared/remote-services/corp.service';
 import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { CorpResolver } from 'src/app/shared/resolver/corp.resolver';
+import { CorpEmployee } from 'src/app/shared/schemas/corp';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +61,20 @@ export class InBusinessGuard implements  CanActivate{
 }
 
 
+@Injectable({providedIn: 'root'})
+export class CorpEmployeeListResolver implements Resolve<CorpEmployee[]>{
+
+  constructor(private service: CorpService){
+
+  }
+
+  resolve(route: import("@angular/router").ActivatedRouteSnapshot, state: import("@angular/router").RouterStateSnapshot): CorpEmployee[] | import("rxjs").Observable<CorpEmployee[]> | Promise<CorpEmployee[]> {
+    return this.service.listCorpEmployee(route.parent.params['cid']);
+  }
+
+  
+}
+
 
 const routes: Routes =[
     {path: '' , component: CorpComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange', resolve:{dataPage: CorpListResolver}},
@@ -69,7 +85,8 @@ const routes: Routes =[
       children:[
         {path: 'info', component: CorpInfoComponent, resolve: {corp: CorpResolver}},
         {path: 'business', component: CorpBusinessComponent},
-        {path: 'projects' , component: CorpProjectsComponent}
+        {path: 'projects' , component: CorpProjectsComponent},
+        {path: 'employee', component: CorpEmployeeComponent, resolve: {employees: CorpEmployeeListResolver}}
       ]
     }
   ]
@@ -82,6 +99,8 @@ const routes: Routes =[
       CorpProjectsComponent,
       CorpBusinessComponent,
       CorpInfoComponent,
+      CorpEmployeeComponent,
+      CorpEmployeeEditorDialogComponent,
       ],
     imports: [
       CommonModule,
@@ -106,7 +125,11 @@ const routes: Routes =[
       MatSlideToggleModule,
       OcticonModule,
       RouterModule.forChild(routes),
-      SharedDataModule
+      SharedDataModule,
+      MatDialogModule
+    ],
+    entryComponents:[
+      CorpEmployeeEditorDialogComponent
     ]
   
   })
