@@ -32,8 +32,10 @@ export class TaskCheckDialog{
     }
 }
 
-const TASK_VIEW_PATH: {[key:string]:string} = {
-  fire_check_view:'fire'
+const TASK_VIEW_PATH: {[key:string]:string[]} = {
+  fire_check_view: ['fire','view'],
+  fire_apply_edit: ['fire', 'apply'],
+  fire_check_opinion:['fire','opinion']
 }
 
 const TASK_VIEW_DEFINE_KEY: string = "view";
@@ -46,6 +48,12 @@ export class TaskRouterService {
 
   private taskChange$ = new Subject<boolean>();
 
+  private taskPath(key:string,taskId: string ):string[]{
+    let result = ['task'];
+    TASK_VIEW_PATH[key].forEach(path => result.push(path));
+    result.push(taskId);
+    return result;
+  }
 
   connectTaskChange(): Observable<boolean>{
     return this.taskChange$.asObservable();
@@ -53,15 +61,15 @@ export class TaskRouterService {
 
   view(task:Task){
     this._service.getTaskExtensions(task.processDefinitionId,task.taskDefinitionKey,TASK_VIEW_DEFINE_KEY).subscribe(val => {
-      console.log('task route to ' + val + '->' + TASK_VIEW_PATH[val]);
-      this._router.navigate(['task',TASK_VIEW_PATH[val],task.id]);
+      console.log('task route to ' + val + '->' + TASK_VIEW_PATH[val] );
+      this._router.navigate(this.taskPath(val,task.id));
     });
   }
 
   complete(task: Task, completePage?: string){
     this._service.getAllTaskExtensions(task.processDefinitionId,task.taskDefinitionKey).subscribe(properties => {
       if (properties.edit){
-        this._router.navigate(['task',TASK_VIEW_PATH[properties.edit],task.id]);
+        this._router.navigate(this.taskPath(properties.edit,task.id));
 
       }else if (properties.check){
         let variables = new Variables();
@@ -69,7 +77,7 @@ export class TaskRouterService {
           variables.putVariable(properties.reapply,{value:false})
         }
 
-        variables
+        //variables
         this.dialog.open(TaskCheckDialog,{
           width: '400px',
           data: task

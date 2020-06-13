@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule, Component, OnInit, Injectable } from '@angular/core';
+import { Routes, RouterModule, Resolve, ActivatedRoute, Router } from '@angular/router';
 import { FireTaskViewComponent, FireCheckProjectInfoComponent, FireCheckDocumentComponent, FireTaskCompletedComponent } from './task-view.component';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,19 +25,187 @@ import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 import { SharedDataModule } from 'src/app/shared/schemas/data.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { FireCheckSchemasModule } from '../schemas';
+import { FireCheckSchemasModule, FireCheck, CheckFile, CheckBuildOpinion } from '../schemas';
 import { BusinessDocumentModule } from 'src/app/business/document/document-files.component';
 import { BusinessKeyTasksResolver } from 'src/app/business/tasks/business-key-tasks.resolver';
 import { FireCheckResolver } from '../fire-check.resolver';
 import { FireCheckInfoModule } from '../info.module';
+import { Task, BusinessDocumentBase, BusinessDocument, Variables } from 'src/app/business/schemas';
+import { CamundaRestService } from 'src/app/business/camunda-rest.service';
+import { switchMap, map } from 'rxjs/operators';
+import { FireCheckService } from '../fire-check.service';
 
+
+
+export declare class FireCheckTask{
+  task: Task;
+  check: FireCheck;
+}
+
+@Injectable({providedIn: 'root'})
+export class FireCheckTaskResolver implements Resolve<FireCheckTask>{
+
+  constructor(private camundaService: CamundaRestService, 
+      private checkService: FireCheckService){}
+
+  resolve(route: import("@angular/router").ActivatedRouteSnapshot, state: import("@angular/router").RouterStateSnapshot): FireCheckTask | import("rxjs").Observable<FireCheckTask> | Promise<FireCheckTask> {
+    return this.camundaService.getTask(route.params['tid']).pipe(
+      switchMap(task => 
+        this.camundaService.getProcessInstance(task.processInstanceId).pipe(
+          switchMap(processInstance => this.checkService.fireCheck(Number(processInstance.businessKey)).pipe(
+            map(check => {return {task: task, check: check}})
+            )
+          )
+        )
+      )
+    )
+  }
+
+}
+
+@Injectable({providedIn: 'root'})
+export class BusinessDocumentResolver implements Resolve<string[]>{
+
+  constructor(private camundaService: CamundaRestService){}
+
+  resolve(route: import("@angular/router").ActivatedRouteSnapshot, state: import("@angular/router").RouterStateSnapshot): string[] | import("rxjs").Observable<string[]> | Promise<string[]> {
+    return this.camundaService.getTask(route.params['tid']).pipe(
+      switchMap(task => this.camundaService.getProcessInstance(task.processInstanceId)),
+      switchMap(processInstance  => this.camundaService.getBusinessDocuments(Number(processInstance.businessKey))),
+      map(documents => documents.map(doc => doc.name))
+    );
+  }
+
+
+
+}
+
+@Component({
+  selector: 'fire-apply-task-complete',
+  templateUrl: 'apply-task.html'
+})
+export class FireApplyTaskComponent implements OnInit{
+
+  fireCheckTask: FireCheckTask;
+
+  //items: CheckFile[];
+
+  itemForm: FormArray;
+
+  constructor(private _route: ActivatedRoute, 
+    private _router: Router,
+    private _fb: FormBuilder,
+    private _checkSvr: FireCheckService,
+    private _camundaSvr: CamundaRestService){}
+
+  ngOnInit(): void {
+    this._route.data.subscribe(data => {
+      this.fireCheckTask = data.data;
+      this._fb.array(data.items.map(item => this._fb.group({
+        pass: [],
+        name: [item]
+      })));
+    });
+  }
+
+  addItem(name: string){
+    this.itemForm.push(this._fb.group({
+      pass:[],
+      name:[name]
+    }))
+  }
+
+  get valid():boolean{
+    return !this.itemForm.value.find(item => !item.pass)
+  }
+
+  private complete(apply: boolean){
+    let variables = new Variables();
+    variables.putVariable('approved',{value:apply})
+
+    this._checkSvr.fileCheck(this.fireCheckTask.check.id,this.itemForm.value).pipe(
+      switchMap(() => this._camundaSvr.postCompleteTask(this.fireCheckTask.task.id,variables))
+    ).subscribe(() => {
+      this._router.navigate(['/task/fire/completed',this.fireCheckTask.check.id])
+    })
+  }
+
+  apply(){
+    this.complete(true);
+  }
+
+  noApply(){
+    this.complete(false);
+  }
+
+}
+
+@Component({
+  selector: 'fire-opinion-task-complete',
+  templateUrl: 'opinion-task.html'
+})
+export class FireOpinionTaskComponent implements OnInit{
+
+  fireCheckTask: FireCheckTask;
+
+  opinionForm: FormArray;
+
+  constructor(private _route: ActivatedRoute,
+    private _router: Router,
+    private _camundaSvr: CamundaRestService,
+    private _checkSvr: FireCheckService,
+    private _fb: FormBuilder){}
+
+  ngOnInit(): void {
+    this._route.data.subscribe(data => {
+      this.fireCheckTask = data.data;
+      this.opinionForm = this._fb.array(
+        this.fireCheckTask.check.info.builds.map(build => this._fb.group({
+          code: [build.code],
+          opinion: [,Validators.required],
+          pass: [,Validators.required]
+        }))
+      )
+    });
+  }
+
+  get valid():boolean{
+    return !this.opinionForm.value.find(item => !item.pass)
+  }
+
+  private complete(apply: boolean){
+    let variables = new Variables();
+    variables.putVariable('approved',{value:apply})
+
+    this._checkSvr.buildOpinion(this.fireCheckTask.check.id,this.opinionForm.value).pipe(
+      switchMap(() => this._camundaSvr.postCompleteTask(this.fireCheckTask.task.id,variables))
+    ).subscribe(() => {
+      this._router.navigate(['/task/fire/completed',this.fireCheckTask.check.id])
+    })
+  }
+
+  qualified(){
+    this.complete(true);
+  }
+
+  unqualified(){
+    this.complete(false);
+  }
+
+}
 
 const routes: Routes =[
   {path : 'completed/:id' , component: FireTaskCompletedComponent, resolve:{tasks: BusinessKeyTasksResolver, check: FireCheckResolver}},
-  {path: ':tid' , component: FireTaskViewComponent, children:[
+  {path: 'view/:tid' , component: FireTaskViewComponent, children:[
     {path:'', component: FireCheckProjectInfoComponent},
     {path:'document', component: FireCheckDocumentComponent}
   ]},
+  {
+    path: 'apply/:tid',  component: FireApplyTaskComponent, resolve: {data: FireCheckTaskResolver, items: BusinessDocumentResolver}
+  },
+  {
+    path: 'opinion/:tid', component: FireOpinionTaskComponent, resolve: {data: FireCheckTaskResolver}
+  }
 ]
 
 
@@ -46,7 +214,9 @@ const routes: Routes =[
     FireTaskViewComponent, 
     FireCheckProjectInfoComponent,
     FireCheckDocumentComponent,
-    FireTaskCompletedComponent
+    FireTaskCompletedComponent,
+    FireApplyTaskComponent,
+    FireOpinionTaskComponent
   ],
   imports:[
     RouterModule.forChild(routes),

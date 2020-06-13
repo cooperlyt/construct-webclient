@@ -34,8 +34,8 @@
             <strong>情况说明:</strong> {{fireCheck.memo}}
           </li>
 
-          <li>
-            <strong>检查意见</strong> {{fireCheck.opinion}}
+          <li *ngIf="fireCheck.info.inRandom">
+            <strong>检查意见:</strong> {{fireCheck.opinion}}
           </li>
 
           <li *ngIf="fireCheck.status == 'Unqualified' || fireCheck.status == 'Qualified'">
@@ -47,7 +47,7 @@
     </mat-card>
 
     <mat-accordion class="example-headers-align">
-      <mat-expansion-panel [expanded]="corp.code === fireCheck.info.corp" *ngFor="let corp of fireCheck?.info.project.corps">
+      <mat-expansion-panel  *ngFor="let corp of fireCheck?.info.project.corps">
 
 
       <mat-expansion-panel-header>

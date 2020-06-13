@@ -70,6 +70,12 @@ export enum WarmType{
   B2 = ""
 }
 
+export declare class CheckFile{
+  pass: boolean;
+  name: string;
+}
+
+
 
 export declare class FireCheckProjectCorp{
   level:number;
@@ -136,7 +142,13 @@ export declare class CheckBuildInfo{
   underArea: number;
 }
 
-export declare class CheckBuild{
+export declare class CheckBuildOpinion{
+  code: number;
+  opinion: string;
+  pass: boolean;
+}
+
+export declare class CheckBuild extends CheckBuildOpinion{
   rating: number;
   danger: number;
   code: number;
