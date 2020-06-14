@@ -1,4 +1,4 @@
-<ngx-ui-loader></ngx-ui-loader>
+<!-- <ngx-ui-loader></ngx-ui-loader>
 
 <div class="Subhead">
   <h2 class="Subhead-heading">{{!!project ? '编辑' : '创建'}}项目备案</h2>
@@ -28,228 +28,8 @@
         <mat-card-title>基本信息</mat-card-title>
       </mat-card-header>
 
-      <mat-card-content formGroupName="info">
+      <mat-card-content >
 
-        <div class="row">
-          <mat-form-field class="col-sm-3">
-            <mat-label>
-              工程性质
-            </mat-label>
-            <mat-select formControlName="property" required>
-              <mat-option>--</mat-option>
-              <mat-option *ngFor="let property of dataUtils.projectProperties" [value]="property.key">
-                  {{property.label}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="regForm.get('info').get('info').get('property').hasError('required')">
-              请选择工程性质
-            </mat-error>
-
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-9">
-            <mat-label>
-              项目名称
-            </mat-label>
-            <input matInput formControlName="name" required>
-            <mat-error *ngIf="regForm.get('info').get('info').get('name').hasError('required')">
-              企业名称 <strong>不能为空</strong>
-            </mat-error>
-            <mat-error *ngIf="regForm.get('info').get('info').get('name').hasError('maxlength')">
-              名称长度不能超过 <strong>256</strong>
-            </mat-error>
-          </mat-form-field>
-
-
-        </div>
-
-
-        <div class="row">
-          <mat-form-field class="col-sm-3">
-            <mat-label>
-              工程类别
-            </mat-label>
-            <mat-select formControlName="type" required>
-              <mat-option>--</mat-option>
-              <mat-optgroup *ngFor="let group of dataUtils.projectTypeGroups" [label]="group.name"> 
-                <mat-option *ngFor="let type of group.types" [value]="type.key">
-                  {{type.value.label}}
-                </mat-option>
-              </mat-optgroup>
-            </mat-select>
-
-            <mat-error *ngIf="regForm.get('info').get('info').get('type').hasError('required')">
-              请选择工程类别
-            </mat-error>
-          </mat-form-field>
-
-          <!-- 
-          [disabled]="false" [required]="true"  -->
-          <mat-form-field class="col-sm-3" >
-            <mat-label>
-              层类别
-            </mat-label>
-            <mat-select formControlName="floorType">
-              <mat-option>--</mat-option>
-              <mat-option *ngFor="let type of dataUtils.floorTypes" [value]="type.key">
-                {{type.label}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="regForm.get('info').get('info').get('floorType').hasError('required')">
-              请选择层类别
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-4">
-            <mat-label>
-              结构
-            </mat-label>
-            <mat-select formControlName="structure">
-              <mat-option>--</mat-option>
-              <mat-option *ngFor="let struct of dataUtils.projectStructures" [value]="struct.key">
-                {{struct.label}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-2">
-            <mat-label>
-              类别
-            </mat-label>
-            <mat-select formControlName="typeLevel" >
-              <mat-option>--</mat-option>
-              <mat-option *ngFor="let level of dataUtils.projectTypeLevels" [value]="level.key">
-                {{level.label}}
-              </mat-option>
-
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="row">
-          <mat-form-field class="col-sm-3">
-            <mat-label>
-              重点工程级别
-            </mat-label>
-            <mat-select formControlName="importantType" required>
-              <mat-option>--</mat-option>
-              <mat-option *ngFor="let type of dataUtils.importantTypes" [value]="type.key">
-                {{type.label}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="regForm.get('info').get('info').get('importantType').hasError('required')">
-              请选择重点工程级别
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-4">
-            <mat-label>
-              重点工程文号
-            </mat-label>
-            <input matInput formControlName="importantFile">
-            <mat-error *ngIf="regForm.get('info').get('info').get('importantFile').hasError('maxlength')">
-              名称长度不能超过 <strong>32</strong>
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-3">
-            <mat-label>
-              工程造价(万元)
-            </mat-label>
-            <input matInput type="number" formControlName="costs">
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-2">
-            <mat-label>
-              高度
-            </mat-label>
-            <input matInput type="number" formControlName="height">
-          </mat-form-field>
-
-        </div>
-
-
-        <div class="row">
-          <mat-form-field class="col-sm-3">
-            <mat-label>
-              建筑面积(平方米)
-            </mat-label>
-            <input matInput type="number" formControlName="area">
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-3">
-            <mat-label>
-              占地面积(平方米)
-            </mat-label>
-            <input matInput type="number" formControlName="landArea">
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-3">
-            <mat-label>
-              地上层数
-            </mat-label>
-            <input matInput type="number" min="0" step="1" formControlName="groundCount">
-          </mat-form-field>
-
-
-          <mat-form-field class="col-sm-3">
-            <mat-label>
-              地下层数
-            </mat-label>
-            <input matInput type="number" min="0" step="1" formControlName="underCount">
-          </mat-form-field>
-
-
-          <mat-form-field class="col-sm-3">
-            <mat-label>
-              计划开工日期
-            </mat-label>
-            <input matInput  [matDatepicker]="beginDate" formControlName="beginDate">
-            <mat-datepicker-toggle matSuffix [for]="beginDate"></mat-datepicker-toggle>
-            <mat-datepicker  #beginDate></mat-datepicker>
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-3">
-            <mat-label>
-              计划竣工日期
-            </mat-label>
-            <input matInput  [matDatepicker]="completeDate" formControlName="completeDate">
-            <mat-datepicker-toggle matSuffix [for]="completeDate"></mat-datepicker-toggle>
-            <mat-datepicker  #completeDate></mat-datepicker>
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-6">
-            <mat-label>
-              招标情况
-            </mat-label>
-            <input matInput formControlName="tender">
-            <mat-error *ngIf="regForm.get('info').get('info').get('name').hasError('maxlength')">
-              长度不能超过 <strong>32</strong>
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-12">
-            <mat-label>
-              项目地址
-            </mat-label>
-            <input matInput formControlName="address">
-            <mat-error *ngIf="regForm.get('info').get('info').get('address').hasError('maxlength')">
-              长度不能超过 <strong>512</strong>
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="col-sm-12">
-            <mat-label>
-              备注
-            </mat-label>
-            <textarea matInput formControlName="memo" rows="1"></textarea>
-            <mat-error *ngIf="regForm.get('info').get('info').get('memo').hasError('maxlength')">
-              长度不能超过 <strong>512</strong>
-            </mat-error>
-          </mat-form-field>
-
-
-        </div>
 
 
       </mat-card-content>
@@ -260,68 +40,24 @@
       <ng-container formArrayName="corps">
 
 
-        <mat-card [id]="editCorps[i].reg.property + '-' + editCorps[i].corp.code" *ngFor="let corp of corpsForm.controls; let i=index">
+        <mat-card >
           <mat-card-header  class="tools-card-header">
             <mat-card-title>
-              {{editCorps[i].reg.property | joinTypeLabel}} - {{editCorps[i].corp.info.name}}
+
             </mat-card-title>
             <mat-card-subtitle>
-              {{editCorps[i].corp.info.groupIdType | groupCardLabel}}: {{editCorps[i].corp.info.groupId}}
+
             </mat-card-subtitle>
 
             <div class="actions">
 
 
-              <button type="button" (click)="delCorp(i)" mat-icon-button color="warn" >
-                  <mat-icon>delete</mat-icon>
-              </button>
             </div>
           </mat-card-header>
 
-          <mat-card-content [formGroupName]="i">
-
-           
-            <div class="row">
-
-              <mat-form-field class="col-sm-4">
-                <mat-label>
-                  外埠队伍审批手续
-                </mat-label>
-                <input matInput formControlName="outsideTeamFile">
-              </mat-form-field>
-              
-              <div class="check-edit-field col-sm-5">
-                <mat-checkbox formControlName="outLevel" (change)="outLevelCheckChange(i)">
-                </mat-checkbox>
-                <div class="checked-input">
-                <mat-form-field >
-                  <mat-label>
-                    越级审批文号
-                  </mat-label>
-          
-                  <input  matInput formControlName="outLevelFile">
-                </mat-form-field>
-                </div>
-              </div>
+          <mat-card-content >
 
 
-
-
-            <mat-form-field class="col-sm-4">
-              <mat-label>
-                  联系人
-              </mat-label>
-              <input matInput formControlName="contacts">
-            </mat-form-field>
-
-            <mat-form-field class="col-sm-4">
-              <mat-label>
-                联系电话
-              </mat-label>
-              <input matInput formControlName="tel">
-            </mat-form-field>
-
-          </div>
           </mat-card-content>
         </mat-card>
 
@@ -339,51 +75,15 @@
   <div id="corp-info">
 
   </div>
-  <ng-container *ngIf="regForm.get('corp')">
-    <mat-card>
-      <mat-card-content>
-        <div *ngIf="!existsDeveloper" class="mat-error">
-          *至少要包含一个开发单位
-        </div>
-        <div class="row">
-          <corp-select class="col-sm-6" [formControl]="corpCtl">
-          </corp-select>
 
-
-          <mat-form-field class="col-sm-3">
-            <mat-label>
-              参建类型
-            </mat-label>
-            <mat-select [(ngModel)]="selectReg" [disabled]="!selectCorp">
-              <mat-option>--</mat-option>
-              <ng-container *ngIf="selectCorp">
-                <mat-option *ngFor="let reg of selectCorp.regs" [value]="reg"> {{reg.property | joinTypeLabel}}</mat-option>
-              </ng-container>
-            </mat-select>
-          </mat-form-field>
-
-          <div class="col-sm-3  flex-right-center">
-            <button [disabled]="!newCorpValid" (click)="addNewCorp()" mat-raised-button color="primary">添加参建单位</button>
-          </div>
-        </div>
-
-        <div class="mat-error" *ngIf="selectReg && !newCorpValid">
-          此参建单位已添加!不可重复添加重复添加同一类型的同一参建单位.
-        </div>
-
-      </mat-card-content>
-
-
-    </mat-card>
-  </ng-container>
 
   <hr/>
 
-<!--  -->
+
 <button mat-raised-button color="primary" [disabled]="!regForm.valid || !existsDeveloper" form="project-form"  type="submit" >
    {{project ? '修改':'建立'}} 项目备案
 </button>
 </div>
 
 
-</div>
+</div> -->

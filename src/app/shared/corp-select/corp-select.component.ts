@@ -9,7 +9,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSelectInfiniteScrollModule} from 'ng-mat-select-infinite-scroll';
 import { MatSelectSearchModule } from 'src/app/tools/mat-select-search/mat-select-search.module';
 import { FormControl, ReactiveFormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { Corp } from '../data/corp';
+import { Corp } from '../schemas/corp';
 import { CorpService } from '../remote-services/corp.service';
 
 @Component({selector:"corp-select",

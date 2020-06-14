@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PageResult } from 'src/app/shared/page-result';
 import { CustomEncoder } from 'src/app/shared/custom-encoder';
-import { ProjectReg, Project, ProjectAndCorp } from '../data/project';
+import { Project, ProjectAndCorp, ProjectReg, JoinCorpAndReg, BuildRegInfo, ProjectRegInfo, JoinCorp, BuildReg } from '../schemas/project';
+import { RegInfo } from '../schemas/corp';
 
 
 
@@ -29,6 +30,21 @@ export class ProjectService{
     return this._http.delete<{code: number, enable:boolean}>(`${environment.apiUrl}/construct-project/mgr/${enable ? 'enable' : 'disable'}/${code}`)
   }
 
+  joinCorpAndRegs(code:number): Observable<JoinCorpAndReg[]>{
+    return this._http.get<JoinCorpAndReg[]>(`${environment.apiUrl}/construct-project-cache/data/project/${code}/corp/reg`);
+  }
+
+  projectBuilds(code: number): Observable<BuildRegInfo[]>{
+    return this._http.get<BuildRegInfo[]>(`${environment.apiUrl}/construct-project-cache/data/project/${code}/builds`);
+  }
+
+  projectRegInfo(code: number):Observable<ProjectRegInfo>{
+    return this._http.get<ProjectRegInfo>(`${environment.apiUrl}/construct-project-cache/data/project/${code}/info`);
+  }
+
+  projectBuildReg(code: number):Observable<BuildReg>{
+    return this._http.get<BuildReg>(`${environment.apiUrl}/construct-project/view/project/${code}/build`);
+  }
 
   search(page:number, valid: string, key: string, property: string | null, projectClass: string | null):Observable<PageResult<Project>>{
     let params = new HttpParams({encoder: new CustomEncoder()}).set("page",page ? page.toString() : '0');

@@ -1,0 +1,86 @@
+
+<div class="mdb card blue-gradient">
+  <div class="mdb card-body white-text rgba-black-light text-center">
+  
+    <!--Grid row-->
+    <div class="row d-flex justify-content-center">
+  
+      <!--Grid column-->
+      <div class="col-md-6 fadeIn" style="visibility: visible; animation-name: fadeIn; animation-iteration-count: 1;">
+  
+        <h1 class="font-weight-bold mb-3 h2">建设工程消防{{check.info.special ? '验收' : '备案'}} - 业务已处理完成</h1>
+  
+        <h4 class="mb-2 h5">业务已经处理,业务根据流程图进行流转,业务下一阶段将出现在业务办理人员的业务办理页面中.</h4>
+  
+      </div>
+      <!--Grid column-->
+  
+    </div>
+    <!--Grid row-->
+  
+  </div>
+  </div>
+  
+  
+  <div class="body-sn">
+    <div class="pt-4 container ">
+      <section class="p-3 mb-4">
+    
+        <div class="row border border-info rounded p-4">
+          <div class="col-md-3  d-flex" style="flex-direction: column; justify-content:center; align-items: center;">
+            <!--Featured image-->
+            <div class="view overlay z-depth-1" >
+       
+                <div  [octicon]=" check.info.inRandom ? 'eye' : 'eye-closed'" width="50px"></div>
+                <div style="text-align: center;">{{ check.info.special ? '验收' : check.info.inRandom ? '抽中' : '未抽中'}}</div>
+       
+  
+            </div>
+      
+          </div>
+          <div class="col-md-9 d-flex align-content-center flex-wrap text-center text-md-left mt-4 mt-md-0">
+            <div>
+              <h4 class="mb-3 font-weight-bold dark-grey-text">
+      
+                <strong>      {{check.info.special ? '验收' : '备案'}}{{check.type | fireApplyTypelabel}} / {{check.info.project.name}} - {{check.info.project.property | projectPropertyLabel}}
+                </strong>
+              </h4>
+              <div class="dark-grey-text mb-3" *ngIf="reports.length > 0">
+                <strong>报表</strong>
+                <ul style="padding-left: 20px;">
+                  <li *ngFor="let report of reports">
+                    <a target="_blank" [href]="reportUrl + report.id">{{report.name}}</a>
+                  </li> 
+                </ul>
+              </div>
+  
+              <div class="dark-grey-text mb-3" *ngIf="tasks?.length > 0">
+                <strong>继续处理</strong>
+                <ul style="padding-left: 20px;">
+                  <li *ngFor="let task of tasks; let i = index">
+                    <a style="cursor: pointer;" (click)="viewTask(i)">{{task.name}}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="button-row">
+                <button mat-raised-button color="primary">
+                  业务信息
+                </button>
+  
+  
+    
+                <button routerLink="/business/tasks" mat-raised-button>
+                  返回
+                </button>
+              </div>
+  
+  
+            </div>
+          </div>
+        </div>
+      
+      </section>
+    </div>
+    
+  </div>
+  

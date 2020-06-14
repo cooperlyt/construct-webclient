@@ -1,0 +1,146 @@
+
+
+  <mat-card>
+    <mat-card-content class="d-flex">
+        <h2 style="margin-left: 18px;" class="flex-auto">楼幢信息</h2> 
+        <div>
+          <button  type="button" mat-raised-button color="primary"
+            (click)="addBuild()">添加楼幢</button>
+        </div>
+    </mat-card-content>
+  </mat-card>
+
+
+  <div formGroupName="build">
+    <mat-accordion formArrayName="builds"  class="example-headers-align">
+      <mat-expansion-panel expanded="true" *ngFor="let corp of buildForm.controls; let i=index" [formGroupName]="i" >
+        <mat-expansion-panel-header>
+          <mat-panel-title [class.mat-error]="!buildForm.controls[i].valid">
+            {{buildForm.controls[i].value.info.name ? buildForm.controls[i].value.info.name : '未命名楼幢'}}
+          </mat-panel-title>
+          <mat-panel-description *ngIf="!buildForm.controls[i].valid" class="mat-error">
+            填写格式错误或信息不完整,请检查!
+            <mat-icon>error</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div formGroupName="info">
+
+
+          <div class="row">
+            <mat-form-field class="col-sm-8">
+              <mat-label>
+                楼幢名称
+              </mat-label>
+              <input matInput formControlName="name" required>
+              <mat-error *ngIf="buildForm.controls[i].get('info').get('name').hasError('required')">
+                名称 <strong>不能为空</strong>
+              </mat-error>
+              <mat-error *ngIf="buildForm.controls[i].get('info').get('name').hasError('maxlength')">
+                名称长度不能超过 <strong>32</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="col-sm-3">
+              <mat-label>
+                结构型式
+              </mat-label>
+              <mat-select formControlName="structure" required>
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let struct of dataUtils.projectStructures" [value]="struct.key">
+                  {{struct.label}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="buildForm.controls[i].get('info').get('structure').hasError('required')">
+                结构型式 <strong>不能为空</strong>
+              </mat-error>
+            </mat-form-field>
+
+
+
+            <mat-form-field class="col-sm-3">
+              <mat-label>
+                地上层数
+              </mat-label>
+              <input matInput type="number" min="0" step="1" formControlName="onCount">
+            </mat-form-field>
+            <mat-form-field class="col-sm-3">
+              <mat-label>
+                地下层数
+              </mat-label>
+              <input matInput type="number" min="0" step="1" formControlName="underCount">
+            </mat-form-field>
+            <mat-form-field class="col-sm-3">
+              <mat-label>
+                地上面积
+              </mat-label>
+              <input matInput type="number" formControlName="onArea">
+            </mat-form-field>
+            <mat-form-field class="col-sm-3">
+              <mat-label>
+                地下面积
+              </mat-label>
+              <input matInput type="number" formControlName="underArea">
+            </mat-form-field>
+
+            <mat-form-field class="col-sm-3">
+              <mat-label>
+                占地面积
+              </mat-label>
+              <input matInput type="number" formControlName="landArea">
+            </mat-form-field>
+            <mat-form-field class="col-sm-3">
+              <mat-label>
+                建设高度
+              </mat-label>
+              <input matInput type="number" formControlName="height">
+            </mat-form-field>
+
+
+          </div>
+        </div>
+        <mat-action-row>
+
+          <button type="button" (click)="removeBuild(i)"  mat-button color="warn" >
+            <mat-icon>delete</mat-icon>
+            移除
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+
+    <!-- <mat-form-field class="col-sm-4">
+      <mat-label>
+        结构
+      </mat-label>
+      <mat-select formControlName="structure">
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let struct of dataUtils.projectStructures" [value]="struct.key">
+          {{struct.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        地上层数
+      </mat-label>
+      <input matInput type="number" min="0" step="1" formControlName="groundCount">
+    </mat-form-field>
+
+
+    <mat-form-field class="col-sm-3">
+      <mat-label>
+        地下层数
+      </mat-label>
+      <input matInput type="number" min="0" step="1" formControlName="underCount">
+    </mat-form-field>
+
+    <mat-form-field class="col-sm-2">
+      <mat-label>
+        高度
+      </mat-label>
+      <input matInput type="number" formControlName="height">
+    </mat-form-field> -->

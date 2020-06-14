@@ -73,55 +73,55 @@ const FUNCTIONS:  FunctionCategory[] =
         }
       ]
     },
-    {
-      id: 'quality',
-      name: '工程质检',
-      summary: '工程质检.',
-      items: [
-        {
-          id: 'quality-params',
-          name: '质检参数',
-          summary: '质检参数.'
-        },
-        {
-          id: 'quality-business',
-          name: '质检业务',
-          summary: '质检业务.'
-        }
-      ]
-    },
-    {
-      id: 'files',
-      name: '档案管理',
-      summary: '档案管理.',
-      items: [
-        {
-          id: 'files-room',
-          name: '档案室'
-        },
-        {
-          id: 'files-business',
-          name: '档案业务'
-        }
-      ]
-    },
-    {
-      id: 'setting',
-      name: '系统设置',
-      summary: '系统设置.',
-      items: [
-        {
-          id: 'employee',
-          name: '用户管理',
-          summary: '员工管理.'
-        },
-        {
-          id: 'config',
-          name: '系统设置',
-          summary: '系统设置.'
-        }
-      ]
-    }
+    // {
+    //   id: 'quality',
+    //   name: '工程质检',
+    //   summary: '工程质检.',
+    //   items: [
+    //     {
+    //       id: 'quality-params',
+    //       name: '质检参数',
+    //       summary: '质检参数.'
+    //     },
+    //     {
+    //       id: 'quality-business',
+    //       name: '质检业务',
+    //       summary: '质检业务.'
+    //     }
+    //   ]
+    // },
+    // {
+    //   id: 'files',
+    //   name: '档案管理',
+    //   summary: '档案管理.',
+    //   items: [
+    //     {
+    //       id: 'files-room',
+    //       name: '档案室'
+    //     },
+    //     {
+    //       id: 'files-business',
+    //       name: '档案业务'
+    //     }
+    //   ]
+    // },
+    // {
+    //   id: 'setting',
+    //   name: '系统设置',
+    //   summary: '系统设置.',
+    //   items: [
+    //     {
+    //       id: 'employee',
+    //       name: '用户管理',
+    //       summary: '员工管理.'
+    //     },
+    //     {
+    //       id: 'config',
+    //       name: '系统设置',
+    //       summary: '系统设置.'
+    //     }
+    //   ]
+    // }
   ];
 
 const ALL_FUNCTIONS_ITEM = FUNCTIONS.reduce(

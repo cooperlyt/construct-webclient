@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ProjectService } from 'src/app/shared/remote-services/project.service';
 import { PageResult } from 'src/app/shared/page-result';
-import { Project } from 'src/app/shared/data/project';
+import { Project } from 'src/app/shared/schemas/project';
 import { Resolve } from '@angular/router';
 
 @Injectable({providedIn: 'root'})

@@ -89,7 +89,15 @@ dd {
     vertical-align: middle;
 }
 
-
+.select-menu-button:after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: -2px;
+    content: "";
+    border: 4px solid transparent;
+    border-top-color: currentcolor;
+}
 
 .select-menu-button-gravatar {
     float: left;
@@ -207,6 +215,57 @@ dd {
     border-radius: 3px;
 }
 
+.Box-header {
+    padding: 16px;
+    margin: -1px -1px 0;
+    background-color: #f6f8fa;
+    border: 1px solid #d1d5da;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.notifications-list-item.notification-unread {
+    background-color: #fff;
+  }
+  
+.notifications-list-item.notification-unread .notification-list-item-unread-indicator {
+    background-color: #0366d6;
+    width: 8px;
+    height: 8px;
+}
+
+.notifications-list-item.notification-unread .notification-list-item-link {
+    color: #24292e!important;
+}
+
+.notifications-list-item .notification-list-item-link {
+    color: #6a737d!important;
+    cursor: pointer;
+}
+
+.notifications-list-item:hover {
+    background-color: #f1f8ff!important;
+}
+
+.notifications-list-item:hover .notification-list-item-actions {
+    display: flex!important;
+}
+
+.notifications-list-item:hover .notification-list-item-hide-on-hover {
+    visibility: hidden!important;
+}
+
+.notifications-list-item:hover .notification-list-item-actions .btn {
+    color: #586069!important;
+    background: transparent!important;
+    border: 0!important;
+}
+
+.notifications-list-item:hover .notification-list-item-actions .btn:hover:not(:disabled) {
+    color: #24292e!important;
+    background-color: #e1e4e8!important;
+}
+
 .Subhead {
     border-bottom: 1px solid #e1e4e8;
     display: flex;
@@ -246,6 +305,28 @@ dd {
     position: relative;
 }
 
+.label, .Label {
+    display: inline-block;
+    padding: 3px 4px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    border-radius: 2px;
+    box-shadow: inset 0 -1px 0 rgba(27,31,35,.12);
+}
+
+.Label--outline {
+    margin-top: -1px;
+    margin-bottom: -1px;
+    font-weight: 400;
+    color: #586069;
+    background-color: initial;
+    border: 1px solid rgba(27,31,35,.15);
+    box-shadow: none;
+}
+
+
 .pagehead {
     border-bottom: 1px solid #e1e4e8;
     margin-bottom: 24px;
@@ -257,6 +338,10 @@ dd {
 .repohead.experiment-repo-nav {
     background-color: #fafbfc;
     padding-bottom: 0;
+}
+
+.path-divider {
+    margin: 0 .25em;
 }
 
 .repohead .repohead-details-container {
@@ -272,6 +357,10 @@ dd {
 
 .pagehead .pagehead-actions>button{
     margin: 0 10px 0 0;
+}
+
+.repohead .pagehead-actions .mat-button-base{
+    line-height: 26px !important;
 }
 
 .pagehead-actions>li {
@@ -391,6 +480,30 @@ dd {
     line-height: 20px;
     padding: 3px 10px;
     vertical-align: middle;
+}
+
+.btn {
+    position: relative;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-repeat: repeat-x;
+    background-position: -1px -1px;
+    background-size: 110% 110%;
+    border: 1px solid rgba(27,31,35,.2);
+    border-radius: .25em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .btn i {

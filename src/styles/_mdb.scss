@@ -6,7 +6,7 @@ body{
     line-height: 1.5;
     color: #212529;
     text-align: left;
-    background-color: #fff;
+    // background-color: #fff;
 }
 
 .mat-body, .mat-body-1, .mat-typography {
@@ -16,7 +16,7 @@ body{
     line-height: 1.5;
     color: #212529;
     text-align: left;
-    background-color: #fff;
+    background-color: #fafafa;
 }
 
 button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disabled), [type="submit"]:not(:disabled) {
@@ -231,9 +231,133 @@ ul.striped li {
 }
 
 
-
+.img-thumbnail {
+    padding: .25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    max-width: 100%;
+    height: auto;
+}
 
 .mat-select-panel .search-box{
     padding: 16px 16px;
 }   
+
+.small-button.mat-button-base{
+    line-height: 26px !important;
+}
+
+.small-button.mat-icon-button{
+    width: 26px !important;
+    height: 26px !important;
+}
+
+.zoom:hover img, .zoom:hover video {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+
+.zoom img, .zoom video {
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+}
+
+
+  
+  .example-headers-align .mat-expansion-panel-header-title,
+  .example-headers-align .mat-expansion-panel-header-description {
+    flex-basis: 0;
+  }
+  
+  .example-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+
+h3.docs-api-h3 {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 32px;
+    margin: 40px 0 20px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+
+    .mat-checkbox label{
+        font-weight: 400;
+    }
+    
+}
+
+.mdb.card-body {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-radius: 0 !important;
+}
+
+.mdb.card{
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,0.125);
+    border-radius: .25rem;
+}
+
+.button-row button{
+    display: table-cell; 
+    margin-right: 8px;
+
+}
+
+@media (min-width: 1200px){
+    .body-sn{
+        margin-right: 6%;
+        margin-left: 6%;
+    }
+}
+
+@media (min-width: 992px){
+    .body-sn {
+        margin-right: 5%;
+        margin-left: 5%;
+    }
+    
+}
+
+@media (min-width: 600px){
+    .body-sn {
+        margin-right: 2%;
+        margin-left: 2%;
+    }
+}
+
+@media (max-width: 1440px){
+    .body-sn {
+        padding-left: 0;
+    }
+}
+
+
+
+
+  @media only screen and (max-width: 600px) {
+
+    .cdk-overlay-connected-position-bounding-box {
+        left: 0 !important;
+    }
+    
+    .menu-screen {
+      position: fixed;
+      max-width: unset !important;
+      width: 100vw;
+    } 
+  }
 

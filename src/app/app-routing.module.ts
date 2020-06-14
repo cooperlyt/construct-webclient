@@ -24,6 +24,19 @@ const routes: Routes = [
             component: HomeComponent
           },
           {
+            path: 'business',
+            loadChildren: () => import('./business/business.module').then(m => m.BusinessModule)
+          },
+          {
+            path: 'task',
+            children:[
+              {
+                path: 'fire',
+                loadChildren: () => import('./functions/fire/task/task.module').then(m => m.FireTaskModule)
+              }
+            ]
+          },
+          {
             path: 'function',
             canActivateChild: [FunctionGuard],
             children:[
@@ -39,6 +52,14 @@ const routes: Routes = [
               {
                 path: 'project',
                 loadChildren: () => import('./functions/project/project.module').then(m => m.ProjectModule)
+              },
+              {
+                path: 'fire',
+                loadChildren: () => import('./functions/fire/create/create.module').then(m => m.FireModule)
+              },
+              {
+                path: 'fire-business',
+                loadChildren: () => import('./functions/fire/search.module').then(m => m.FireCheckModule)
               }
             ]
           }

@@ -1,0 +1,67 @@
+
+<div class="repohead" *ngIf="dataService.fireCheck">
+
+  <div class="d-flex flex-column flex-md-row mb-4 px-3">
+
+    <div class="flex-auto min-width-0 width-fit mr-3 mb-2">
+      <h1 class="private  d-flex flex-wrap flex-items-center break-word float-none ">
+        <span class="flex-self-stretch" octicon="flame" style="margin-top: -2px;">
+
+        </span>
+        <strong class="mr-2 ml-2 flex-self-stretch" >
+          {{dataService.fireCheck?.info.project.name}}
+        </strong>
+        <!-- <span class="path-divider flex-self-stretch"> / </span>
+        <span class="mr-2 flex-self-stretch">
+          {{dataService.fireCheck?.project.property | projectPropertyLabel}}  <span *ngIf="dataService.fireCheck?.project.property == 'MODIFY'"> <span class="path-divider flex-self-stretch"> / </span> {{dataService.fireCheck?.project.modifyType | projectModifyTypeLabel}}</span>
+          
+        </span> -->
+        <span style="margin-left: 5px;" [class.badge-info]="dataService.fireCheck?.status === 'Running'" [class.badge-danger]="dataService.fireCheck?.status === 'Unqualified'" [class.badge-success]="dataService.fireCheck?.status === 'Qualified'" [class.badge-warning]="dataService.fireCheck?.status === 'NoAccept'" [class.badge-default]="dataService.fireCheck?.status === 'Abort'" class="badge badge-info badge-pill">{{dataService.fireCheck?.status | fireCheckStatus}}</span>  
+      </h1>
+    </div>
+    <ul class="pagehead-actions flex-shrink-0 d-flex flex-justify-space-around flex-md-justify-end" >
+      
+      <li>
+        <mat-menu #reportMenu="matMenu">
+          <a target="_blank" [href]="reportUrl + report.id" mat-menu-item *ngFor="let report of dataService.fireCheck.reports">{{report.name}}</a>
+
+        </mat-menu>
+        <button mat-stroked-button [matMenuTriggerFor]="reportMenu" class="select-menu-button">
+          <span octicon="file" [width]="14" height="14" style="line-height: 1px;"></span>
+          报表
+          
+        </button>
+      </li>
+      <li>
+ 
+      </li>
+      <li>
+
+      </li>
+
+    </ul>
+  </div>
+
+
+<nav mat-tab-nav-bar style="margin-bottom: 25px;">
+  <a mat-tab-link [routerLink]="['./']" [routerLinkActiveOptions]= "{exact: true}" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
+      基本信息
+  </a>
+  <a mat-tab-link routerLink="business" disabled="true" routerLinkActive #rlb="routerLinkActive" [active]="rlb.isActive">
+    验收表
+</a>
+  <a mat-tab-link routerLink="document" routerLinkActive #rlc="routerLinkActive" [active]="rlc.isActive">
+    要件/附件
+  </a>
+
+  <a mat-tab-link routerLink="business" disabled="true" routerLinkActive #rlb="routerLinkActive" [active]="rlb.isActive">
+      业务轨迹
+  </a>
+  
+
+
+
+
+</nav>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,50 @@
+
+<div class="container-fluid">
+  <mat-card>
+  <table style="width: 100%;" mat-table [dataSource]="employees">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> 编号 </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> 用户名 </th>
+      <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="number">
+      <th mat-header-cell *matHeaderCellDef> 证件 </th>
+      <td mat-cell *matCellDef="let element"> {{element.idType | personCardLabel}} {{element.idNumber}} </td>
+    </ng-container>  
+  
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> 姓名 </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef> 电话 </th>
+      <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+    </ng-container>
+  
+  
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>  
+        <button mat-icon-button (click)="newEmployee()" color="primary" aria-label="Example icon button with a home icon">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </th>
+      <td mat-cell *matCellDef="let element"> 
+        <button mat-icon-button (click)="resetPassword(element.username)" color="accent" aria-label="Example icon button with a home icon">
+          <mat-icon>lock_open</mat-icon>
+        </button>  
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="['id','username','number','name','phone','action']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['id','username','number','name','phone','action'];"></tr>
+  
+  </table>
+  </mat-card>
+</div>

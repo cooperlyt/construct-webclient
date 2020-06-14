@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CorpBusiness, Corp } from 'src/app/shared/data/corp';
+import { CorpBusiness, Corp, CorpEmployee } from 'src/app/shared/schemas/corp';
 import { environment } from 'src/environments/environment';
 import { PageResult } from 'src/app/shared/page-result';
 import { CustomEncoder } from 'src/app/shared/custom-encoder';
@@ -28,7 +28,7 @@ export class CorpService{
 
     patchCorp(business: CorpBusiness, code?: number): Observable<number>{
 
-        return this._http.post<number>(`${environment.apiUrl}/construct-attach-corp/mgr/path/${code ? 'modify/' + code: 'create'}`,business, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
+        return this._http.post<number>(`${environment.apiUrl}/construct-attach-corp/path/${code ? 'modify/' + code: 'create'}`,business, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
     }
 
     changeCorpStatus(code: number,enable: boolean): Observable<CorpStautsResult>{
@@ -67,5 +67,21 @@ export class CorpService{
           params = params.append("key",term);
         }
         return this._http.get<PageResult<Corp>>(`${environment.apiUrl}/construct-attach-corp/view/names/${offset}`,{params: params});
+    }
+
+    listCorpEmployee(code: number):Observable<CorpEmployee[]>{
+        return this._http.get<CorpEmployee[]>(`${environment.apiUrl}/construct-attach-corp/view/corp/${code}/employee`);
+    }
+
+    corpEmployee(id: number):Observable<CorpEmployee>{
+        return this._http.get<CorpEmployee>(`${environment.apiUrl}/construct-attach-corp/view/employee/${id}`);
+    }
+
+    addEmployee(code: number, employee: CorpEmployee):Observable<number>{
+        return this._http.post<number>(`${environment.apiUrl}/construct-attach-corp/mgr/corp/${code}/employee/add`, employee,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'})
+    }
+
+    resetEmployeePassword(username:string):Observable<String>{
+        return this._http.put<String>(`${environment.apiUrl}/authenticationservice/admin/trust/reset/${username}`, null, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
     }
 }

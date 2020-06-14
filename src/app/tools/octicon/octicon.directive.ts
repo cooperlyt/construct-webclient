@@ -23,6 +23,8 @@ export class OcticonDirective implements OnInit{
     if (this.width) {
         this.renderer.setStyle(icon, 'width', this.width);
         this.renderer.setStyle(icon, 'height', '100%');
+        this.renderer.setAttribute(icon, "height", this.width.toString());
+        this.renderer.setAttribute(icon, "width", this.width.toString())
     }
 }
 

@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from '@angular/router';
 import { ProjectComponent, ProjectEditComponent } from './project.componet';
-import { ProjectResolver } from './project.resolver';
 import { ProjectDetailsComponent, ProjectInfoComponent, ProjectBusinessComponent } from './project-details.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -25,18 +24,20 @@ import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialo
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 import { CorpSelectModule } from 'src/app/shared/corp-select/corp-select.component';
-import { SharedDataModule } from 'src/app/shared/data/data.module';
+import { SharedDataModule } from 'src/app/shared/schemas/data.module';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ProjectSearchResolver } from './project-search.resolver';
 import { DescriptFieldModule } from 'src/app/tools/descript-field/descript-field.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { ProjectEditResolver } from './project-edit.resolver';
+import { ProjectResolver } from 'src/app/shared/resolver/project.resolver';
+import { ProjectInfoInputComponent, ProjectCorpInputComponent, CreateProjectComponent, ProjectBuildComponent } from './project-edit.component';
 
 const routes:Routes = [
     {path: "", component: ProjectComponent,runGuardsAndResolvers: 'paramsOrQueryParamsChange', resolve: {projects: ProjectSearchResolver}},
-    {path: "edit", component: ProjectEditComponent},
-    {path: "edit/:id", component: ProjectEditComponent, resolve: {project: ProjectEditResolver }},
-    {path: "details/:id",component: ProjectDetailsComponent,children:[
+    {path: "create/:type", component: CreateProjectComponent},
+    {path: "edit/:pid", component: ProjectEditComponent, resolve: {project: ProjectEditResolver }},
+    {path: "details/:pid",component: ProjectDetailsComponent,children:[
         {path: "info", component: ProjectInfoComponent, resolve: {project: ProjectResolver}},
         {path: "business", component: ProjectBusinessComponent}
     ]}
@@ -48,6 +49,10 @@ const routes:Routes = [
     ProjectDetailsComponent,
     ProjectInfoComponent,
     ProjectBusinessComponent, 
+    ProjectInfoInputComponent,
+    ProjectCorpInputComponent,
+    CreateProjectComponent,
+    ProjectBuildComponent
 ],
 imports:[
     RouterModule.forChild(routes),
@@ -74,9 +79,9 @@ imports:[
     ConfirmDialogModule,
     MatSlideToggleModule,
     OcticonModule,
+    MatExpansionModule,
     SharedDataModule,
     CorpSelectModule,
-    MatExpansionModule,
     DescriptFieldModule]
 })
 export class ProjectModule{}

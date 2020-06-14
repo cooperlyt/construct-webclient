@@ -1,4 +1,4 @@
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { NgModule} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -47,7 +47,7 @@ import { NavigationFocusModule } from './tools/navigation-focus/navigation-focus
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher, MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { paginatorCN } from './tools/paginator-cn/paginator-cn';
-
+import { DragulaModule } from 'ng2-dragula';
 
 @NgModule({
   declarations: [
@@ -59,21 +59,16 @@ import { paginatorCN } from './tools/paginator-cn/paginator-cn';
     PaperLayoutComponent,
     NavbarComponent,
     SidenavLayoutComponent,
-
     ComponentNav,
-
     FunctionPageHeaderComponent,
-
     FooterComponent
   ],
   imports: [
-    BrowserModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     CommonModule,
-
     CdkAccordionModule,
     MatListModule,
     MatSidenavModule,
@@ -88,6 +83,7 @@ import { paginatorCN } from './tools/paginator-cn/paginator-cn';
     MatPaginatorModule,
     QRCodeModule,
     NgxUiLoaderModule,
+    DragulaModule.forRoot(),
     ToastrModule.forRoot(),
     NgProgressModule.withConfig(
       {

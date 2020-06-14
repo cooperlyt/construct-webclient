@@ -11,8 +11,8 @@ import { SearchFunctionBase, SearchCondition, FunctionPageBar, PageFunctionBase 
 import { ActivatedRoute } from '@angular/router';
 
 
-import { Corp, CorpInfo, CorpReg, CorpBusiness } from 'src/app/shared/data/corp';
-import { DataUtilsService, JoinType } from 'src/app/shared/data/define';
+import { Corp, CorpInfo, CorpReg, CorpBusiness } from 'src/app/shared/schemas/corp';
+import { DataUtilsService, JoinType } from 'src/app/shared/schemas/define';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { CorpService } from '../../shared/remote-services/corp.service';
@@ -83,7 +83,7 @@ export class CorpComponent extends SearchFunctionBase implements OnInit {
 
   ngOnInit(): void {
     this._route.queryParamMap.subscribe(params => this.params = {showDisabled: JSON.parse(params.get('valid')) ,type : params.get('type')})
-    this._route.data.subscribe(data => this.dataPage = data.dataPage)
+    this._route.data.subscribe(data =>{this.dataPage = data.dataPage; console.log(data.dataPage)} )
   }
 
 }
