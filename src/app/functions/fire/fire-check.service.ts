@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FireCheck, Report, CheckFile, CheckBuildOpinion } from './schemas';
+import { FireCheck, Report, CheckFile, CheckBuildOpinion, ProjectFireCheckStatus } from './schemas';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { PageResult } from 'src/app/shared/page-result';
@@ -13,6 +13,10 @@ export class FireCheckService{
   
   create(fireCheck: any): Observable<{id:string ,inRandom:boolean}>{
     return this._http.post<any>(`${environment.apiUrl}/construct-fire/manager/apply`,fireCheck);
+  }
+
+  creeateReview(projectCode: number): Observable<{id:string ,inRandom:boolean}>{
+    return this._http.post<any>(`${environment.apiUrl}/construct-fire/manager/review/${projectCode}`,null);
   }
 
   fireCheck(id: number): Observable<FireCheck>{
@@ -47,5 +51,9 @@ export class FireCheckService{
 
   buildOpinion(id:number, opinions: CheckBuildOpinion[]): Observable<Number>{
     return this._http.post<Number>(`${environment.apiUrl}/construct-fire/manager/check/${id}/opinion`,opinions, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
+  }
+
+  projectFireCheckStatus(code: number): Observable<ProjectFireCheckStatus>{
+    return this._http.get<ProjectFireCheckStatus>(`${environment.apiUrl}/construct-fire/manager/project/${code}/status`, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
   }
 }

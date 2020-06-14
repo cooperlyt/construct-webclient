@@ -131,7 +131,7 @@
       </mat-card-content>
 
       <mat-card-actions>
-        <button mat-button [routerLink]="'/function/fire/create/' + project.code">消防验收</button>
+        <button mat-button (click)="createFireBusiness()">消防验收</button>
         <button mat-button (click)="edit()" >编辑</button>
         <button mat-button [color]="project.enable ? 'warn' : 'primary' " (click)="changeStatus()">
             <mat-icon *ngIf="statusWaiting">

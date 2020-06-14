@@ -64,6 +64,14 @@ enum ApplyType{
   Review="复查"
 }
 
+export enum ProjectFireCheckStatus{
+  None,
+  PartQualified,
+  Qualified,
+  Unqualified,
+  RUNNING,
+}
+
 export enum WarmType{
   A = "",
   A1 = "",

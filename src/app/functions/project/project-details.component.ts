@@ -9,6 +9,7 @@ import { empty } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { faUserTie, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { PageFunctionBase, FunctionPageBar } from 'src/app/shared/function-items/function-items';
+import { FireBusinessService } from '../fire/fire-business.service';
 
 
 @Component({selector: "project-details", templateUrl: "./details.html"})
@@ -39,6 +40,7 @@ export class ProjectInfoComponent implements OnInit{
         private _service: ProjectService,
         private _toastr: ToastrService,
         public dialog: MatDialog,
+        private _fireBusinessSvr: FireBusinessService,
         private _router: Router){}
 
     changeStatus(){
@@ -72,6 +74,10 @@ export class ProjectInfoComponent implements OnInit{
             this.builds = this.project.builds.filter(build => build.operation != 'DELETE');
             this.delBuilds = this.project.builds.filter(build => build.operation == 'DELETE');
         })
+    }
+
+    createFireBusiness(){
+        this._fireBusinessSvr.createFireBusiness(this.project.code);
     }
 }
 

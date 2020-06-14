@@ -152,7 +152,7 @@ export class FireOpinionTaskComponent implements OnInit{
   fireCheckTask: FireCheckTask;
 
   get opinionForm(): FormArray{
-    return this.form.get('opinion') as FormArray;
+    return this.form.get('opinions') as FormArray;
   }
   form: FormGroup;
 
@@ -166,7 +166,7 @@ export class FireOpinionTaskComponent implements OnInit{
     this._route.data.subscribe(data => {
       this.fireCheckTask = data.data;
       this.form = this._fb.group({
-        opinion: this._fb.array(
+        opinions: this._fb.array(
           this.fireCheckTask.check.info.builds.map(build => this._fb.group({
             code: [build.code],
             name: [build.info.name],

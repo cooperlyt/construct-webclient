@@ -4,36 +4,45 @@
   <h1 class="Subhead-heading">处理业务 - {{fireCheckTask.task.name}}</h1>
   <p class="Subhead-description">
     {{fireCheckTask.check.info.project.name}} - 消防{{fireCheckTask.check.info.special ? '验收' : '备案'}}
+    <a [routerLink]="['/task/fire/view',fireCheckTask.task.id]">查看任务</a>
   </p>
 </div>
 
 
 <form [formGroup]="form">
 
-  <div formArrayName="files" *ngFor="let file of opinionForm.controls; let i = index">
-    <div [formGroupName]="i">
-      {{opinionForm.controls[i].value.name}}
+  <mat-card formArrayName="opinions" *ngFor="let file of opinionForm.controls; let i = index">
 
-      <mat-form-field>
-        <mat-label> {{opinionForm.controls[i].value.name}}</mat-label>
-        <mat-select formControlName="pass" required>
-          <mat-option> -- </mat-option>
-          <mat-option [value]="true">合格</mat-option>
-          <mat-option [value]="false">不合格</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <mat-card-header>
+      <mat-card-title>
+        {{opinionForm.controls[i].value.name}}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content [formGroupName]="i">
+      <div class="row">
+        <mat-form-field class="col-sm-3">
+          <mat-label>勘查结果</mat-label>
+          <mat-select formControlName="pass" required>
+            <mat-option> -- </mat-option>
+            <mat-option [value]="true">合格</mat-option>
+            <mat-option [value]="false">不合格</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>意见</mat-label>
-        <textarea matInput formControlName="opinion" required>
-        </textarea>
-      </mat-form-field>
+        <mat-form-field class="col-sm-12">
+          <mat-label>意见</mat-label>
+          <textarea rows="3" matInput formControlName="opinion" required>
+          </textarea>
+        </mat-form-field>
+      </div>
 
-    </div>
-  </div>
+
+
+    </mat-card-content>
+  </mat-card>
 
   <hr>
-  <button mat-raised-button [routerLink]="['/task/fire/view',fireCheckTask.task.id]">取消</button>
-  <button mat-raised-button (click)="complete()" [color]="valid ? 'primary' : 'accent'"> {{valid ? '合格' : '不合格'}}</button>
+
+  <button mat-raised-button [disabled]="!form.valid" (click)="complete()" [color]="valid ? 'primary' : 'accent'"> {{valid ? '合格' : '不合格'}}</button>
 
 </form>
