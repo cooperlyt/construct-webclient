@@ -53,7 +53,7 @@ export class FireCheckService{
     return this._http.post<Number>(`${environment.apiUrl}/construct-fire/manager/check/${id}/opinion`,opinions, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
   }
 
-  projectFireCheckStatus(code: number): Observable<ProjectFireCheckStatus>{
-    return this._http.get<ProjectFireCheckStatus>(`${environment.apiUrl}/construct-fire/manager/project/${code}/status`, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
+  projectFireCheckStatus(code: number): Observable<string>{
+    return this._http.get<string>(`${environment.apiUrl}/construct-fire/manager/project/${code}/status`, {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
   }
 }

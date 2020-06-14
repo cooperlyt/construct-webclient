@@ -16,13 +16,14 @@ export class FireBusinessService{
 
   createFireBusiness(projectCode: number){
     this._service.projectFireCheckStatus(projectCode).subscribe(status => {
+      console.log(status);
       switch(status){
-        case  ProjectFireCheckStatus.None:
-        case  ProjectFireCheckStatus.PartQualified:{
+        case  'None':
+        case  'PartQualified':{
           this._router.navigate(['/function/fire/create',projectCode]);
           break;
         }
-        case  ProjectFireCheckStatus.Qualified:{
+        case  'Qualified':{
           this.dialog.open(ConfirmDialogComponent,
             {width:'400px',
             role:'alertdialog',
@@ -34,7 +35,7 @@ export class FireBusinessService{
             })
           break;
         }
-        case  ProjectFireCheckStatus.Unqualified:{
+        case  'Unqualified':{
           this.dialog.open(ConfirmDialogComponent,
             {width:'400px',
             role:'alertdialog',
@@ -54,7 +55,7 @@ export class FireBusinessService{
             })
           break;
         }
-        case  ProjectFireCheckStatus.RUNNING:{
+        case 'RUNNING':{
           this.dialog.open(ConfirmDialogComponent,
             {width:'400px',
             role:'alertdialog',
