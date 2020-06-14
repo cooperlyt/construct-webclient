@@ -2,7 +2,7 @@ import { NgModule, Component, OnInit, Injectable } from '@angular/core';
 import { Routes, RouterModule, Resolve, ActivatedRoute, Router } from '@angular/router';
 import { FireTaskViewComponent, FireCheckProjectInfoComponent, FireCheckDocumentComponent, FireTaskCompletedComponent } from './task-view.component';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,6 +34,9 @@ import { Task, BusinessDocumentBase, BusinessDocument, Variables } from 'src/app
 import { CamundaRestService } from 'src/app/business/camunda-rest.service';
 import { switchMap, map } from 'rxjs/operators';
 import { FireCheckService } from '../fire-check.service';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { StateCheckboxModule } from 'src/app/tools/status-checkbox/status-checkbox';
 
 
 
@@ -82,15 +85,17 @@ export class BusinessDocumentResolver implements Resolve<string[]>{
 
 @Component({
   selector: 'fire-apply-task-complete',
-  templateUrl: 'apply-task.html'
+  templateUrl: './apply-task.html'
 })
 export class FireApplyTaskComponent implements OnInit{
 
   fireCheckTask: FireCheckTask;
 
-  //items: CheckFile[];
+  form: FormGroup;
 
-  itemForm: FormArray;
+  get itemForm(): FormArray{
+    return this.form.get('files') as FormArray;
+  }
 
   constructor(private _route: ActivatedRoute, 
     private _router: Router,
@@ -101,54 +106,55 @@ export class FireApplyTaskComponent implements OnInit{
   ngOnInit(): void {
     this._route.data.subscribe(data => {
       this.fireCheckTask = data.data;
-      this._fb.array(data.items.map(item => this._fb.group({
-        pass: [],
-        name: [item]
-      })));
+      this.form = this._fb.group({
+        files: this._fb.array(data.items.map(item => this._fb.group({
+          pass: [true],
+          name: [item]
+        })))
+      });
     });
   }
 
   addItem(name: string){
     this.itemForm.push(this._fb.group({
-      pass:[],
+      pass:[true],
       name:[name]
     }))
   }
 
   get valid():boolean{
-    return !this.itemForm.value.find(item => !item.pass)
+    return !this.itemForm.value.find(item => (item.pass !== null) && !item.pass)
   }
 
-  private complete(apply: boolean){
-    let variables = new Variables();
-    variables.putVariable('approved',{value:apply})
+  complete(){
 
-    this._checkSvr.fileCheck(this.fireCheckTask.check.id,this.itemForm.value).pipe(
+    console.log(this.itemForm.value.filter(item => item.pass !== null));
+
+    let variables = new Variables();
+    variables.putVariable('approved',{value:this.valid})
+
+    this._checkSvr.fileCheck(this.fireCheckTask.check.id,this.itemForm.value.filter(item => item.pass !== null)).pipe(
       switchMap(() => this._camundaSvr.postCompleteTask(this.fireCheckTask.task.id,variables))
     ).subscribe(() => {
       this._router.navigate(['/task/fire/completed',this.fireCheckTask.check.id])
     })
   }
 
-  apply(){
-    this.complete(true);
-  }
-
-  noApply(){
-    this.complete(false);
-  }
 
 }
 
 @Component({
   selector: 'fire-opinion-task-complete',
-  templateUrl: 'opinion-task.html'
+  templateUrl: './opinion-task.html'
 })
 export class FireOpinionTaskComponent implements OnInit{
 
   fireCheckTask: FireCheckTask;
 
-  opinionForm: FormArray;
+  get opinionForm(): FormArray{
+    return this.form.get('opinion') as FormArray;
+  }
+  form: FormGroup;
 
   constructor(private _route: ActivatedRoute,
     private _router: Router,
@@ -159,13 +165,16 @@ export class FireOpinionTaskComponent implements OnInit{
   ngOnInit(): void {
     this._route.data.subscribe(data => {
       this.fireCheckTask = data.data;
-      this.opinionForm = this._fb.array(
-        this.fireCheckTask.check.info.builds.map(build => this._fb.group({
-          code: [build.code],
-          opinion: [,Validators.required],
-          pass: [,Validators.required]
-        }))
-      )
+      this.form = this._fb.group({
+        opinion: this._fb.array(
+          this.fireCheckTask.check.info.builds.map(build => this._fb.group({
+            code: [build.code],
+            name: [build.info.name],
+            opinion: [,Validators.required],
+            pass: [,Validators.required]
+          }))
+        )
+      });
     });
   }
 
@@ -173,9 +182,9 @@ export class FireOpinionTaskComponent implements OnInit{
     return !this.opinionForm.value.find(item => !item.pass)
   }
 
-  private complete(apply: boolean){
+  complete(){
     let variables = new Variables();
-    variables.putVariable('approved',{value:apply})
+    variables.putVariable('approved',{value:this.valid})
 
     this._checkSvr.buildOpinion(this.fireCheckTask.check.id,this.opinionForm.value).pipe(
       switchMap(() => this._camundaSvr.postCompleteTask(this.fireCheckTask.task.id,variables))
@@ -183,15 +192,6 @@ export class FireOpinionTaskComponent implements OnInit{
       this._router.navigate(['/task/fire/completed',this.fireCheckTask.check.id])
     })
   }
-
-  qualified(){
-    this.complete(true);
-  }
-
-  unqualified(){
-    this.complete(false);
-  }
-
 }
 
 const routes: Routes =[
@@ -216,7 +216,8 @@ const routes: Routes =[
     FireCheckDocumentComponent,
     FireTaskCompletedComponent,
     FireApplyTaskComponent,
-    FireOpinionTaskComponent
+    FireOpinionTaskComponent,
+    
   ],
   imports:[
     RouterModule.forChild(routes),
@@ -247,7 +248,10 @@ const routes: Routes =[
     SharedDataModule,
     FireCheckSchemasModule,
     BusinessDocumentModule,
-    FireCheckInfoModule
+    FireCheckInfoModule,
+    MatDividerModule,
+    MatListModule,
+    StateCheckboxModule
   ]
 })
 export class FireTaskModule {}

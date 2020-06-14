@@ -1,32 +1,68 @@
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FireTaskDataService } from './fire-task.service';
 import { FunctionPageBar } from 'src/app/shared/function-items/function-items';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { faUserTie, faPhone } from '@fortawesome/free-solid-svg-icons';
-import { FireCheck } from '../schemas';
+import { FireCheck, Report } from '../schemas';
 import { Task } from 'src/app/business/schemas';
 import { TaskRouterService } from 'src/app/business/tasks/task-router.service';
 import { environment } from 'src/environments/environment';
+import { interval, Subject } from 'rxjs';
+import { FireCheckService } from '../fire-check.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({templateUrl:"./completed.html"})
-export class FireTaskCompletedComponent implements OnInit{
+export class FireTaskCompletedComponent implements OnInit, OnDestroy{
 
   check: FireCheck;
   tasks: Task[];
+  reports: Report[];
+
+  private _destroyed = new Subject();
 
   reportUrl = `${environment.fileUrl}/pdf/`;
 
   constructor(private _taskRouter: TaskRouterService,
+    private checkSrv: FireCheckService,
     private _route: ActivatedRoute,_func: FunctionPageBar){
     _func.loadTitle('业务处理完成');
   }
 
+  ngOnDestroy(): void {
+    this._destroyed.next();
+    this._destroyed.complete();
+  }
+
+  private refreshReports(){
+
+    setTimeout(() => {
+      this.checkSrv.reports(this.check.id).pipe(takeUntil(this._destroyed)).subscribe(
+        reports => {
+          if (reports.length === this.reports.length){
+            if (!this._destroyed.isStopped){
+              this.refreshReports();
+            }
+            
+          }else{
+            this.reports = reports;
+          }
+        }
+      );
+    }, 2000);
+
+  }
 
   ngOnInit(): void {
     this._route.data.subscribe(data => {
       this.check = data.check;
+      this.reports = data.check.reports;
       this.tasks = data.tasks;
+      
+      this.refreshReports();
+      // interval(1000).subscribe(val => {
+      //    this.checkSrv.reports(this.check.id).subscribe(reports => this.reports = reports)
+      // })
     })
   }
 

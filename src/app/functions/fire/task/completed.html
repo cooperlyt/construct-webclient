@@ -45,10 +45,10 @@
                 <strong>      {{check.info.special ? '验收' : '备案'}}{{check.type | fireApplyTypelabel}} / {{check.info.project.name}} - {{check.info.project.property | projectPropertyLabel}}
                 </strong>
               </h4>
-              <div class="dark-grey-text mb-3" *ngIf="check.reports?.length > 0">
+              <div class="dark-grey-text mb-3" *ngIf="reports.length > 0">
                 <strong>报表</strong>
                 <ul style="padding-left: 20px;">
-                  <li *ngFor="let report of check.reports">
+                  <li *ngFor="let report of reports">
                     <a target="_blank" [href]="reportUrl + report.id">{{report.name}}</a>
                   </li> 
                 </ul>

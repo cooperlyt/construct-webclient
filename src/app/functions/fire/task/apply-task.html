@@ -1,0 +1,40 @@
+<div class="Subhead">
+  <h1 class="Subhead-heading">处理业务 - {{fireCheckTask.task.name}}</h1>
+  <p class="Subhead-description">
+    {{fireCheckTask.check.info.project.name}} - 消防{{fireCheckTask.check.info.special ? '验收' : '备案'}}
+    <a [routerLink]="['/task/fire/view',fireCheckTask.task.id]">查看任务</a>
+  </p>
+
+</div>
+
+<div style="display: flex;align-items:center;">
+  <mat-form-field style="width: 400px; ">
+    <input #addNewNameInput matInput>
+  </mat-form-field>
+
+  <button mat-button [disabled]="!addNewNameInput.value" style="margin-left: 10px;" (click)="addItem(addNewNameInput.value);addNewNameInput.value = null;"  color="primary">添加</button>
+
+
+</div>
+
+
+
+<form [formGroup]="form">
+
+  <mat-list formArrayName="files" >
+    <mat-list-item [formGroupName]="i" *ngFor="let file of itemForm.controls; let i = index">
+
+
+      <app-tri-state-checkbox formControlName="pass" [class.red-text]="itemForm.controls[i].value.pass === false" [class.indigo-text]="itemForm.controls[i].value.pass === true" [class.grey-text]="itemForm.controls[i].value.pass === null" [class.line-through]="itemForm.controls[i].value.pass === null">
+        {{itemForm.controls[i].value.name}}
+      </app-tri-state-checkbox>
+    </mat-list-item>
+
+  </mat-list>
+
+
+  <hr>
+
+  <button mat-raised-button (click)="complete()" [color]="valid ? 'primary' : 'warn'"> {{valid ? '' : '不予'}}受理</button>
+
+</form>
