@@ -1,10 +1,8 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://192.168.1.21:5555',
   clientId: 'register',
   clientPassword: 'thisissecret',
-  fileUrl: 'http://192.168.1.21:6699',
-  title: '建设工程审批系统'
-
-  
+  title: '建设工程审批系统',
+  apiUrl: window["env"]["apiUrl"] || "http://192.168.1.21:5555",
+  fileUrl: window["env"]["fileUrl"] || "http://192.168.1.21:6699",
 };
