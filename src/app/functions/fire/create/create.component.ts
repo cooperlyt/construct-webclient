@@ -149,7 +149,7 @@ export class FireCheckCreateComponent implements OnInit{
   ngOnInit(): void {
     this._route.data.subscribe(data => {
       this.project = data.project;
-      this.builds = this.project.builds.map(build => build.info);
+
 
       this.businessForm = this._fb.group({
           corp:[,Validators.required],
