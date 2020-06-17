@@ -61,11 +61,12 @@ export class FireCheckCreateComponent implements OnInit{
 
   businessForm: FormGroup;
 
+  checkForm: FormGroup;
+
   builds: BuildInfo[];
 
   buildColumns: string[] = ['name','rating','danger'];
 
-  corpCtl: FormControl = new FormControl(Validators.required);
 
   get buildForm(): FormArray{
     return this.businessForm.get('builds') as FormArray;
@@ -90,11 +91,14 @@ export class FireCheckCreateComponent implements OnInit{
       breakpoints.observe(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`)
         .pipe(map(breakpoint => breakpoint.matches)).subscribe( small => {
 
-          const i = this.buildColumns.indexOf('name');
+          if (!this.buildColumns.includes(fullBuildColumns[0])){
+            const i = this.buildColumns.indexOf('name');
 
-          fullBuildColumns.reverse().forEach(item => {
-            this.buildColumns.splice(i + 1,0,item);
-          });    
+            fullBuildColumns.reverse().forEach(item => {
+              this.buildColumns.splice(i + 1,0,item);
+            });
+          }
+          
         }
           
         );
@@ -104,11 +108,11 @@ export class FireCheckCreateComponent implements OnInit{
 
   onSubmit(){
     this._uiLoader.start();
-    let value = this.businessForm.value;
-    value.builds = value.builds.filter(build => build.selected).map(build => {return {code: build.code, rating: build.rating, danger: build.danger}});
+    let value = this.checkForm.value;
 
+    value.info.builds = value.info.builds.filter(build => build.selected).map(build => {return {code: build.code, rating: build.rating, danger: build.danger}});
 
-    this._fireCheckService.create({info: value}).subscribe(
+    this._fireCheckService.create(value).subscribe(
       val => {
         this._router.navigate(['../../','created',val.id],{relativeTo: this._route});
       },
@@ -151,9 +155,8 @@ export class FireCheckCreateComponent implements OnInit{
       this.project = data.project;
 
 
+
       this.businessForm = this._fb.group({
-          corp:[,Validators.required],
-          corpProperty:[],
           property:[],
           projectCode: [this.project.code],
           contracts:[, Validators.maxLength(64)],
@@ -170,6 +173,11 @@ export class FireCheckCreateComponent implements OnInit{
           oldUse:[,Validators.maxLength(16)],
           builds:this._fb.array([])
 
+      });
+
+      this.checkForm = this._fb.group({
+        corp:[, Validators.required],
+        info: this.businessForm
       });
 
       this.businessForm.get("special").valueChanges.subscribe(value => {
@@ -253,15 +261,6 @@ export class FireCheckCreateComponent implements OnInit{
       }
 
       
-      this.corpCtl.valueChanges.subscribe(value => {
-        if (value){
-          this.businessForm.get('corp').setValue(value.code);
-          this.businessForm.get('corpProperty').setValue(value.property);
-        }else{
-          this.businessForm.get('corp').setValue(null);
-          this.businessForm.get('corpProperty').setValue(null);
-        }
-      })
 
     })
 

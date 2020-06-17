@@ -175,6 +175,7 @@ export declare class FireCheck{
   applyTime: Date;
   regTime: Date;
   type: string;
+  corp: number;
   memo: string;
   opinion: string;
   info: FireCheckInfo;
@@ -194,8 +195,6 @@ export declare class FireCheckInfo{
   designFileDate:Date;
 
   tel: string;
-  corp: number;
-  corpProperty: string;
   source: string;
   inRandom: boolean;
   property:string;
