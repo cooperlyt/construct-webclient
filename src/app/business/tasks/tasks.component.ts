@@ -7,6 +7,7 @@ import { Task } from '../schemas';
 import { TaskRouterService } from './task-router.service';
 import { CamundaRestService } from '../camunda-rest.service';
 import { AuthenticationService } from 'src/app/auth/authentication.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({templateUrl:"./tasks.html", styleUrls:['./tasks.scss']})
 export class TasksComponent implements OnInit {
@@ -17,10 +18,13 @@ export class TasksComponent implements OnInit {
 
   key: string = null;
 
+  loadding: boolean = true;
+
   constructor(
     private _taskRoute: TaskRouterService,
     private _camundaService: CamundaRestService,
     private _authService: AuthenticationService,
+    private ngxLoader: NgxUiLoaderService,
     private _route: ActivatedRoute, _func: FunctionPageBar){
     _func.loadSearch({title:'业务办理',search: true}).subscribe(key => this.doSearch(key)); 
     _taskRoute.connectTaskChange().subscribe(() => this.refreshTasks());
@@ -42,7 +46,13 @@ export class TasksComponent implements OnInit {
   }
   
   refreshTasks(){
-    this._camundaService.getTasks(this.key).subscribe(tasks => this.tasks = tasks);
+    this.loadding = true;
+    this.ngxLoader.startBackgroundLoader('loader-01');
+    this._camundaService.getTasks(this.key).subscribe(tasks => {
+      this.tasks = tasks;
+      this.loadding = false;
+      this.ngxLoader.stopBackgroundLoader('loader-01');
+    });
   }
 
   view(task: Task):void{

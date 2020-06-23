@@ -105,23 +105,23 @@ const FUNCTIONS:  FunctionCategory[] =
     //     }
     //   ]
     // },
-    // {
-    //   id: 'setting',
-    //   name: '系统设置',
-    //   summary: '系统设置.',
-    //   items: [
-    //     {
-    //       id: 'employee',
-    //       name: '用户管理',
-    //       summary: '员工管理.'
-    //     },
-    //     {
-    //       id: 'config',
-    //       name: '系统设置',
-    //       summary: '系统设置.'
-    //     }
-    //   ]
-    // }
+    {
+      id: 'setting',
+      name: '系统设置',
+      summary: '系统设置.',
+      items: [
+        {
+          id: 'employee',
+          name: '用户管理',
+          summary: '员工管理.'
+        },
+        // {
+        //   id: 'config',
+        //   name: '系统设置',
+        //   summary: '系统设置.'
+        // }
+      ]
+    }
   ];
 
 const ALL_FUNCTIONS_ITEM = FUNCTIONS.reduce(

@@ -1,119 +1,67 @@
 
-    <div class="pb-3 context-view-head">
-        <div class="head-nav">
-       
-                <h3>
-                    12,750 repository results
-                </h3>
+<div class="d-flex" style="padding: 0 5px;">
+
+   
+    <h2>共找到 {{list.length}} 个用户</h2>
+    <div class="flex-auto flex-right-center">
+        <button (click)="add()" mat-raised-button color="primary">添加用户</button>
+    </div>
+
   
-            <div class="flex-auto">
-
-            </div>
-
-            <div class="actions">
-                <button mat-icon-button routerLink="edit" aria-label="Example icon-button with a menu">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-            </div>
-
-              
-        </div>
-
-
-    </div>
-<div class="context-view-body">
-
-<div class="context-view-master">
-<div class="px-2 view-context">
-
-
-    <ul class="repo-list" style="margin-top: -16px">
-        <li class="repo-list-item hx_hit-repo d-flex flex-justify-start py-4 public source">
-            <div class="flex-shrink-0 mr-2">
-                
-            </div>
-
-            <div class="mt-n1">
-                <div class="f4 text-normal">
-                    <a class="v-align-middle">
-                        corp name
-                    </a>
-                    <p class="mb-1">
-                        descript
-                    </p>
-                    <div>
-                        tags
-                    </div>
-                    <div class="d-flex flex-wrap text-small text-gray">
-                        <div class="mr-3">
-                            date
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-
-        <li class="repo-list-item hx_hit-repo d-flex flex-justify-start py-4 public source">
-            <div class="flex-shrink-0 mr-2">
-
-            </div>
-
-            <div class="mt-n1">
-                <div class="f4 text-normal">
-                    <a class="v-align-middle">
-                        corp name
-                    </a>
-                    <p class="mb-1">
-                        descript
-                    </p>
-                    <div>
-                        tags
-                    </div>
-                    <div class="d-flex flex-wrap text-small text-gray">
-                        <div class="mr-3">
-                            date
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-
-        <li class="repo-list-item hx_hit-repo d-flex flex-justify-start py-4 public source">
-            <div class="flex-shrink-0 mr-2">
-            
-            </div>
-
-            <div class="mt-n1">
-                <div class="f4 text-normal">
-                    <a class="v-align-middle">
-                        corp name
-                    </a>
-                    <p class="mb-1">
-                        descript
-                    </p>
-                    <div>
-                        tags
-                    </div>
-                    <div class="d-flex flex-wrap text-small text-gray">
-                        <div class="mr-3">
-                            date
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
 </div>
 
 
- </div>  
- 
- 
- <div class="context-view-details" >
-    <div class="details-context">
-        asdf
-    </div>
- </div>
-</div>
+<mat-card class="flex-auto">
+<table mat-table [dataSource]="list">
+
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>登录名</th>
+        <td mat-cell *matCellDef="let element">{{element.username}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>姓名</th>
+        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef>电话</th>
+        <td mat-cell *matCellDef="let element">{{element.phone}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>邮件</th>
+        <td mat-cell *matCellDef="let element">{{element.email}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>   
+            <div class="flex-right-center">
+                <mat-slide-toggle (change)="showChange($event)" [checked]="showAll"></mat-slide-toggle>
+            </div>
+           </th>
+        <td mat-cell *matCellDef="let element; let i=index">
+            <div class="flex-right-center">
+                <button (click)="del(i)" mat-icon-button color="warn" aria-label="Example icon button with a menu icon">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button mat-icon-button color="accent" (click)="enable(i)" aria-label="Example icon button with a menu icon">
+                    <mat-icon *ngIf="element.enable">lock</mat-icon>
+                    <mat-icon *ngIf="!element.enable">lock_open</mat-icon>
+                  </button>
+                  <button (click)="resetPassword(i)" mat-icon-button color="accent" aria-label="Example icon button with a menu icon">
+                    <mat-icon>vpn_key</mat-icon>
+                  </button>
+                  <button mat-icon-button color="primary" aria-label="Example icon button with a menu icon">
+                    <mat-icon>menu</mat-icon>
+                  </button>
+            </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['id','name','phone','email','action']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['id','name','phone','email','action']"></tr>
+
+</table>
+
+</mat-card>

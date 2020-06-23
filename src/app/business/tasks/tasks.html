@@ -1,13 +1,23 @@
 
 
 
-<div class="Box mx-0 mt-0 mb-3 task-list ">
+<div class="Box mx-0 mt-0 mb-3 task-list">
   <div class="Box-header d-flex flex-items-center py-2 pl-md-0 pl-3">
     <label class="h6 pl-0 pl-md-4">
       任务列表
     </label>
+
+    <div class="flex-auto flex-right-center">
+      <button (click)="refreshTasks()" [disabled]="loadding" type="submit" title="sync" role="menuitem" class="d-flex btn btn-git btn-sm" data-hotkey="M">
+        <div class="mr-1" octicon="sync">
+       </div>
+      </button>
+    </div>
+
   </div>
 
+
+  
 
   <div class="Box-body p-0">
     <ul class="list-style-none bg-gray">
@@ -88,6 +98,13 @@
         </ul>
         
       </li>
+      
+      <li *ngIf="loadding && tasks?.length <=0" class="notifications-list-item p-0 pl-2 pb-2 pb-md-0 position-relative border-0  border-bottom border-gray-light flex-center">
+        <mat-spinner></mat-spinner>
+      </li>
     </ul>
   </div>
+</div>
+<div style="position: relative">
+  <ngx-ui-loader [loaderId]="'loader-01'"></ngx-ui-loader>
 </div>
