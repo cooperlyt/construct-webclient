@@ -61,11 +61,11 @@ const FUNCTIONS:  FunctionCategory[] =
       name: '消防质检',
       summary: '消防质检.',
       items: [
-        {
-          id: 'fire-templete',
-          name: '质检模版',
-          summary: '质检模版.'
-        },
+        // {
+        //   id: 'fire-templete',
+        //   name: '质检模版',
+        //   summary: '质检模版.'
+        // },
         {
           id: 'fire-business',
           name: '检测业务',
