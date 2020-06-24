@@ -1,3 +1,5 @@
+@import '../../../styles/constants';
+
 
 app-master-layout {
     display: flex;
@@ -26,7 +28,7 @@ app-master-layout {
 //     overflow-y: auto;
 //   }
   
-  @media (max-width: 720px) {
+  @media (max-width: $small-breakpoint-width) {
     app-master-layout {
       top: 92px;
     }
@@ -43,6 +45,44 @@ app-master-layout {
 
 app-navbar {
     color: #fff;
+}
+
+
+.docs-button[md-button], .docs-button[md-raised-button] {
+  text-transform: uppercase;
+}
+
+h1, h2 {
+  font-weight: 400;
+}
+
+.docs-primary-header {
+  padding-left: 20px;
+
+  h1 {
+    font-weight: 300;
+    margin: 0;
+    padding: 28px 8px;
+    font-size: 20px;
+  }
+}
+
+.docs-primary-header {
+  background: #3f51b5;;
+
+  h1 {
+    color: #fff;
+  }
+}
+
+// These styles are for controlling SVGs without using the /deep/ selector
+
+.docs-component-category-list-card-image svg {
+  width: 100%;
+}
+
+.docs-footer-angular-logo svg {
+  height: 50px;
 }
 
 

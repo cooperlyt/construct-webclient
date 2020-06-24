@@ -1,0 +1,162 @@
+
+
+
+<div class="context-view-head">
+  <div class="head-nav">
+    <div class="head-toggle">
+        <mat-slide-toggle (toggleChange)="onShowDisabledChange()" [checked]="params.showDisabled"  matTooltip="是否显示已设置为禁用的项目">
+ 
+        </mat-slide-toggle>
+    </div>
+        <h3>
+      
+            共 {{dataPage.totalElements | number}} 个{{params.showDisabled ? '' : '生效'}}备案项目
+        </h3>  
+
+
+    <div class="flex-auto">
+    </div>
+
+    <div class="actions">
+        <mat-menu #createMenu="matMenu">
+            <button [routerLink]="['create','NEW']" mat-menu-item>新建</button>
+            <button [routerLink]="['create','MODIFY']"  mat-menu-item>改建</button>
+            <button [routerLink]="['create','BIG']"  mat-menu-item>扩建</button>
+            <button [routerLink]="['create','MOVE']"  mat-menu-item>迁建</button>
+            <button [routerLink]="['create','TEMP']"  mat-menu-item>临建</button>
+          </mat-menu>
+        <button  [matMenuTriggerFor]="createMenu" mat-icon-button color="primary"  aria-label="Example icon-button with a menu">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+  </div>
+
+
+
+  <mat-menu #classMenu="matMenu">
+    <button mat-menu-item (click)="onClassChange(null)" >全部类型</button>
+    <button  [class.mat-selected] ="type.key == params.projectClass" *ngFor="let type of dataUtil.projectMainTypes" mat-menu-item  (click)="onClassChange(type.key)">{{type.label}}</button>
+   </mat-menu>
+
+   <mat-menu #propertyMenu="matMenu">
+       <button mat-menu-item (click)="onPropertyChange(null)" >全部性质</button>
+       <button mat-menu-item *ngFor="let property of dataUtil.projectProperties" (click)="onPropertyChange(property.key)" [class.mat-selected] ="property.key == params.property" >{{property.label}}</button>
+   </mat-menu>
+
+
+    <div class="head-tab-menu">
+        <div class="head-tab-items">
+                <a class="head-tab-item selected" (click)="onPropertyChange(null)"  [class.selected]="!params.property">
+                    全部
+                </a>
+
+                <a class="head-tab-item" (click)="onPropertyChange(property.key)" [class.selected]="params.property == property.key" *ngFor="let property of dataUtil.projectProperties">
+                    {{property.label}}
+                </a>
+        </div>
+
+        <div class="head-filter-bar property-filter-bar">
+            <a [matMenuTriggerFor]="propertyMenu" class="filter-menu" 
+            [class.filtered]="!!params.property">
+            <span *ngIf="params.property">{{params.property | projectPropertyLabel}}</span>
+            <span *ngIf="!params.property">全部性质</span>
+        </a>
+        </div>
+
+
+        <div class="head-filter-bar">
+            <a [matMenuTriggerFor]="classMenu" class="filter-menu" 
+                [class.filtered]="!!params.projectClass">
+                <span *ngIf="params.projectClass">{{params.projectClass | projectTypeClassLabel}}</span>
+                <span *ngIf="!params.projectClass">全部类型</span>
+            </a>
+
+        </div>
+
+    </div> 
+</div>
+
+<div class="context-view-body" >
+<div *ngIf="!dataPage.empty" class="context-view-master">
+    <div class="px-2 view-context">
+        <ul class="repo-list">
+            <li *ngFor="let item of dataPage.content"  class="repo-list-item hx_hit-repo d-flex flex-justify-start py-4 public source">
+                <div class="flex-shrink-0 mr-2">
+                    <fa-icon [class.red-text]="item.info.importantType != 'NORMAL'" [icon]="faProjectDiagram"></fa-icon>
+                </div>
+
+                <div class="mt-n1">
+                    <div class="f4 text-normal project-title">
+                        <a class="v-align-middle" [class.line-through]="!item.enable"  [routerLink]="'details/' + item.code + '/info'">
+                          {{item.code}} / <span [class.line-through]="!item.enable">{{item.info.name}}</span> 
+                        </a>
+                        <span class="badge badge-info badge-pill">{{item.info.property | projectPropertyLabel}}</span>
+                     
+             
+                    </div>
+                    <p class="mb-1" [class.line-through]="!item.enable">
+                        项目<ng-container *ngIf="item.info.importantType != 'NORMAL'">为<strong>{{item.info.importantType | improtantTypeLabel}}</strong> 文号: <strong> {{item.info.importantFile}} </strong> </ng-container> 
+                        <descript-field [field]="item.info.address" suffix=",">位于</descript-field>工程类别为: <strong>{{item.info.type | projectTypeLabel}}  {{item.info.typeLevel | projectTypeLevelLabel}}</strong>
+                        <descript-field [field]="item.info.landArea | number " suffix="平方米,">占地</descript-field>
+
+
+                        <descript-field [field]="item.info.costs | number" suffix="万元,">工程造价</descript-field>
+                        <ng-container *ngIf="item.info.beginDate || item.info.completeDate">计划</ng-container>
+                        <descript-field [field]="item.info.beginDate | date:'yyyy年MM月dd日'" suffix="开工,">于</descript-field>
+                        <descript-field [field]="item.info.completeDate | date:'yyyy年MM月dd日'" suffix="竣工.">于</descript-field>
+                    </p>
+                    <div>
+    
+                        <div class="corp-badges">
+
+                            <a [routerLink]="'/function/corp/details/' + corp.code + '/info'" *ngFor="let corp of item.corp.corpSummary" class="badge" [class.badge-primary]="corp.property == 'Developer'" [class.badge-default]="corp.property != 'Developer'">
+                                {{corp.property | joinTypeLabel}} - {{corp.name}}
+                            </a>
+                            
+                       
+                        </div>
+                        <div class="d-flex flex-wrap text-small text-gray">
+                            <div class="mr-3">
+                                备案时间:{{item.regTime | date:'yyyy年MM月dd日'}}
+                            </div>
+                        </div> 
+                    </div>
+    
+                </div>
+            </li>
+        </ul>
+
+        <mat-paginator [length]="dataPage.totalElements"
+        hidePageSize="true"
+        showFirstLastButtons="true"
+        [pageIndex]="dataPage.number"
+        (page)="onPageChange($event)"
+        [pageSize]="dataPage.size">
+        </mat-paginator>
+    </div>
+
+</div>
+
+<div class="px-2 context-view-master" *ngIf="dataPage.empty">
+    <div class="blankslate flex-auto" >
+        <span octicon="search" class="blankslate-icon" width="32"></span>
+        <h3>没有找到符合条件的参建单位。</h3>
+        你可以 <a routerLink="edit"> 创建 </a> 项目备案
+    </div>
+</div>
+
+
+<div class="context-view-details" >
+    <div class="details-context">
+        <ul class="filter-list small">
+            <li *ngFor="let type of dataUtil.projectMainTypes" >
+                <a (click)="onClassChange(type.key)"  class="filter-item" [class.selected]="type.key == params.projectClass">
+                    <span *ngIf="type.key == params.projectClass" octicon="x" class="float-right"></span>
+                    {{type.label}}
+                </a>
+            </li>
+        </ul>     
+    </div>
+ </div>
+
+</div>

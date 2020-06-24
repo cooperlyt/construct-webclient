@@ -1,0 +1,70 @@
+
+
+<h1 mat-dialog-title class="deep-orange-text">{{data.id ? '编辑员工' : '增加员工'}}</h1>
+<div mat-dialog-content >
+
+  <form [formGroup]="employeeForm">
+  <div class="row">
+    <div class="col-sm-6">
+      <mat-form-field>
+        <mat-label>姓名</mat-label>
+        <input matInput formControlName="name" required>
+        <mat-error *ngIf="employeeForm?.get('name').hasError('required')">
+          姓名 <strong>不能为空</strong>
+        </mat-error>
+        <mat-error *ngIf="employeeForm?.get('name').hasError('maxlength')">
+          姓名长度不能超过 <strong>32</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-sm-6">
+      <mat-form-field>
+        <mat-label>联系电话</mat-label>
+        <input matInput formControlName="phone" required>
+  
+        <mat-error *ngIf="employeeForm?.get('phone').hasError('required')">
+          联系电话 <strong>不能为空</strong>
+        </mat-error>
+        <mat-error *ngIf="employeeForm?.get('phone').hasError('maxlength')">
+          电话长度不能超过 <strong>16</strong>
+        </mat-error>
+  
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <mat-form-field>
+        <mat-label>证件</mat-label>
+  
+  
+        <mat-select formControlName="idType" required>
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let type of dataUtils.personIdType" [value]="type.key">
+              {{type.label}}
+            </mat-option>
+      </mat-select>
+        <mat-error *ngIf="employeeForm?.get('idType').hasError('required')">
+          请选择证件类型
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-sm-8">
+      <mat-form-field>
+        <mat-label>证件编号</mat-label>
+        <input matInput formControlName="idNumber">
+        <mat-error *ngIf="employeeForm?.get('idNumber').hasError('maxlength')">
+          证件编号长度不能超过 <strong>32</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()" cdkFocusInitial>取消</button>
+  <button mat-button [mat-dialog-close]="employeeForm.value" [disabled]="!employeeForm?.valid">确认</button>
+</div>

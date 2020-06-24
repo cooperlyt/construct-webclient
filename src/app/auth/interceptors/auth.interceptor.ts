@@ -52,7 +52,6 @@ export class AuthInterceptor implements HttpInterceptor {
     if (!this.inflightAuthRequest) {
       this.inflightAuthRequest = authService.getAccessToken();
     }
-    console.log(" Http Client AuthInterceptor 1 ");
     return this.inflightAuthRequest.pipe(
       switchMap((newToken: string) => {
         // unset request inflight
@@ -76,6 +75,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }
   
         if (!authReq.headers.has('Accept')) {
+          console.log("add accept json:" + authReq.url);
           authReq = authReq.clone({ headers: authReq.headers.set('Accept', 'application/json') });
         }
         return next.handle(authReq)

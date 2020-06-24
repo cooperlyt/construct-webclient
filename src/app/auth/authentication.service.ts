@@ -6,6 +6,16 @@ import { tap, share, map, catchError  } from "rxjs/operators";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 
+export declare class UserInfo{
+  authorities: string[];
+  client_id: string;
+  exp: number;
+  jti: string;
+  name: string;
+  scope: string[];
+  user_name: string;
+
+}
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +35,7 @@ export class AuthenticationService {
       headers: new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
       'Authorization': 'Basic '+btoa(`${environment.clientId}:${environment.clientPassword}`)})
     }
-    return this._http.post(`${environment.apiUrl}/auth/auth/oauth/token`, 
+    return this._http.post(`${environment.apiUrl}/authenticationservice/oauth/token`, 
       params.toString(), httpOptions).pipe(
         tap( (res:any) => {
           localStorage.setItem('refresh_token',res.refresh_token);
@@ -71,7 +81,7 @@ export class AuthenticationService {
       headers: new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
       'Authorization': 'Basic '+btoa(`${environment.clientId}:${environment.clientPassword}`)})
     }
-    return this._http.post(`${environment.apiUrl}/auth/auth/oauth/token`, 
+    return this._http.post(`${environment.apiUrl}/authenticationservice/oauth/token`, 
       params.toString(), httpOptions).pipe(
         share(),
         catchError(err => {
@@ -94,7 +104,11 @@ export class AuthenticationService {
     localStorage.clear();
   }
 
-  getUserInfo(): Observable<any>{
+  changePassword(oldPwd: string, newPwd: string):Observable<any>{
+    return this._http.post<any>(`${environment.apiUrl}/authenticationservice/auth/change/${oldPwd}`,newPwd);
+  }
+
+  getUserInfo(): Observable<UserInfo>{
     return this.getAccessToken().pipe(
       map(res => {
         const helper = new JwtHelperService();
@@ -102,6 +116,10 @@ export class AuthenticationService {
       })
     );
     //return this._http.get(`${environment.apiUrl}/auth/auth/user`);
+  }
+
+  getRemoteUserName(id:string):Observable<{user_name:string,name:string}>{
+    return this._http.get<{user_name:string, name:string}>(`${environment.apiUrl}/authenticationservice/auth/user/${id}/name`);
   }
 
 }

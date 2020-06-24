@@ -1,0 +1,14 @@
+<h1 mat-dialog-title class="deep-orange-text">{{data.title}}</h1>
+<div mat-dialog-content>
+  <p >{{data.description}}</p>
+</div>
+<div *ngIf="data.confirm">
+  <p>请输入 <strong>{{data.confirm}}</strong> 确认此操作</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="confirmInput">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()" cdkFocusInitial>取消</button>
+  <button mat-button [disabled]="confirmDisalbed" color="warn" (click)="onConfirmClick()" >确认</button>
+</div>

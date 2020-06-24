@@ -1,5 +1,7 @@
 
-<mat-sidenav-container class="docs-component-viewer-sidenav-container">
+<mat-sidenav-container class="docs-component-viewer-sidenav-container" [style.padding-top.px] = "padding">
+
+
     <!-- If on small screen, menu resides in drawer -->
     <mat-sidenav #sidenav class="docs-component-viewer-sidenav"
                 *ngIf="(isScreenSmall | async)"
@@ -9,8 +11,11 @@
                 [fixedTopGap]="(isExtraScreenSmall | async) ? 92 : 56">
       <app-function-nav></app-function-nav>
     </mat-sidenav>
-    <div class="docs-component-sidenav-content">
-      <app-function-page-header (toggleSidenav)="toggleSidenav(sidenav)"></app-function-page-header>
+    <div class="docs-component-sidenav-content" >
+
+      
+      <app-function-page-header (heightChange)="heightChange($event)" (toggleSidenav)="toggleSidenav(sidenav)"></app-function-page-header>
+ 
       <div class="docs-component-sidenav-inner-content">
         <main class="docs-component-sidenav-body-content">
           <!-- If on large screen, menu resides to left of content -->
@@ -18,7 +23,10 @@
             *ngIf="(isScreenSmall | async) === false"
             >
           </app-function-nav>
-          <router-outlet></router-outlet>
+          <div class="function-body">
+            <router-outlet></router-outlet>
+          </div>
+          
         </main>
         <app-footer></app-footer>
       </div>

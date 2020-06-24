@@ -1,0 +1,15 @@
+version: '2'
+services:
+
+
+  constructwebclient:
+      image: coopersoft/construct-webclient:snapshot
+      environment:
+        API_URL: 'http://192.168.1.21:5555'
+        FILE_URL: 'http://192.168.1.21:6699'
+      ports:
+        - "5200:5200"
+
+
+
+

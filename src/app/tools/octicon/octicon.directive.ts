@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, Renderer2, OnInit } from '@angular/core';
+import { Directive, Input, ElementRef, Renderer2, OnInit, NgModule } from '@angular/core';
 import * as octicons from 'octicons';
 
 @Directive({
@@ -23,7 +23,16 @@ export class OcticonDirective implements OnInit{
     if (this.width) {
         this.renderer.setStyle(icon, 'width', this.width);
         this.renderer.setStyle(icon, 'height', '100%');
+        this.renderer.setAttribute(icon, "height", this.width.toString());
+        this.renderer.setAttribute(icon, "width", this.width.toString())
     }
 }
 
 }
+
+
+@NgModule({
+  declarations: [OcticonDirective],
+  exports: [OcticonDirective],
+})
+export class OcticonModule {}

@@ -1,0 +1,345 @@
+
+
+<ngx-ui-loader></ngx-ui-loader>
+
+<div class="Subhead">
+    <h2 class="Subhead-heading">{{!!corp ? '编辑' : '创建'}}参建单位备案</h2>
+
+    <p *ngIf="!corp" class="Subhead-description">
+        每个参建单位可以有多种参建角色，如果只是想新增一种参建角色，请修改原参建单位.
+    </p>
+
+    <p *ngIf="!!corp" class="Subhead-description">
+        请不要试图用更改名称的方式来达到成为其它单位的目地! 更改单位信息并不会更改曾经参与的历史业务数据中的单位信息,它们会保持业务建立时的单位情况.如需更改业务中的信息还需要运行相应的更正或变更业务! 
+    </p>
+
+
+</div>
+
+
+<div class="paper-page">
+
+    <mat-card *ngIf="!businessForm.get('info')">
+        <mat-card-header>
+            <mat-card-title>{{corp.info.name}}</mat-card-title>
+
+        </mat-card-header>
+
+        <mat-card-content>
+            
+            <ul class="striped list-unstyled field-info-list">
+
+                <li>
+                    <strong>{{corp.info.groupIdType | groupCardLabel}}：</strong>{{corp.info.groupId}}
+                </li>
+   
+                <li>
+                    <strong>法    人：</strong>{{corp.info.ownerName}}
+                </li>
+                <li>
+                    <strong>{{corp.info.ownerIdType | personCardLabel}}：</strong>{{corp.info.ownerId}}
+                </li>
+                <li>
+                    <strong>地    址：</strong>{{corp.info.address}}
+                </li>
+                <li>
+                    <strong>联系电话：</strong>{{corp.info.tel}}
+                </li>
+            </ul>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="infoEdit()" color="primary">编辑基本信息</button>
+        </mat-card-actions>
+    </mat-card>
+
+<form id="corp-form" [formGroup]="businessForm"  (ngSubmit)="onSubmit()">
+
+
+
+
+    <mat-card *ngIf="businessForm.get('info')"  formGroupName="info">
+        <mat-card-header>
+            <mat-card-title>基本信息</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <mat-form-field>
+                <mat-label>名称</mat-label>
+                <input matInput formControlName="name" required>
+            
+                <mat-error *ngIf="businessForm.get('info').get('name').hasError('required')">
+                    企业名称 <strong>不能为空</strong>
+                </mat-error>
+                <mat-error *ngIf="businessForm.get('info').get('name').hasError('maxlength')">
+                    名称长度不能超过 <strong>128</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="row">
+                <mat-form-field class="col-sm-4">
+                    <mat-label>证件类型</mat-label>
+    
+                    <mat-select formControlName="groupIdType" required>
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let type of dataUtils.groupIdTypes" [value]="type.key">
+                            {{type.label}}
+                          </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="businessForm.get('info').get('groupIdType').hasError('required')">请选择证件类型</mat-error>
+                </mat-form-field>
+
+
+                <mat-form-field class="col-sm-8">
+                    <mat-label>证件编号</mat-label>
+                    <input [errorStateMatcher]="groupNumberParentMatcher" matInput formControlName="groupId" required>
+                    <mat-error *ngIf="businessForm.get('info').get('groupId').hasError('required')">
+                        编号 <strong>不能为空</strong>
+                    </mat-error>
+                    <mat-error *ngIf="businessForm.get('info').get('groupId').hasError('maxlength')">
+                        编号长度不能超过 <strong>32</strong>
+                    </mat-error>
+                    <mat-error *ngIf="businessForm.get('info').hasError('group-number')">
+                        此编号的单位已经存在
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+
+
+            <div class="row">
+
+                <mat-form-field class="col-md-3">
+                    <mat-label>法人姓名</mat-label>
+                    <input matInput formControlName="ownerName" required>
+                    <mat-error *ngIf="businessForm.get('info').get('ownerName').hasError('required')">
+                        姓名 <strong>不能为空</strong>
+                    </mat-error>
+                    <mat-error *ngIf="businessForm.get('info').get('ownerName').hasError('maxlength')">
+                        姓名 <strong>32</strong>
+                    </mat-error>
+
+                </mat-form-field>
+
+                <mat-form-field class="col-md-3 col-sm-4">
+                    <mat-label>法人证件类型</mat-label>
+    
+                    <mat-select formControlName="ownerIdType" required>
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let type of dataUtils.personIdType" [value]="type.key">
+                            {{type.label}}
+                          </mat-option>
+                    </mat-select>
+
+                    <mat-error *ngIf="businessForm.get('info').get('ownerIdType').hasError('required')">请选择证件类型</mat-error>
+
+                </mat-form-field>
+
+                <mat-form-field class="col-md-6 col-sm-8" required >
+                    <mat-label>法人证件编号</mat-label>
+                    <input matInput [errorStateMatcher]="identityNumberParentMatcher" formControlName="ownerId" required>
+                    <mat-error *ngIf="businessForm.get('info').get('ownerId').hasError('required')">
+                        编号 <strong>不能为空</strong>
+                    </mat-error>
+                    <mat-error *ngIf="businessForm.get('info').get('ownerId').hasError('maxlength')">
+                        编号长度不能超过 <strong>32</strong>
+                    </mat-error>
+                    <mat-error *ngIf="businessForm.get('info').hasError('identity')">
+                        身份证号码不合法 
+                    </mat-error>
+                </mat-form-field>
+
+
+     
+            </div>
+
+          
+
+           
+            <div class="row">
+               
+                <mat-form-field class="col-sm-4">
+                    <mat-label>联系电话</mat-label>
+                    <input matInput formControlName="tel">
+                    <mat-error *ngIf="businessForm.get('info').get('tel').hasError('maxlength')">
+                        电话长度不能超过 <strong>16</strong>
+                    </mat-error>
+                </mat-form-field>
+     
+
+                <mat-form-field class="col-sm-8">
+                    <mat-label>地址</mat-label>
+                    <input matInput formControlName="address">
+                    <mat-error *ngIf="businessForm.get('info').get('address').hasError('maxlength')">
+                        地址长度不能超过 <strong>256</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+      
+ 
+        </mat-card-content>
+
+
+        <mat-card-actions *ngIf="!!corp">
+            <button type="button" mat-raised-button (click)="cancelInfoEdit()" color="warn">放弃编辑</button>
+        </mat-card-actions>
+    </mat-card>
+
+
+
+
+    <mat-card *ngIf="!!oldJoinTypes &&  oldJoinTypes.length > 0">
+
+        <mat-card-content>
+
+            <table mat-table [dataSource]="oldJoinTypes">
+
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef> 类型 </th>
+                    <td [class.line-through]="element.del" mat-cell *matCellDef="let element">  {{element.type | joinTypeLabel}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="level">
+                    <th mat-header-cell *matHeaderCellDef> 资质等级 </th>
+                    <td [class.line-through]="element.del" mat-cell *matCellDef="let element">  {{element.level | levelLabel : element.type}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="number">
+                    <th mat-header-cell *matHeaderCellDef>资质证书号</th>
+                    <td [class.line-through]="element.del" mat-cell *matCellDef="let element"> {{element.number}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="limit">
+                    <th mat-header-cell *matHeaderCellDef>到期时间</th>
+                    <td [class.line-through]="element.del" mat-cell *matCellDef="let element">{{element.limit | date: 'yyyy年MM月dd日'}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th class="actions" mat-header-cell *matHeaderCellDef></th>
+                    <td class="actions" mat-cell *matCellDef="let element">
+                        <button *ngIf="!element.del" type="button" mat-icon-button (click)="addJoinType(element.type)">
+                            <mat-icon color="primary">edit</mat-icon>
+                        </button>
+                        
+                        <button *ngIf="!element.del" type="button" mat-icon-button (click)="deleteType(element.type)">
+                            <mat-icon color="warn">delete</mat-icon>
+                        </button>
+        
+                        <button *ngIf="element.del" type="button" mat-icon-button (click)="restoreType(element.type)">
+                            <mat-icon color="primary">restore</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="['type','level','number','limit','actions']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['type','level','number','limit','actions'];"></tr>
+            </table>
+        </mat-card-content>
+
+    </mat-card>
+
+
+    <ng-container formArrayName="regs" >
+   
+
+        <mat-card *ngFor="let reg of regsForm.controls; let i=index">
+            <mat-card-header class="tools-card-header">
+                <mat-card-title>{{regsForm.value[i].property | joinTypeLabel}} </mat-card-title>
+                <div class="actions">
+                    <button *ngIf="typeIsOld(regsForm.value[i].property)" 
+                    (click)="restoreType(regsForm.value[i].property)"
+                    color="primary" type="button" mat-icon-button >
+                        <mat-icon>restore</mat-icon>
+                    </button>
+
+                    <button type="button" (click)="deleteType(regsForm.value[i].property)" mat-icon-button color="warn" >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+
+         
+            
+            </mat-card-header>
+
+
+
+
+            <mat-card-content [formGroupName]="i">
+                <div formGroupName="info" class="row">
+                    <mat-form-field class="col-md-2">
+                        <mat-label>资质等级 </mat-label>
+         
+
+                        <mat-select formControlName="level" required>
+                            <mat-option>--</mat-option>
+                 
+                            <mat-option *ngFor="let type of regsForm.value[i].property | levelKeyValue" [value]="type.key">
+                                {{type.label}} 
+                            </mat-option>
+                        </mat-select>
+
+                        <mat-error *ngIf="reg.get('info').get('level').hasError('required')">
+                            请选择资质等级
+                        </mat-error>
+                    </mat-form-field>
+        
+                    <mat-form-field class="col-md-6">
+                        <mat-label>资质证书编号</mat-label>
+                        <input matInput formControlName="levelNumber">
+                        <mat-error *ngIf="reg.get('info').get('levelNumber').hasError('maxlength')">
+                            编号长度不能超过 <strong>32</strong>
+                        </mat-error>
+    
+                    </mat-form-field>
+        
+                    <mat-form-field class="col-md-4">
+                        <mat-label>资质证书期限</mat-label>
+                        <input matInput  [matDatepicker]="picker" formControlName="regTo" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker  #picker></mat-datepicker>
+                        <mat-error *ngIf="reg.get('info').get('regTo').hasError('required')">
+                            请填写证书期限
+                        </mat-error>
+                    </mat-form-field>    
+                </div>
+            </mat-card-content>
+
+
+
+        </mat-card>
+
+    </ng-container>
+
+
+</form>
+    <mat-card class="type-select-card" [class.invalid]="!joinTypeVaild " *ngIf="joinTypes.length > 0">
+
+        
+        <div class="type-select-label">
+            <h2>添加参建角色</h2>
+            <div class="mat-error">
+                请添加至少一个参建角色！
+            </div>
+        </div>
+        
+
+        <div class="flex-auto"></div>
+        
+        <button mat-raised-button color="primary"  [matMenuTriggerFor]="typeMenu">
+            选择参建角色
+        </button>
+        <mat-menu #typeMenu="matMenu">
+            <button type="button" mat-menu-item (click)="addJoinType(type.id)"  *ngFor="let type of joinTypes">{{type.name}}</button>
+        </mat-menu>
+    </mat-card>
+
+
+
+</div>
+
+<hr/>
+
+<!--  -->
+<button mat-raised-button color="primary" [disabled]="!valid" form="corp-form"  type="submit" >
+   {{corp ? '修改':'建立'}} 参建单位
+</button>

@@ -1,0 +1,363 @@
+
+// 修改全局样式 适应 mdb
+body{
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    // background-color: #fff;
+}
+
+.mat-body, .mat-body-1, .mat-typography {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fafafa;
+}
+
+button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disabled), [type="submit"]:not(:disabled) {
+    cursor: pointer;
+}
+
+button:focus {
+    outline: 0 !important;
+}
+
+.mat-form-field {
+    display: block !important;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+// mdb 通用样式
+
+.info-color {
+    background-color: #33b5e5 !important;
+}
+
+.primary-color {
+    background-color: #3f51b5 !important;
+}
+
+
+.alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.alert-primary {
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+
+.alert-secondary {
+    color: #383d41;
+    background-color: #e2e3e5;
+    border-color: #d6d8db;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+.alert-light {
+    color: #818182;
+    background-color: #fefefe;
+    border-color: #fdfdfe;
+}
+
+.alert-dark {
+    color: #1b1e21;
+    background-color: #d6d8d9;
+    border-color: #c6c8ca;
+}
+
+.alert-dismissible {
+    padding-right: 4rem;
+}
+
+.alert-dismissible .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.75rem 1.25rem;
+    color: inherit;
+}
+
+.close {
+    float: right;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}
+
+.close:hover {
+    color: #000;
+    text-decoration: none;
+}
+
+.close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {
+    opacity: .75;
+}
+
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+
+
+.view {
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+}
+
+.view .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background-attachment: fixed;
+}
+
+.rgba-stylish-strong {
+    background-color: rgba(62,69,81,.7);
+}
+
+.mdb h1, h2, h3, h4, h5, h6 {
+    font-weight: 300;
+}
+
+.mdb h5, .h5 {
+    font-size: 1.25rem;
+}
+
+.mdb h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.mdb h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.list-inline, .list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
+
+ul.striped li {
+    padding: .5rem;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+}
+
+// mdb 组件适配
+.mat-card {
+    margin: 10px 0;
+  }
+  
+.mat-form-field {
+    line-height: 1.5;
+}
+  
+
+.mdb.mat-card{
+    padding: 0;
+}
+
+.mdb.mat-card .mat-card-title:first-child {
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+}
+
+.mdb.mat-card .mat-card-title h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+    margin-bottom: 0 !important;
+}
+
+
+.mdb.mat-card .mat-card-content{
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.25rem;
+}
+
+
+
+
+.mat-card table{
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+
+.img-thumbnail {
+    padding: .25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    max-width: 100%;
+    height: auto;
+}
+
+.mat-select-panel .search-box{
+    padding: 16px 16px;
+}   
+
+.small-button.mat-button-base{
+    line-height: 26px !important;
+}
+
+.small-button.mat-icon-button{
+    width: 26px !important;
+    height: 26px !important;
+}
+
+.zoom:hover img, .zoom:hover video {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+
+.zoom img, .zoom video {
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+}
+
+
+  
+  .example-headers-align .mat-expansion-panel-header-title,
+  .example-headers-align .mat-expansion-panel-header-description {
+    flex-basis: 0;
+  }
+  
+  .example-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+
+h3.docs-api-h3 {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 32px;
+    margin: 40px 0 20px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+
+    .mat-checkbox label{
+        font-weight: 400;
+    }
+    
+}
+
+.mdb.card-body {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-radius: 0 !important;
+}
+
+.mdb.card{
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,0.125);
+    border-radius: .25rem;
+}
+
+.button-row button{
+    display: table-cell; 
+    margin-right: 8px;
+
+}
+
+@media (min-width: 1200px){
+    .body-sn{
+        margin-right: 6%;
+        margin-left: 6%;
+    }
+}
+
+@media (min-width: 992px){
+    .body-sn {
+        margin-right: 5%;
+        margin-left: 5%;
+    }
+    
+}
+
+@media (min-width: 600px){
+    .body-sn {
+        margin-right: 2%;
+        margin-left: 2%;
+    }
+}
+
+@media (max-width: 1440px){
+    .body-sn {
+        padding-left: 0;
+    }
+}
+
+
+
+
+  @media only screen and (max-width: 600px) {
+
+    .cdk-overlay-connected-position-bounding-box {
+        left: 0 !important;
+    }
+    
+    .menu-screen {
+      position: fixed;
+      max-width: unset !important;
+      width: 100vw;
+    } 
+  }
+

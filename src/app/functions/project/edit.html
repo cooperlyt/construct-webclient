@@ -1,0 +1,89 @@
+<!-- <ngx-ui-loader></ngx-ui-loader>
+
+<div class="Subhead">
+  <h2 class="Subhead-heading">{{!!project ? '编辑' : '创建'}}项目备案</h2>
+
+  <p *ngIf="!project" class="Subhead-description">
+      每个建设项目可以添加多个参建单位,至少要包含一个开发单位.
+  </p>
+
+  <p *ngIf="!!project" class="Subhead-description">
+      请不要试图用更改名称的方式来达到成为其它项目的目地! 更改项目信息并不会更改历史业务数据中的项目信息,它们会保持业务建立时的项目情况.如需更改业务中的信息还需要运行相应的更正或变更业务! 
+  </p>
+
+
+</div>
+
+<div class="edit-content">
+
+
+
+<div class="paper-page" >
+
+
+  <form id="project-form" [formGroup]="regForm"  (ngSubmit)="onSubmit()">
+    <mat-card *ngIf="regForm.get('info')"  formGroupName="info">
+
+      <mat-card-header>
+        <mat-card-title>基本信息</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content >
+
+
+
+      </mat-card-content>
+    </mat-card>
+
+
+    <ng-container *ngIf="regForm.get('corp')" formGroupName="corp">
+      <ng-container formArrayName="corps">
+
+
+        <mat-card >
+          <mat-card-header  class="tools-card-header">
+            <mat-card-title>
+
+            </mat-card-title>
+            <mat-card-subtitle>
+
+            </mat-card-subtitle>
+
+            <div class="actions">
+
+
+            </div>
+          </mat-card-header>
+
+          <mat-card-content >
+
+
+          </mat-card-content>
+        </mat-card>
+
+
+      </ng-container>
+    </ng-container>
+
+
+
+
+
+
+  </form>
+
+  <div id="corp-info">
+
+  </div>
+
+
+  <hr/>
+
+
+<button mat-raised-button color="primary" [disabled]="!regForm.valid || !existsDeveloper" form="project-form"  type="submit" >
+   {{project ? '修改':'建立'}} 项目备案
+</button>
+</div>
+
+
+</div> -->

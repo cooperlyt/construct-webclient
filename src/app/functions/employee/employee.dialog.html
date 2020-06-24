@@ -1,0 +1,55 @@
+<h1 mat-dialog-title> {{data?.username ? '编辑' : '增加'}} {{data?.username}}</h1>
+<div mat-dialog-content>
+
+  <form [formGroup]="employeeForm">
+    <mat-form-field>
+      <mat-label>登录名</mat-label>
+      <input matInput formControlName="username" required>
+      <mat-error *ngIf="employeeForm.get('username').hasError('required')">
+        登录名 <strong>不能为空</strong>
+      </mat-error>
+      <mat-error *ngIf="employeeForm.get('username').hasError('maxlength')">
+        登录名长度不能超过 <strong>32</strong>
+      </mat-error>
+      <mat-error *ngIf="employeeForm.get('username').hasError('exists')">
+        登录名已经存在
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>电话</mat-label>
+      <input matInput formControlName="phone" required>
+      <mat-error *ngIf="employeeForm.get('phone').hasError('required')">
+        电话 <strong>不能为空</strong>
+      </mat-error>
+      <mat-error *ngIf="employeeForm.get('phone').hasError('maxlength')">
+        电话长度不能超过 <strong>16</strong>
+      </mat-error>
+      <mat-error *ngIf="employeeForm.get('phone').hasError('exists')">
+        电话号已经存在
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>姓名</mat-label>
+      <input matInput formControlName="name" required>
+      <mat-error *ngIf="employeeForm.get('name').hasError('required')">
+        姓名 <strong>不能为空</strong>
+      </mat-error>
+      <mat-error *ngIf="employeeForm.get('name').hasError('maxlength')">
+        姓名长度不能超过 <strong>32</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>邮件</mat-label>
+      <input matInput formControlName="email">
+  
+      <mat-error *ngIf="employeeForm.get('email').hasError('maxlength')">
+        邮件长度不能超过 <strong>32</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()" cdkFocusInitial>取消</button>
+  <button mat-button [disabled]="!employeeForm.valid" [mat-dialog-close]="employeeForm.value" >保存</button>
+</div>

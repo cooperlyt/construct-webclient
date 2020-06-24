@@ -1,0 +1,121 @@
+
+
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>参建单位</mat-card-title>
+      <mat-card-subtitle *ngIf="!existsDeveloper" class="mat-error">*至少要包含一个开发单位</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+      <div class="row">
+        <corp-select class="col-sm-6" [formControl]="corpCtl">
+        </corp-select>
+
+
+        <mat-form-field class="col-sm-3">
+          <mat-label>
+            参建类型
+          </mat-label>
+          <mat-select [formControl]="selectRegCtl" >
+            <mat-option>--</mat-option>
+            <ng-container *ngIf="selectCorp">
+              <mat-option *ngFor="let reg of selectCorp.regs" [value]="reg"> {{reg.property | joinTypeLabel}}</mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="col-sm-3  flex-right-center">
+          <button  type="button" [disabled]="!newCorpValid" (click)="addNewCorp()" mat-raised-button color="primary">添加参建单位</button>
+        </div>
+      </div>
+
+      <div class="mat-error" *ngIf="selectRegCtl.value && !newCorpValid">
+        此参建单位已添加!不可重复添加重复添加同一类型的同一参建单位.
+      </div>
+
+    </mat-card-content>
+
+
+  </mat-card>
+
+
+
+<div formGroupName="corp">
+  <mat-accordion formArrayName="corps"  class="example-headers-align">
+    <mat-expansion-panel expanded="true" [formGroupName]="i"  *ngFor="let corp of corpsForm.controls; let i=index">
+   
+      <mat-expansion-panel-header >
+  
+        <mat-panel-title>
+  
+  
+          {{editCorps[i].reg.property | joinTypeLabel}} - {{editCorps[i].corp.info.name}}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{editCorps[i].corp.info.groupIdType | groupCardLabel}}: {{editCorps[i].corp.info.groupId}}
+  
+       
+      
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+  
+  
+             
+      <div class="row">
+  
+  
+        <mat-form-field class="col-sm-4">
+          <mat-label>
+            外埠队伍审批手续
+          </mat-label>
+          <input matInput formControlName="outsideTeamFile">
+        </mat-form-field>
+        
+        <div class="check-edit-field col-sm-5">
+          <mat-checkbox formControlName="outLevel" (change)="outLevelCheckChange(i)">
+          </mat-checkbox>
+          <div class="checked-input">
+          <mat-form-field >
+            <mat-label>
+              越级审批文号
+            </mat-label>
+    
+            <input  matInput formControlName="outLevelFile">
+          </mat-form-field>
+          </div>
+        </div>
+  
+  
+  
+  
+      <mat-form-field class="col-sm-4">
+        <mat-label>
+            联系人
+        </mat-label>
+        <input matInput formControlName="contacts">
+      </mat-form-field>
+  
+      <mat-form-field class="col-sm-4">
+        <mat-label>
+          联系电话
+        </mat-label>
+        <input matInput formControlName="tel">
+      </mat-form-field>
+  
+    </div>
+  
+    <mat-action-row>
+  
+      <button type="button" (click)="delCorp(i)" mat-button color="warn" >
+        <mat-icon>delete</mat-icon>
+        移除
+      </button>
+    </mat-action-row>
+  
+    </mat-expansion-panel>
+  
+  
+  </mat-accordion>
+  </div>
+  

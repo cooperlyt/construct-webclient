@@ -1,0 +1,31 @@
+<h1 mat-dialog-title class="deep-orange-text">更改密码</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="myForm">
+    <mat-form-field>
+      <mat-label>原密码</mat-label>
+      <input matInput formControlName="old" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>新密码</mat-label>
+      <input matInput formControlName="password" required>
+      <mat-error *ngIf="myForm.hasError('required', 'password')">
+        请输入一个新密码
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>确认密码</mat-label>
+      <input matInput formControlName="confirmPassword"  [errorStateMatcher]="matcher">
+      <mat-error *ngIf="myForm.hasError('notSame')">
+        两次密码不匹配
+      </mat-error>  
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()" cdkFocusInitial>取消</button>
+  <button mat-button [disabled]="!myForm.valid" color="warn" (click)="onConfirmClick()" >确认</button>
+</div>
+
