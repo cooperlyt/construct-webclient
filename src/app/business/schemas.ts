@@ -25,6 +25,15 @@ export declare class ProcessInstance {
   tenantId: string;
 }
 
+export declare class BusinessOperation{
+  type: string;
+  time: Date;
+  empId: string;
+  empName: string;
+  taskName: string;
+  description: string;
+}
+
 export  class Task{
   id: string;
   name: string;

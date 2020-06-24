@@ -20,15 +20,17 @@ import { MatInputModule } from '@angular/material/input';
 import {MatSlideToggleModule, MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatCheckboxModule, MatCheckboxChange} from '@angular/material/checkbox';
+import {MatListModule} from '@angular/material/list';
 import { ConfirmDialogModule, ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { ToastrService } from 'ngx-toastr';
+import { NgxUiLoaderModule, NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 
 export declare class User{
   username:string;
   name:string;
-  enable:boolean;
+  enabled:boolean;
   email:string;
   phone:string;
   password:string;
@@ -73,7 +75,7 @@ export class UserService{
 
 
     search(enable:boolean, key?:string):Observable<User[]>{
-      let params = new HttpParams({encoder: new CustomEncoder()}).set("enable",enable ?  'false' : 'true');
+      let params = new HttpParams({encoder: new CustomEncoder()}).set("enable",enable ?  'true' : 'false');
       if (key){
           params = params.append('key',key);
       }
@@ -92,6 +94,22 @@ export class UserService{
     pwdReset(username:string):Observable<string>{
       return this._http.put<string>(`${environment.apiUrl}/authenticationservice/admin/hr/user/pwdreset/${username}`,null,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'})
     }
+
+    enable(username:string,enable:boolean):Observable<string>{
+      return this._http.put<string>(`${environment.apiUrl}/authenticationservice/admin/hr/user/${enable ? 'enable' : 'disable'}/${username}`,null,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'})
+    }
+
+    userRoles(username:string):Observable<UserRole[]>{
+      return this._http.get<UserRole[]>(`${environment.apiUrl}/authenticationservice/admin/hr/user/roles/${username}`)
+    }
+
+    addRole(username:string, role:string):Observable<string>{
+      return this._http.put<string>(`${environment.apiUrl}/authenticationservice/admin/hr/user/${username}/role/add/${role}`,null,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'})
+    }
+
+    removeRole(username:string, role:string):Observable<string>{
+      return this._http.put<string>(`${environment.apiUrl}/authenticationservice/admin/hr/user/${username}/role/remove/${role}`,null,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
+    }
 }
 
 @Component({
@@ -103,24 +121,24 @@ export class RoleDialog {
   roles:UserRole[];
 
   constructor(
-    private _http: HttpClient,
+    private _service: UserService,
     public dialogRef: MatDialogRef<EmployeeDialog>,
     @Inject(MAT_DIALOG_DATA) public data: string
   ){
-    this._http.get<UserRole[]>(`${environment.apiUrl}/authenticationservice/admin/hr/user/roles/${data}`).subscribe(
+    this._service.userRoles(data).subscribe(
       roles => this.roles = roles
     )
   }
 
 
   private add(role:Role){
-    this._http.put<string>(`${environment.apiUrl}/authenticationservice/admin/hr/user/${this.data}/role/add/${role.authority}`,null).subscribe(
+    this._service.addRole(this.data,role.authority).subscribe(
       result => {}
     )
   }
 
   private remove(role:Role){
-    this._http.put<string>(`${environment.apiUrl}/authenticationservice/admin/hr/user/${this.data}/role/remove/${role.authority}`,null).subscribe(
+    this._service.removeRole(this.data,role.authority).subscribe(
       result => {}
     )
   }
@@ -181,7 +199,7 @@ export class EmployeeSearchResolver implements Resolve<User[]>{
   ){}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): User[] | import("rxjs").Observable<User[]> | Promise<User[]> {
-    return this.service.search(route.queryParams['enable'],route.queryParams['key']);
+    return this.service.search(JSON.parse(route.queryParams['enable']),route.queryParams['key']);
   }
 
 }
@@ -210,8 +228,8 @@ export class EmployeeComponent extends SearchFunctionBase implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private _http: HttpClient,
     private _service: UserService,
+    private ngxLoader: NgxUiLoaderService,
     private _toastr: ToastrService,
     private _route: ActivatedRoute, 
     private _router: Router,
@@ -221,21 +239,26 @@ export class EmployeeComponent extends SearchFunctionBase implements OnInit {
 
   ngOnInit(): void {
     this._route.data.subscribe(data => this.list = data.list);
-    this._route.queryParams.subscribe(params => this.showAll = params['enable']);
+    this._route.queryParams.subscribe(params => this.showAll = JSON.parse(params['enable']));
   }
 
   showChange(event: MatSlideToggleChange){
-
-      this._router.navigate([],{relativeTo: this._route, queryParams: {enable: event.checked}, queryParamsHandling: 'merge' })
+    console.log(event.checked)
+    this._router.navigate([],{relativeTo: this._route, queryParams: {enable: event.checked}, queryParamsHandling: 'merge' })
 
   }
 
   refresh(){
+    this.ngxLoader.startBackgroundLoader("loader-01")
     this._route.params.subscribe(params => {
       if (params['key']){
+        this.ngxLoader.stopBackgroundLoader("loader-01");
         this._router.navigate([],{relativeTo: this._route, queryParams: {key: null}, queryParamsHandling: 'merge' })
       }else{
-        this._service.search(this.showAll).subscribe(result => this.list = result)
+        this._service.search(this.showAll).subscribe(result => {
+          this.list = result;
+          this.ngxLoader.stopBackgroundLoader("loader-01");
+        })
       }
     })
   }
@@ -248,19 +271,20 @@ export class EmployeeComponent extends SearchFunctionBase implements OnInit {
     }).afterClosed().pipe(
       switchMap(result => result ? this._service.add(result) : of(null))
     ).subscribe(result => {
-      this.refresh();
+      if (result)
+        this.refresh();
     });
   }
 
   enable(i:number){
     this.dialog.open(ConfirmDialogComponent,{width: '480px',data:{  
-      title: `${this.list[i].enable ? '禁用' : '启用'}确认`,
-      description: `将用把 ${this.list[i].name}  设置为 ${this.list[i].enable ? '禁用' : '启用'} 状态.`,
+      title: `${this.list[i].enabled ? '禁用' : '启用'}确认`,
+      description: `将用把 ${this.list[i].name}  设置为 ${this.list[i].enabled ? '禁用' : '启用'} 状态.`,
       result: this.list[i]
     }}).afterClosed().pipe(
-      switchMap(result => result ? this._http.put<string>(`${environment.apiUrl}/authenticationservice/admin/hr/user/${result.enable ? 'disable' : 'enable'}/${result.username}`,null,{headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'}) : of(null))
+      switchMap(result => result ? this._service.enable(result.username, !result.enable) : of(null))
     ).subscribe(result => {
-
+      if (result) this.refresh();
     })
   }
 
@@ -272,11 +296,12 @@ export class EmployeeComponent extends SearchFunctionBase implements OnInit {
     }}).afterClosed().pipe(
       switchMap(result => result ? this._service.delete(result.username) : of(null))
     ).subscribe(result => {
-      this.refresh();
+      if (result) this.refresh();
     })
   }
 
   resetPassword(i:number){
+    
     this.dialog.open(ConfirmDialogComponent,{width: '480px',data:{  
       title: `重置密码`,
       description: `将为用户 ${this.list[i].name} 重置密码,重置后密码为用户的电话号码.`,
@@ -284,7 +309,8 @@ export class EmployeeComponent extends SearchFunctionBase implements OnInit {
     }}).afterClosed().pipe(
       switchMap(result => result ? this._service.pwdReset(result.username)  : of(null))
     ).subscribe(result => {
-      this._toastr.info('密码已重置!')
+      if (result) this._toastr.info('密码已重置!');
+
     })
   }
 
@@ -315,6 +341,8 @@ const routes: Routes = [
     MatCheckboxModule,
     MatSlideToggleModule,
     MatButtonToggleModule,
+    MatListModule,
+    NgxUiLoaderModule,
     ConfirmDialogModule,
     RouterModule.forChild(routes)
   ],

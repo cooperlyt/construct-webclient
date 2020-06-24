@@ -3,7 +3,7 @@ import { catchError, map, tap, switchMap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpEventType, HttpParams } from "@angular/common/http";
 import { Observable, of, forkJoin } from 'rxjs';
-import { Task, ProcessDefinition, ProcessInstance, BusinessDocument, BusinessFile, BusinessDocumentBase } from './schemas';
+import { Task, ProcessDefinition, ProcessInstance, BusinessDocument, BusinessFile, BusinessDocumentBase, BusinessOperation } from './schemas';
 import { environment } from 'src/environments/environment';
 import { CustomEncoder } from '../shared/custom-encoder';
 import { SseService } from '../tools/sse.service';
@@ -186,6 +186,9 @@ export class CamundaRestService {
   }
 
 
+  businessOperations(id: number):Observable<BusinessOperation[]>{
+    return this.http.get<BusinessOperation[]>(`${environment.apiUrl}/camundasvr/publish/${id}/operations`);
+  }
 
   //Adapter api
   private adapterRestUrl = `${environment.apiUrl}/camundasvr/adapter/`;

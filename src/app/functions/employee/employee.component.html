@@ -16,7 +16,12 @@
 
     <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>登录名</th>
-        <td mat-cell *matCellDef="let element">{{element.username}}</td>
+        <td mat-cell *matCellDef="let element">
+            <span [class.line-through]="!element.enabled">
+                {{element.username}}
+            </span>
+            
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="name">
@@ -42,17 +47,18 @@
            </th>
         <td mat-cell *matCellDef="let element; let i=index">
             <div class="flex-right-center">
-                <button (click)="del(i)" mat-icon-button color="warn" aria-label="Example icon button with a menu icon">
+                <button (click)="del(i)" mat-icon-button color="warn" aria-label="删除">
                     <mat-icon>delete</mat-icon>
                   </button>
-                  <button mat-icon-button color="accent" (click)="enable(i)" aria-label="Example icon button with a menu icon">
-                    <mat-icon *ngIf="element.enable">lock</mat-icon>
-                    <mat-icon *ngIf="!element.enable">lock_open</mat-icon>
+    
+                  <button mat-icon-button color="accent" (click)="enable(i)" aria-label="禁用/启用">
+                    <mat-icon *ngIf="element.enabled">lock</mat-icon>
+                    <mat-icon *ngIf="!element.enabled">lock_open</mat-icon>
                   </button>
-                  <button (click)="resetPassword(i)" mat-icon-button color="accent" aria-label="Example icon button with a menu icon">
+                  <button (click)="resetPassword(i)" mat-icon-button color="accent" aria-label="重置密码">
                     <mat-icon>vpn_key</mat-icon>
                   </button>
-                  <button mat-icon-button color="primary" aria-label="Example icon button with a menu icon">
+                  <button (click)="roleChange(i)" mat-icon-button color="primary" aria-label="权限设置">
                     <mat-icon>menu</mat-icon>
                   </button>
             </div>
@@ -65,3 +71,7 @@
 </table>
 
 </mat-card>
+
+<div style="position: relative">
+    <ngx-ui-loader [loaderId]="'loader-01'"></ngx-ui-loader>
+</div>
