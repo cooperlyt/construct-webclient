@@ -38,7 +38,7 @@ import { HomeComponent } from './home/home.component';
 import { MasterLayoutComponent } from './layouts/master-layout/master-layout.component';
 import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
 import { PaperLayoutComponent } from './layouts/paper-layout/paper-layout.component';
-import { NavbarComponent } from './layouts/navbar/navbar.component';
+import { NavbarComponent, ChangePwdDialog } from './layouts/navbar/navbar.component';
 import { SidenavLayoutComponent, ComponentNav } from './layouts/sidenav-layout/sidenav-layout.component';
 import { FunctionPageHeaderComponent } from './layouts/function-page-header/function-page-header.component';
 import { FooterComponent } from './layouts/footer/footer.component';
@@ -48,6 +48,7 @@ import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher, MAT_DATE_LOCALE, DateA
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { paginatorCN } from './tools/paginator-cn/paginator-cn';
 import { DragulaModule } from 'ng2-dragula';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { DragulaModule } from 'ng2-dragula';
     SidenavLayoutComponent,
     ComponentNav,
     FunctionPageHeaderComponent,
-    FooterComponent
+    FooterComponent,
+    ChangePwdDialog
   ],
   imports: [
     HttpClientModule,
@@ -79,6 +81,7 @@ import { DragulaModule } from 'ng2-dragula';
     MatInputModule,
     MatCardModule,
     MatDialogModule,
+    MatMenuModule,
     FlexLayoutModule,
     MatPaginatorModule,
     QRCodeModule,
@@ -100,6 +103,9 @@ import { DragulaModule } from 'ng2-dragula';
     OcticonModule,
     NavigationFocusModule,
     AppRoutingModule,
+  ],
+  entryComponents:[
+    ChangePwdDialog
   ],
   providers: [Title,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

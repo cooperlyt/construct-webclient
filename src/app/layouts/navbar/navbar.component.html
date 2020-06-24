@@ -13,14 +13,25 @@
   
   <div class="flex-spacer"></div>
 
+  <mat-menu #userMenu="matMenu">
+    <button (click)="changePwd()" mat-menu-item>
+      <mat-icon width="18px" octicon="key"></mat-icon>
+      <span>更改密码</span>  
+    </button>
+    <button (click)="logout()" mat-menu-item>
+      <mat-icon width="18px" octicon="sign-out"></mat-icon>
+      <span>退出</span>
+    </button>
+  </mat-menu>
 
-  <a mat-button class="docs-button docs-navbar-hide-small"
-  (click)="logout()" aria-label="注销">
-  <span class="docs-github-logo" color="white" octicon="sign-out" ></span> {{user.user_name}}
-</a>
+
+  <a mat-button class="docs-button docs-navbar-hide-small" [matMenuTriggerFor]="userMenu" aria-label="用户信息">
+    <span class="docs-github-logo" color="white" octicon="person" ></span> {{user.user_name}}
+    <mat-icon role="img" class="mat-icon notranslate material-icons mat-icon-no-color" aria-hidden="true">arrow_drop_down</mat-icon>
+  </a>
   <a mat-icon-button class="docs-button docs-navbar-show-small"
-    (click)="logout()" aria-label="注销">
-    <span octicon="sign-out" class="docs-github-logo" color="white" ></span> 
+    [matMenuTriggerFor]="userMenu" aria-label="用户信息">
+    <span octicon="person" class="docs-github-logo" color="white" ></span> 
   </a>
 </nav>
 <nav class="docs-navbar docs-navbar-show-small" aria-label="Section Nav Bar">

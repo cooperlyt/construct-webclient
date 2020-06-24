@@ -104,6 +104,10 @@ export class AuthenticationService {
     localStorage.clear();
   }
 
+  changePassword(oldPwd: string, newPwd: string):Observable<any>{
+    return this._http.post<any>(`${environment.apiUrl}/authenticationservice/auth/change/${oldPwd}`,newPwd);
+  }
+
   getUserInfo(): Observable<UserInfo>{
     return this.getAccessToken().pipe(
       map(res => {
