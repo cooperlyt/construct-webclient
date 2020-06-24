@@ -1,0 +1,37 @@
+
+<div class="timeline">
+  <article class="event" *ngFor="let op of operstions">
+    <div class="event-content">
+      <header >
+        <p class="event-date">
+          <span class="event-date-day" aria-hidden="true"> {{op.time | date:'dd'}}	</span>
+          <span class="event-date-month" aria-hidden="true"> {{op.time | date:'MM月'}}	</span>
+          <span class="event-date-year" aria-hidden="true"> {{op.time | date:'yyyy'}}	</span>
+          <span class="event-date-full" aria-hidden="true"> {{op.time | date:'yyyy年MM月dd日'}}	</span>
+        </p>
+        <p class="event-thumbnail">
+          <fa-icon *ngIf="op.type == 'TASK'"  [icon]="faCircle" size="3x"></fa-icon>
+          <fa-icon *ngIf="op.type == 'CREATE'" [icon]="faPlayCircle" size="3x"></fa-icon>
+          <fa-icon *ngIf="op.type == 'PASS'" [icon]="faCheckCircle" size="3x"></fa-icon>
+          <fa-icon *ngIf="op.type == 'REJECT'" [icon]="faReplyAll" size="3x"> </fa-icon>
+          <fa-icon *ngIf="op.type == 'ABORT'" [icon]="faStopCircle" size="3x"></fa-icon>
+          <fa-icon *ngIf="op.type == 'SUSPEND'" [icon]="faPauseCircle" size="3x"></fa-icon>
+          <fa-icon *ngIf="op.type == 'RESUME'" [icon]="faArrowAltCircleRight" size="3x"></fa-icon>
+      
+        </p>
+        <h2 class="event-title"> 
+          <span *ngIf="op.type == 'TASK'">{{op.taskName}}</span> 
+          <span *ngIf="op.type != 'TASK'">{{op.type | businessOperationLabel }}</span> 
+        </h2>
+        <p class="event-meta">
+          <span class="event-meta-time" title="Event Time"> {{op.time | date:'hh:mm:ss'}}	</span>
+          <span class="event-meta-user" title="Event Location"> 
+            {{op.empName}}
+          </span>
+        </p>
+
+      </header>
+    </div>
+    
+  </article>
+</div>

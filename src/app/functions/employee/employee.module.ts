@@ -199,7 +199,9 @@ export class EmployeeSearchResolver implements Resolve<User[]>{
   ){}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): User[] | import("rxjs").Observable<User[]> | Promise<User[]> {
-    return this.service.search(JSON.parse(route.queryParams['enable']),route.queryParams['key']);
+    
+    const enabled = route.queryParams['enable'] ?  JSON.parse(route.queryParams['enable']) : false;
+    return this.service.search(enabled,route.queryParams['key']);
   }
 
 }

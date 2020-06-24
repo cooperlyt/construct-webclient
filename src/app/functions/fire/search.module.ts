@@ -31,6 +31,8 @@ import { FireCheckResolver } from './fire-check.resolver';
 import { FireCheckInfoModule } from './info.module';
 import { BusinessDocumentModule } from 'src/app/business/document/document-files.component';
 import { environment } from 'src/environments/environment';
+import { BusinessModule } from 'src/app/business/business.module';
+import { BusinessOperationModule } from 'src/app/business/operation/operation-list.component';
 
 @Injectable({providedIn: 'root'})
 export class FireCheckSearchResolver implements Resolve<PageResult<FireCheck>>{
@@ -136,6 +138,20 @@ export class FireCheckDocumentComponent implements OnInit{
 
 }
 
+@Component({
+  template: `<business-operations-list  [id]="businessId"> </business-operations-list> `
+})
+export class FireCheckOperationsComponent implements OnInit{
+
+  constructor(private _route: ActivatedRoute){}
+
+  businessId: number;
+
+  ngOnInit(): void {
+   this._route.parent.params.subscribe(params => this.businessId = params['id']);
+  }
+}
+
 
 
 
@@ -144,7 +160,8 @@ const routes: Routes =[
   {path: ':id', component: FireCheckDetailsComponent , resolve:{check: FireCheckResolver} , 
     children:[
       {path: '', component: FireCheckInfoComponent},
-      {path: 'document', component: FireCheckDocumentComponent}
+      {path: 'document', component: FireCheckDocumentComponent},
+      {path: 'operations' , component: FireCheckOperationsComponent}
     ]
   }
 ]
@@ -154,7 +171,8 @@ const routes: Routes =[
     FireCheckSearchComponent,
     FireCheckDetailsComponent,
     FireCheckInfoComponent,
-    FireCheckDocumentComponent
+    FireCheckDocumentComponent,
+    FireCheckOperationsComponent
   ],
   imports:[
     CommonModule,
@@ -178,6 +196,7 @@ const routes: Routes =[
     NgxUiLoaderModule,
     ConfirmDialogModule,
     MatSlideToggleModule,
+    BusinessOperationModule,
     OcticonModule,
     RouterModule.forChild(routes),
     SharedDataModule,

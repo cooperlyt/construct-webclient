@@ -31,59 +31,6 @@ import { SafeHtmlModule } from '../tools/pipe/safe-html.pipe';
 import { CamundaRestService } from './camunda-rest.service';
 import { BusinessOperation } from './schemas';
 
-enum OperationType{
-  TASK = '处理业务',
-  CREATE = "建立业务",
-  PASS = "通过",
-  REJECT = "驳回",
-  ABORT = "中止",
-  SUSPEND = "挂起",
-  RESUME ="恢复"
-}
-
-@Pipe({name: "businessOperationLabel"})
-export class ProjectPropertyLabelPipe implements PipeTransform{
-    transform(value: string) {
-        return OperationType[value];
-    }
-}
-
-@Component({
-  selector: 'business-operations-list',
-  template: `
-    <mat-list >
-      <mat-list-item *ngFor="let op of operstions">
-        <mat-icon *ngIf="op.type == 'TASK'" octicon="commit"></mat-icon>
-        <mat-icon *ngIf="op.type == 'CREATE'" octicon="play"></mat-icon>
-        <mat-icon *ngIf="op.type == 'PASS'" octicon="check"></mat-icon>
-        <mat-icon *ngIf="op.type == 'REJECT'" octicon="replay"></mat-icon>
-        <mat-icon *ngIf="op.type == 'ABORT'" octicon="square"></mat-icon>
-        <mat-icon *ngIf="op.type == 'SUSPEND'" octicon="tab"></mat-icon>
-        <mat-icon *ngIf="op.type == 'RESUME'" octicon="paper-airplane"></mat-icon>
-
-
-        <div mat-line *ngIf="op.type == 'TASK'"> {{op.taskName}} </div>
-        <div mat-line *ngIf="op.type != 'TASK'"> {{op.type | businessOperationLabel }} </div>
-        <div mat-line> </div>
-      </mat-list-item>
-    
-    </mat-list>
-  `
-})
-export class BusinessOperationsComponent implements OnInit{
-
-  @Input()
-  id:number;
-
-  operstions: BusinessOperation[];
-
-  constructor(private _service: CamundaRestService){}
-
-  ngOnInit(): void {
-    this._service.businessOperations(this.id).subscribe(res => this.operstions = res);
-  }
-
-}
 
 
 const routes: Routes =[
@@ -91,7 +38,7 @@ const routes: Routes =[
 ]
 
 @NgModule({
-  declarations:[TasksComponent,TaskCompleteDialog,TaskCheckDialog,BusinessOperationsComponent,ProjectPropertyLabelPipe],
+  declarations:[TasksComponent,TaskCompleteDialog,TaskCheckDialog],
   imports:[
     CommonModule,
     ReactiveFormsModule,
@@ -120,8 +67,7 @@ const routes: Routes =[
     RelativeTimeModule,
     SafeHtmlModule
   ],
-  entryComponents:[TaskCompleteDialog,TaskCheckDialog],
-  exports: [ProjectPropertyLabelPipe]
+  entryComponents:[TaskCompleteDialog,TaskCheckDialog]
 })
 export class BusinessModule{
 
