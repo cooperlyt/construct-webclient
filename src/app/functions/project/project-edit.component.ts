@@ -63,6 +63,7 @@ export class ProjectInfoInputComponent implements OnInit{
       completeDate: [projectInfo ? projectInfo.completeDate : null],
       tender:[projectInfo ? projectInfo.tender : null, Validators.maxLength(32)],
       costs:[projectInfo ? projectInfo.costs : null],
+      putMoney:[projectInfo ? projectInfo.putMoney : null],
       importantType:[projectInfo ? projectInfo.importantType: null, Validators.required],
       importantFile:[projectInfo ? projectInfo.importantFile : null ],
       modifyFit:[],
@@ -214,8 +215,9 @@ export class ProjectCorpInputComponent implements OnInit{
         outLevel: [false],
         outLevelFile:[{value: null, disabled: true}, Validators.maxLength(32)],
         code:[this.selectCorp.code, Validators.required],
-        contacts:[, Validators.maxLength(64)],
-        tel:[this.selectCorp.info.tel, Validators.maxLength(16)]
+        contacts:[, [Validators.maxLength(64),Validators.required]],
+        contactsId:[, [Validators.maxLength(32),Validators.required]],
+        tel:[this.selectCorp.info.tel, [Validators.maxLength(16),Validators.required]]
     }));
 
 
@@ -280,12 +282,13 @@ export class ProjectBuildComponent implements OnInit{
         info: this._fb.group({
           name:[,[Validators.required, Validators.maxLength(32)]],
           structure:[,Validators.required],
-          onCount:[],
-          underCount:[],
-          onArea:[],
-          underArea:[],
-          landArea:[],
-          height:[]
+          onCount:[,Validators.required],
+          underCount:[,Validators.required],
+          onArea:[,Validators.required],
+          underArea:[,Validators.required],
+          landArea:[,Validators.required],
+          height:[,Validators.required],
+          length:[]
         })
       }))
     }

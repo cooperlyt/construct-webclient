@@ -92,6 +92,7 @@ export declare class FireCheckProjectCorp{
   groupId:string;
   contacts:string;
   tel:string;
+  contactsId:string;
   property:string;
   code:number;
   ownerName:string;
@@ -139,6 +140,11 @@ export declare class ModifyWarmCheck{
   layers: number;
 }
 
+export declare class UseChange{
+  property:string;
+  oldUse: string;
+}
+
 export declare class CheckBuildInfo{
   name: string;
   landArea: number;
@@ -161,7 +167,7 @@ export declare class CheckBuild extends CheckBuildOpinion{
   danger: number;
   code: number;
   info: CheckBuildInfo;
-
+  property:string;
 }
 
 export declare class Report{
@@ -186,8 +192,7 @@ export declare class FireCheckInfo{
   id:number;
   special: boolean;
   projectCode: number;
-  applyFile: string;
-  fireFile: string;
+
   contracts: string;
   constructFile: string;
   constructFileDate: Date;
@@ -197,15 +202,17 @@ export declare class FireCheckInfo{
   tel: string;
   source: string;
   inRandom: boolean;
-  property:string;
+
   part: boolean; 
   conclusion: string;
-  oldUse: string;
+
+
   project: FireCheckProject;
   tin?: StoreTinCheck;
   square?: StoreSquareCheck;
   fit?:ModifyFitCheck;
   warm?:ModifyWarmCheck;
+  useChange?: UseChange;
   builds: CheckBuild[];
 }
 

@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { empty } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { faUserTie, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faUserTie, faPhone, faIdCard } from '@fortawesome/free-solid-svg-icons';
 import { PageFunctionBase, FunctionPageBar } from 'src/app/shared/function-items/function-items';
 import { FireBusinessService } from '../fire/fire-business.service';
 
@@ -28,6 +28,7 @@ export class ProjectInfoComponent implements OnInit{
 
     faUserTie = faUserTie;
     faPhone = faPhone;
+    faIdCard = faIdCard;
 
     project: Project;
 

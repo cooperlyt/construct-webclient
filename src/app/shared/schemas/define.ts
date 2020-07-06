@@ -17,11 +17,11 @@ export enum PersonIdType{
 }
 
 export enum JoinType{
-    Developer = "开发单位",
+    Developer = "建设单位",
     Design = "设计单位",
     Construct = "施工单位",
-    Supervisor = "工程监理", 
-    FireCheck = "消防检测",
+    Supervisor = "监理单位", 
+    FireCheck = "技术服务机构",
     LandExploration = "土地勘查",
 }
 

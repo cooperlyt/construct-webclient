@@ -4,7 +4,7 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>参建单位</mat-card-title>
-      <mat-card-subtitle *ngIf="!existsDeveloper" class="mat-error">*至少要包含一个开发单位</mat-card-subtitle>
+      <mat-card-subtitle *ngIf="!existsDeveloper" class="mat-error">*至少要包含一个建设单位</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
 
@@ -70,6 +70,10 @@
             外埠队伍审批手续
           </mat-label>
           <input matInput formControlName="outsideTeamFile">
+
+          <mat-error *ngIf="corpsForm.controls[i].get('outsideTeamFile').hasError('maxlength')">
+              长度不能超过 <strong>32</strong>
+          </mat-error>
         </mat-form-field>
         
         <div class="check-edit-field col-sm-5">
@@ -82,6 +86,10 @@
             </mat-label>
     
             <input  matInput formControlName="outLevelFile">
+            <mat-error *ngIf="corpsForm.controls[i].get('outLevelFile').hasError('maxlength')">
+              长度不能超过 <strong>32</strong>
+            </mat-error>
+
           </mat-form-field>
           </div>
         </div>
@@ -91,16 +99,43 @@
   
       <mat-form-field class="col-sm-4">
         <mat-label>
-            联系人
+            负责人
         </mat-label>
-        <input matInput formControlName="contacts">
+
+        <input matInput formControlName="contacts" placeholder="负责人姓名" required>
+        <mat-error *ngIf="corpsForm.controls[i].get('contacts').hasError('maxlength')">
+          长度不能超过 <strong>64</strong>
+        </mat-error>
+        <mat-error *ngIf="corpsForm.controls[i].get('contacts').hasError('required')">
+          请填写负责人
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="col-sm-4">
+        <mat-label>
+            身份证号
+        </mat-label>
+
+        <input matInput formControlName="contactsId" placeholder="负责人身份证号" required>
+        <mat-error *ngIf="corpsForm.controls[i].get('contactsId').hasError('maxlength')">
+          长度不能超过 <strong>32</strong>
+        </mat-error>
+        <mat-error *ngIf="corpsForm.controls[i].get('contactsId').hasError('required')">
+          请填写负责人身份证号
+        </mat-error>
       </mat-form-field>
   
       <mat-form-field class="col-sm-4">
         <mat-label>
-          联系电话
+            联系电话
         </mat-label>
-        <input matInput formControlName="tel">
+        <input matInput formControlName="tel"  placeholder="负责人联系电话" required>
+        <mat-error *ngIf="corpsForm.controls[i].get('tel').hasError('maxlength')">
+          长度不能超过 <strong>16</strong>
+        </mat-error>
+        <mat-error *ngIf="corpsForm.controls[i].get('tel').hasError('required')">
+          请填写负责人联系电话
+        </mat-error>
       </mat-form-field>
   
     </div>
