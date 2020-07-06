@@ -7,23 +7,24 @@ import { Task, ProcessDefinition, ProcessInstance, BusinessDocument, BusinessFil
 import { environment } from 'src/environments/environment';
 import { CustomEncoder } from '../shared/custom-encoder';
 import { SseService } from '../tools/sse.service';
-import { AuthenticationService, UserInfo } from '../auth/authentication.service';
+import { KeycloakService } from 'keycloak-angular';
+import { KeycloakProfile } from 'keycloak-js';
 
 
 export class TaskDetails{
+
+
   constructor(
-    public auth: UserInfo,
+    public user : KeycloakProfile,
     public task: Task,
-    
     public processInstance: ProcessInstance,
-    public processDefine: ProcessDefinition,
-    public assignee:string){}
+    public processDefine: ProcessDefinition){
+
+    }
 
 
     get isClaim():boolean{
-
-      return this.task.assignee === this.auth.user_name;
- 
+      return this.task.assignee === this.user.username;
     }
   
     get isCanClaim():boolean{
@@ -39,7 +40,7 @@ export class CamundaRestService {
 
   constructor(private http: HttpClient,
     private sseService: SseService,
-    private authService: AuthenticationService) {}
+    private keycloakService: KeycloakService) {}
 
   claimTask(id:string, userId:string):Observable<any>{
     return this.http.post(`${this.engineRestUrl}task/${id}/claim`,{userId:userId});
@@ -54,19 +55,16 @@ export class CamundaRestService {
   }
 
   getTaskDetails(id: string):Observable<TaskDetails>{
-     return this.authService.getUserInfo().pipe(
-      switchMap(auth =>  this.getTask(id).pipe(
-        switchMap(task => forkJoin(
-            of(auth),
-            of(task),
-            this.getProcessInstance(task.processInstanceId),
-            this.getProcessDefinitionById(task.processDefinitionId),
-            !task.assignee ? of(task.assignee) : task.assignee === auth.user_name ? of(auth.name) : this.authService.getRemoteUserName(task.assignee).pipe(map(user => user.name))
-          )
-        )
+
+    return this.getTask(id).pipe(
+      switchMap(task  => forkJoin(
+        this.keycloakService.loadUserProfile(),
+        of(task),
+        this.getProcessInstance(task.processInstanceId),
+        this.getProcessDefinitionById(task.processDefinitionId),
       )),
-      map(res => (new TaskDetails(res[0],res[1],res[2],res[3],res[4])))
-    );
+      map(res => (new TaskDetails(res[0],res[1],res[2],res[3])))
+    )
   }
   
 
