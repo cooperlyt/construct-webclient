@@ -37,7 +37,7 @@
       <li>
         <button *ngIf="!dataService.task.isClaim" (click)="dataService.claim()" [disabled]="!dataService.task.isCanClaim" mat-stroked-button>
           <span octicon="person" [width]="14" height="14" style="line-height: 1px;"></span>
-          {{dataService.task.isCanClaim ? '接收业务' : dataService.task.assignee}}
+          {{dataService.task.isCanClaim ? '接收业务' : dataService.task.task.assignee}}
           
         </button>
         <button *ngIf="dataService.task.isClaim" (click)="dataService.unclaim()"  mat-stroked-button>

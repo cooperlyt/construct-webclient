@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../auth/authentication.service';
 
 import { faUser, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';
 import { FunctionPageBar } from '../shared/function-items/function-items';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { KeycloakService } from 'keycloak-angular';
+import { KeycloakProfile } from 'keycloak-js';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 export class HomeComponent implements OnInit {
 
   faUser = faUser;
-  user: any;
+  user: KeycloakProfile;
   faBuilding = faBuilding;
 
 
@@ -25,18 +26,24 @@ export class HomeComponent implements OnInit {
   }
  
 
-  constructor(private _authService: AuthenticationService,   
+  constructor(
+    private keycloakService: KeycloakService,
     private _toastr: ToastrService, 
     private route: ActivatedRoute, 
     _func: FunctionPageBar) { 
     _func.loadTitle(environment.title);
   }
 
-  ngOnInit() {
-      this._authService.getUserInfo().subscribe(data => {this.user = data;   console.log(" user data is: ", data); });
-      // this.route.data.subscribe(data => this.projects = data.projects.filter(p => p.id));
+  async ngOnInit() {
+    if (await this.keycloakService.isLoggedIn()){
+      this.user = await this.keycloakService.loadUserProfile();
+      console.log(this.user)
+    }
   }
 
+  async doLogout() {
+    await this.keycloakService.logout();
+  }
 
 
 }

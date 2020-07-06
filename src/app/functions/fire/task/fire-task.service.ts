@@ -5,8 +5,8 @@ import { CamundaRestService, TaskDetails } from 'src/app/business/camunda-rest.s
 import { FireCheckService } from '../fire-check.service';
 import { Observable, forkJoin, Subject, BehaviorSubject } from 'rxjs';
 import { switchMap, map, tap, mergeMap, takeUntil } from 'rxjs/operators';
-import { AuthenticationService, UserInfo } from 'src/app/auth/authentication.service';
 import { TaskRouterService } from 'src/app/business/tasks/task-router.service';
+import { KeycloakService } from 'keycloak-angular';
 
 
 @Injectable()
@@ -14,7 +14,8 @@ export class FireTaskDataService implements OnDestroy{
 
   private behaviorSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private camundaService:CamundaRestService,
+  constructor(
+    private camundaService:CamundaRestService,
     private taskRouteService: TaskRouterService,
     private fireService:FireCheckService){}
 
@@ -45,7 +46,8 @@ export class FireTaskDataService implements OnDestroy{
   }
 
   claim(){
-    this.camundaService.claimTask(this.taskId,this.task.auth.user_name).pipe(
+
+    this.camundaService.claimTask(this.taskId,this.task.user.username).pipe(
       switchMap(() => this.camundaService.getTask(this.taskId))
     ).subscribe(task => this.task.task = task);
   }

@@ -6,8 +6,8 @@ import { takeUntil, switchMap } from 'rxjs/operators';
 import { Task } from '../schemas';
 import { TaskRouterService } from './task-router.service';
 import { CamundaRestService } from '../camunda-rest.service';
-import { AuthenticationService } from 'src/app/auth/authentication.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({templateUrl:"./tasks.html", styleUrls:['./tasks.scss']})
 export class TasksComponent implements OnInit {
@@ -21,9 +21,9 @@ export class TasksComponent implements OnInit {
   loadding: boolean = true;
 
   constructor(
+    private keycloakService: KeycloakService,
     private _taskRoute: TaskRouterService,
     private _camundaService: CamundaRestService,
-    private _authService: AuthenticationService,
     private ngxLoader: NgxUiLoaderService,
     private _route: ActivatedRoute, _func: FunctionPageBar){
     _func.loadSearch({title:'业务办理',search: true}).subscribe(key => this.doSearch(key)); 
@@ -35,7 +35,7 @@ export class TasksComponent implements OnInit {
       this.key = params["key"]
       this.refreshTasks();
     })
-    this._authService.getUserInfo().subscribe(user => this.userId = user.user_name);
+    this.keycloakService.loadUserProfile().then(user => this.userId = user.username);
   }
 
   doSearch(key: SearchCondition):void{
@@ -60,13 +60,11 @@ export class TasksComponent implements OnInit {
   }
   
   claim(id: string){
-    this._authService.getUserInfo().pipe(
-      switchMap(user => this._camundaService.claimTask(id,user.user_name).pipe(
-        switchMap(() => (this._camundaService.getTasks()))
-      )),
-    
-    ).subscribe(tasks => this.tasks = tasks);
-
+    this.keycloakService.loadUserProfile().then(
+      user => this._camundaService.claimTask(id,user.username).pipe(
+        switchMap(_ => this._camundaService.getTasks())
+      ).subscribe(tasks => this.tasks = tasks)
+    )
   }
 
   unclaim(id: string){
