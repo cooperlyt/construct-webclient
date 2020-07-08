@@ -45,8 +45,13 @@ export class FireCheckService{
     return this._http.get<Report[]>(`${environment.apiUrl}/construct-fire/manager/check/${id}/reports`)
   }
 
-  fileCheck(id: number, fileChecks: CheckFile[] ):Observable<Number>{
-    return this._http.post<Number>(`${environment.apiUrl}/construct-fire/manager/check/${id}/file`, fileChecks,  {headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
+  fileCheck(id: number, fileChecks: CheckFile[] ,noAcceptReason?: string):Observable<Number>{
+    let params = new HttpParams({encoder: new CustomEncoder()});
+    console.log(noAcceptReason);
+    if (noAcceptReason){
+      params = params.append('type',noAcceptReason);
+    }
+    return this._http.post<Number>(`${environment.apiUrl}/construct-fire/manager/check/${id}/file`, fileChecks,  {params: params,  headers: {"Accept" : "text/plain"},responseType: 'text' as 'json'});
   }
 
   buildOpinion(id:number, opinions: CheckBuildOpinion[]): Observable<Number>{

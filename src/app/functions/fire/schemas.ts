@@ -25,6 +25,12 @@ const FireRatingLevel:{[k:number]:string} = {
   Abort = "中止"
 }
 
+enum NoAcceptReason{
+  WRONG_APPLY = "依法不需要申请",
+  WRONG_FILE = "材料不符合相关要求",
+  LESS_FILE = "材料不齐全"
+}
+
  enum UseProperty{
   FULL= "人员密集场所",
   PUB= "公众聚集场所",
@@ -106,8 +112,9 @@ export declare class FireCheckProject{
   type: string;
   property: string;
   landArea: number;
+  area:number;
   importantType: string;
-  
+  putMoney:number;
   modifyFit:boolean;
   modifyWarm:boolean;
   modifyUse:boolean;
@@ -132,12 +139,14 @@ export declare class StoreSquareCheck{
 export declare class ModifyFitCheck{
   part: string;
   area: number;
-  layers: number;
+  layers: string;
 }
 
 export declare class ModifyWarmCheck{
   type: string;
-  layers: number;
+  layers: string;
+  part:string;
+  material:string;
 }
 
 export declare class UseChange{
@@ -178,6 +187,7 @@ export declare class Report{
 export declare class FireCheck{
   id:number;
   status: string;
+  noAcceptType: string;
   applyTime: Date;
   regTime: Date;
   type: string;
@@ -262,10 +272,10 @@ export class TinLayoutPipe implements PipeTransform{
   }
 }
 
-@Pipe({name:"fireFitPart"})
+@Pipe({name:"fireFitPartLabel"})
 export class FireFitPartPipe implements PipeTransform{
   transform(value: string) {
-    return FitPart[value];
+    return value.split(',').map(v => FitPart[v]).join(',')
   }
 }
 
@@ -273,6 +283,13 @@ export class FireFitPartPipe implements PipeTransform{
 export class ApplyTypePipe implements PipeTransform{
   transform(value:string) {
     return ApplyType[value];
+  }
+}
+
+@Pipe({name:'noAcceptReasonlabel'})
+export class NoAcceptReasonPipe implements PipeTransform{
+  transform(value:string) {
+    return NoAcceptReason[value];
   }
 }
 
@@ -284,6 +301,8 @@ export class DataDefine {
   danerLevels = Object.keys(FireDangerLevel).map(key => ({key:Number(key),label: FireDangerLevel[key]}));
 
   ratingLevels = Object.keys(FireRatingLevel).map(key => ({key:Number(key), label: FireRatingLevel[key]}));
+
+  noAcceptReason = Object.keys(NoAcceptReason).map(key => ({key:key, label:NoAcceptReason[key] }))
 
   checkStatus = Object.keys(CheckStatus).map(key => ({key: key, label:CheckStatus[key] }));
 
@@ -308,7 +327,8 @@ export class DataDefine {
     TinTypePipe,
     TinLayoutPipe,
     FireFitPartPipe,
-    ApplyTypePipe
+    ApplyTypePipe,
+    NoAcceptReasonPipe
 
   ], exports:[
     ProjectFireDangerLevelPipe,
@@ -318,6 +338,7 @@ export class DataDefine {
     TinTypePipe,
     TinLayoutPipe,
     FireFitPartPipe,
-    ApplyTypePipe
+    ApplyTypePipe,
+    NoAcceptReasonPipe
   ]})
 export class FireCheckSchemasModule{}

@@ -1,46 +1,82 @@
 
 
 <div class="row" *ngIf="fireCheck">
-  <div class="col-md-8">
+  <div class="col-xl-8">
 
     <mat-card>
       <mat-card-header>
           <mat-card-title>
-            {{fireCheck.info.project.name}}
+            {{fireCheck.info.special ? '特殊建设工程消防验收' : '建设工程消防验收备案'}}<span *ngIf="!fireCheck.info.special">{{fireCheck.type | fireApplyTypelabel}} </span> <span *ngIf="!fireCheck.info.special" class="Label Label--outline v-align-middle ">{{fireCheck?.info.inRandom ? '抽中' : '未抽中'}}</span>
+            
           </mat-card-title>
           <mat-card-subtitle>
-            {{fireCheck.info.project.address}}
+            {{fireCheck.id}}
+            
+            
           </mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content>
-        <ul class="striped list-unstyled field-info-list">
-          <li>
-            <strong>项目备案编号:</strong>{{fireCheck.info.projectCode}}
+      <mat-card-content style="padding: 0 16px;">
+        <ul class="striped list-unstyled field-info-list row">
+
+          <li class="col-md-12">
+            <strong>项目名称:</strong>{{fireCheck.info.project.name}}
           </li>
-          <li>
-            <strong>消防设计备案凭证文号:</strong> {{fireCheck.info.fireFile}}
-          </li>
-          <li>
-            <strong style="font-size: 12px;">建筑工程施工许可证明文件编号:</strong> <span *ngIf="!fireCheck.info.constructFile"> - </span> {{fireCheck.info.constructFile}} <strong *ngIf="fireCheck.info.constructFileDate">审批日期</strong> {{fireCheck.info.constructFileDate | date:'yyyy年MM月dd日'}}
-          </li>
-          <li>
-            <strong style="font-size: 8px;">施工图审查机构出具的综合审查合格书、技术咨询报告等审查意见文号</strong>  <span *ngIf="!fireCheck.info.designFile"> - </span>  {{fireCheck.info.designFile}} <strong *ngIf="fireCheck.info.designFileDate">审批日期</strong>  {{fireCheck.info.designFileDate | date:'yyyy年MM月dd日'}}
-          </li>
-          <li>
-            <strong>受理/备案凭证文号:</strong> {{fireCheck.info.applyFile}}
+          <li class="col-md-12">
+            <strong>项目地址:</strong>{{fireCheck.info.project.address}}
           </li>
 
-          <li>
+
+          <li class="col-md-6" *ngIf="fireCheck.info.special"> 
+            <strong style="font-size: 8px;">《特殊建设工程消防设计审查意见书》文号:</strong>  <span *ngIf="!fireCheck.info.designFile"> - </span>  {{fireCheck.info.designFile}} 
+          </li>
+
+          <li class="col-md-6" *ngIf="fireCheck.info.special">
+            <strong >审查合格日期:</strong>  {{fireCheck.info.designFileDate | date:'yyyy年MM月dd日'}}
+          </li>
+
+          <li class="col-md-6">
+            <strong style="font-size: 8px;">建筑工程施工许可证号、批准开工报告 编号或证明文件编号:</strong> <span *ngIf="!fireCheck.info.constructFile"> - </span> {{fireCheck.info.constructFile}} 
+          </li>
+
+          <li class="col-md-6">
+            <strong >制证日期:</strong> {{fireCheck.info.constructFileDate | date:'yyyy年MM月dd日'}}
+          </li>
+
+          <li class="col-md-6">
+            <strong>受理时间:</strong> {{fireCheck.applyTime | date:'yyyy年MM月dd日 h:mm:ss'}}
+        
+          </li>
+          <li class="col-md-6">
+            <span *ngIf="fireCheck.status == 'Qualified'">
+              <strong>审批时间:</strong> {{fireCheck.regTime | date:'yyyy年MM月dd日 h:mm:ss'}}
+            </span>
+          </li>
+
+
+
+          <li class="col-md-6">
+            <strong>联系人:</strong>{{fireCheck.info.contracts}}
+          </li>
+          <li class="col-md-6">
+            <strong>联系电话:</strong> {{fireCheck.info.tel}}
+          </li>
+
+          <li class="col-md-12">
             <strong>情况说明:</strong> {{fireCheck.memo}}
           </li>
 
-          <li *ngIf="fireCheck.info.inRandom">
-            <strong>检查意见:</strong> {{fireCheck.opinion}}
+
+          <li class="col-md-12" *ngIf=" fireCheck.info.inRandom &&  (fireCheck.status == 'Unqualified' || fireCheck.status == 'Qualified')">
+            <strong>验收结论:</strong> 
+            
+            <span *ngFor="let build of fireCheck.info.builds">
+              {{build.info.name}} : {{build.opinion}};
+            </span>
           </li>
 
-          <li *ngIf="fireCheck.status == 'Unqualified' || fireCheck.status == 'Qualified'">
-            <strong>验收结论:</strong> {{fireCheck.info.conclusion}}
-          </li>
+          <li class="col-md-12" *ngIf="fireCheck.status == 'NoAccept'">
+            <strong>不予受理:</strong> {{fireCheck.noAcceptType | noAcceptReasonlabel}}
+          </li> 
 
         </ul>
       </mat-card-content>
@@ -55,8 +91,7 @@
     
           {{corp.property | joinTypeLabel}} - {{corp.name}}
         </mat-panel-title>
-        <mat-panel-description>
-          {{corp.code}}
+        <mat-panel-description style="flex-grow: 0;">
           <mat-icon color="primary" *ngIf="corp.code === fireCheck.corp ">
             stars
           </mat-icon>
@@ -75,7 +110,7 @@
           <strong>法人:</strong> {{corp.ownerName}}  <strong>{{corp.ownerIdType | personCardLabel}}:</strong> {{corp.ownerId}}
         </li>
         <li>
-          <strong>联系方式:</strong> <fa-icon *ngIf="corp.contacts" [icon]="faUserTie"></fa-icon> {{corp.contacts}} <fa-icon *ngIf="corp.tel" [icon]="faPhone"></fa-icon> {{corp.tel}}
+          <strong>负责人:</strong> <fa-icon *ngIf="corp.contacts" [icon]="faUserTie"></fa-icon> {{corp.contacts}} <fa-icon *ngIf="corp.contactsId" [icon]="faIdCard"></fa-icon> {{corp.contactsId}} <fa-icon *ngIf="corp.tel" [icon]="faPhone"></fa-icon> {{corp.tel}}
         </li>
       </ul>
     </mat-expansion-panel>
@@ -123,11 +158,24 @@
             <td mat-cell *matCellDef="let element"><span *ngIf="!element.info.height">-</span>{{element.info.height | number}}</td>
           </ng-container>
 
+ 
+          <ng-container matColumnDef="length">
+            <th mat-header-cell *matHeaderCellDef>建筑长度</th>
+            <td mat-cell *matCellDef="let element"><span *ngIf="!element.info.length">-</span>{{element.info.length | number}}</td>
+          </ng-container>         
+
+
+          <ng-container matColumnDef="property">
+            <th mat-header-cell *matHeaderCellDef>使用性质</th>
+            <td mat-cell *matCellDef="let element;">
+              {{element.property | fireUseProperty}}
+            </td>
+          </ng-container>
+
           <ng-container matColumnDef="rating">
             <th mat-header-cell *matHeaderCellDef>耐火等级*</th>
             <td mat-cell *matCellDef="let element;">
               {{element.rating | fireRatingLevel}}
-
             </td>
           </ng-container>
 
@@ -138,28 +186,29 @@
             </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="['name','structure','count','area','loadArea','height','rating','danger']"></tr>
-          <tr mat-row *matRowDef="let row; columns:['name','structure','count','area','loadArea','height','rating','danger'];"></tr>
+          <tr mat-header-row *matHeaderRowDef="['name','structure','count','area','loadArea','height','length','property','rating','danger']"></tr>
+          <tr mat-row *matRowDef="let row; columns:['name','structure','count','area','loadArea','height','length','property','rating','danger'];"></tr>
 
         </table>
       </mat-card-content>
     </mat-card>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-xl-4">
     <mat-card *ngIf="fireCheck">
       <mat-card-header>
         <mat-card-title >
-          {{fireCheck.info.special ? '验收' : '备案'}}<span *ngIf="!fireCheck.info.special">{{fireCheck.type | fireApplyTypelabel}} </span> <span *ngIf="!fireCheck.info.special" class="Label Label--outline v-align-middle ">{{fireCheck?.info.inRandom ? '抽中' : '未抽中'}}</span>
+          {{fireCheck.info.project.name}}
         </mat-card-title>
         <mat-card-subtitle>
-          {{fireCheck.id}}
+          {{fireCheck.info.projectCode}}
         </mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
         <ul class="striped list-unstyled field-info-list">
-   
+
+          
           <li>
             <strong>工程性质:</strong>{{fireCheck.info.project.property | projectPropertyLabel}}  <span *ngIf="fireCheck.info.project.property === 'MODIFY'">( <span *ngIf="fireCheck.info.project.modifyFit">装修</span> <span *ngIf="fireCheck.info.project.modifyWarm">建筑保温</span> <span *ngIf="fireCheck.info.project.modifyUse">改变用途</span>)</span> 
           </li>
@@ -167,37 +216,15 @@
             <strong>工程类别:</strong>{{fireCheck.info.project.type | projectTypeLabel}}
           </li>
           <li>
+            <strong>总建筑面积:</strong>{{fireCheck.info.project.area | number}}
+          </li>
+          <li>
             <strong>占地面积:</strong> <span *ngIf="!fireCheck.info.project.landArea">-</span> {{fireCheck.info.project.landArea | number}}  平方米
           </li>
+          <li>
+            <strong>工程投资额:</strong> <span *ngIf="!fireCheck.info.project.putMoney">-</span> {{fireCheck.info.project.putMoney | number}}  万元
+          </li>
 
-   
-          <li>
-            <strong>使用性质:</strong> {{fireCheck.info.property | fireUseProperty}}
-          </li>
-          <li>
-            <strong>原有用途:</strong> {{fireCheck.info.oldUse}}
-          </li>
-          <li>
-            <strong>受理时间:</strong> {{fireCheck.applyTime | date:'yyyy年MM月dd日 h:mm:ss'}}
-          </li>
-          <li *ngIf="fireCheck.status == 'Qualified'">
-            <strong>审批时间:</strong> {{fireCheck.regTime | date:'yyyy年MM月dd日 h:mm:ss'}}
-          </li>
-          <!-- <li>
-            <strong>结构型式:</strong>{{dataService.fireCheck.project.structure | structLabel}} <ng-container *ngIf="!dataService.fireCheck.project.structure"> - </ng-container>
-          </li>
-          <li>
-            <strong>地上/地下层数:</strong> <ng-container *ngIf="!dataService.fireCheck.project.groundCount"> - </ng-container> {{dataService.fireCheck.project.groundCount | number}} / {{dataService.fireCheck.project.underCount | number}} <ng-container *ngIf="!dataService.fireCheck.project.underCount"> - </ng-container>  <ng-container *ngIf="dataService.fireCheck.project.height"> <strong>高度:</strong> {{dataService.fireCheck.project.height |number}} </ng-container>
-          </li>
-          <li>
-            <strong>占地/建筑面积:</strong> <ng-container *ngIf="!dataService.fireCheck.project.landArea"> - </ng-container>{{dataService.fireCheck.project.landArea | number}}m<sup>2</sup> / <ng-container *ngIf="!dataService.fireCheck.project.area"> - </ng-container>{{dataService.fireCheck.project.area | number}}m<sup>2</sup>
-          </li> -->
-          <li>
-            <strong>联系人:</strong>{{fireCheck.info.contracts}}
-          </li>
-          <li>
-            <strong>联系电话:</strong> <fa-icon *ngIf="fireCheck.info.tel" [icon]="faUserTie"></fa-icon> {{fireCheck.info.contracts}} <fa-icon *ngIf="fireCheck.info.tel" [icon]="faPhone"></fa-icon> {{fireCheck.info.tel}}
-          </li>
 
           
         </ul>
@@ -261,13 +288,32 @@
       <mat-card-content>
         <ul class="striped list-unstyled field-info-list">
           <li>
-            <strong>部位:</strong> {{fireCheck.info.fit.part | fireFitPart}}
+            <!-- //fireFitPart -->
+            <strong>部位:</strong> {{fireCheck.info.fit.part | fireFitPartLabel}} 
           </li>
           <li>
             <strong>面积:</strong> {{fireCheck.info.fit.area  | number}}
           </li>
           <li>
-            <strong>层数:</strong> {{fireCheck.info.fit.layers | number}}
+            <strong>层数:</strong> {{fireCheck.info.fit.layers}}
+          </li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card *ngIf="fireCheck.info.useChange">
+      <mat-card-header>
+        <mat-card-title>
+          改变用途
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul class="striped list-unstyled field-info-list">
+          <li>
+            <strong>使用性质:</strong> {{fireCheck.info.useChange.property | fireUseProperty}}
+          </li>
+          <li>
+            <strong>原有用途:</strong> {{fireCheck.info.useChange.oldUse}}
           </li>
         </ul>
       </mat-card-content>
@@ -285,7 +331,13 @@
             <strong>材料类别:</strong>{{fireCheck.info.warm.type}}
           </li>
           <li>
-            <strong>层数:</strong> {{fireCheck.info.warm.layers | number}}
+            <strong>层数:</strong> {{fireCheck.info.warm.layers}}
+          </li>
+          <li>
+            <strong>保温部位:</strong> {{fireCheck.info.warm.part}}
+          </li>
+          <li>
+            <strong>保温材料:</strong> {{fireCheck.info.warm.material}}
           </li>
         </ul>
       </mat-card-content>

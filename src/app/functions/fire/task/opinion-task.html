@@ -9,6 +9,56 @@
 </div>
 
 
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        现场评定具体项目
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>(一)建筑类别与耐火等级; </p>
+
+    <p>(二)总平面布局，应当包括防火间距、消防车道、消防车登高面、消防车登高操作场地等项目; </p>
+    <p>(三)平面布置，应当包括消防控制室、消防水泵房等建设工程消防用房的布置，国家工程建设消防技术标准中有位置要求 场所(如儿童活动场所、展览厅等)的设置位置等项目;</p>
+    <p>(四)建筑外墙、屋面保温和建筑外墙装饰;</p>
+    <p>(五)建筑内部装修防火，应当包括装修情况，纺织织物、 木质材料、高分子合成材料、复合材料及其他材料的防火性能， 用电装置发热情况和周围材料的燃烧性能和防火隔热、散热措施， 对消防设施的影响，对疏散设施的影响等项目;</p>
+    <p>(六)防火分隔，应当包括防火分区，防火墙，防火门、窗， 竖向管道井、其他有防火分隔要求的部位等项目;</p>
+    <p>(七)防爆，应当包括泄压设施，以及防静电、防积聚、防流散等措施;</p>  
+    <p>(八)安全疏散，应当包括安全出口、疏散门、疏散走道、避难层(间)、消防应急照明和疏散指示标志等项目;</p>  
+    <p>(九)消防电梯; </p>  
+    <p>(十)消火栓系统，应当包括供水水源、消防水池、消防水泵、管网、室内外消火栓、系统功能等项目; </p>  
+    <p>(十一)自动喷水灭火系统，应当包括供水水源、消防水池、消防水泵、报警阀组、喷头、系统功能等项目;</p>  
+    <p>(十二)火灾自动报警系统，应当包括系统形式、火灾探测器的报警功能、系统功能、以及火灾报警控制器、联动设备和消 防控制室图形显示装置等项目;</p>  
+    <p>(十三)防烟排烟系统及通风、空调系统防火，包括系统设置、排烟风机、管道、系统功能等项目;</p>   
+    <p>(十四)消防电气，应当包括消防电源、柴油发电机房、变配电房、消防配电、用电设施等项目;</p>  
+    <p>(十五)建筑灭火器，应当包括种类、数量、配置、布置等项目;</p>  
+    <p>(十六)泡沫灭火系统，应当包括泡沫灭火系统防护区、以 及泡沫比例混合、泡沫发生装置等项目;</p>  
+    <p>(十七)气体灭火系统的系统功能;</p>  
+    <p>(十八)其他国家工程建设消防技术标准强制性条文规定的项目，以及带有“严禁”“必须”“应”“不应”“不得”要求 的非强制性条文规定的项目。</p>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        评定条件
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <p> (一)现场评定内容符合经消防设计审查合格的消防设计文件; </p>
+    <p> (二)现场评定内容符合国家工程建设消防技术标准强制性条文规定的要求; </p>
+    <p> (三)有距离、高度、宽度、长度、面积、厚度等要求的内容，其与设计图纸标示的数值误差满足国家工程建设消防技术标准的要求;国家工程建设消防技术标准没有数值误差要求的，误差不超过 5%，且不影响正常使用功能和消防安全;</p>
+    <p> (四)现场评定内容为消防设施性能的，满足设计文件要求并能正常实现;</p>
+    <p> (五)现场评定内容为系统功能的，系统主要功能满足设计文件要求并能正常实现。</p>
+     
+      
+      
+      
+      
+
+
+  </mat-expansion-panel>
+</mat-accordion>
+
 <form [formGroup]="form">
 
   <mat-card formArrayName="opinions" *ngFor="let file of opinionForm.controls; let i = index">
@@ -21,7 +71,7 @@
     <mat-card-content [formGroupName]="i">
       <div class="row">
         <mat-form-field class="col-sm-3">
-          <mat-label>勘查结果</mat-label>
+          <mat-label>评定结果</mat-label>
           <mat-select formControlName="pass" required>
             <mat-option> -- </mat-option>
             <mat-option [value]="true">合格</mat-option>
@@ -30,7 +80,7 @@
         </mat-form-field>
 
         <mat-form-field class="col-sm-12">
-          <mat-label>意见</mat-label>
+          <mat-label>评定意见</mat-label>
           <textarea rows="3" matInput formControlName="opinion" required>
           </textarea>
         </mat-form-field>

@@ -25,7 +25,7 @@ import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 import { SharedDataModule } from 'src/app/shared/schemas/data.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { FireCheckSchemasModule, FireCheck, CheckFile, CheckBuildOpinion } from '../schemas';
+import { FireCheckSchemasModule, FireCheck, CheckFile, CheckBuildOpinion, DataDefine } from '../schemas';
 import { BusinessDocumentModule } from 'src/app/business/document/document-files.component';
 import { BusinessKeyTasksResolver } from 'src/app/business/tasks/business-key-tasks.resolver';
 import { FireCheckResolver } from '../fire-check.resolver';
@@ -101,12 +101,14 @@ export class FireApplyTaskComponent implements OnInit{
     private _router: Router,
     private _fb: FormBuilder,
     private _checkSvr: FireCheckService,
+    public schemasDefine: DataDefine,
     private _camundaSvr: CamundaRestService){}
 
   ngOnInit(): void {
     this._route.data.subscribe(data => {
       this.fireCheckTask = data.data;
       this.form = this._fb.group({
+        noAccept:[],
         files: this._fb.array(data.items.map(item => this._fb.group({
           pass: [true],
           name: [item]
@@ -132,8 +134,16 @@ export class FireApplyTaskComponent implements OnInit{
 
     let variables = new Variables();
     variables.putVariable('approved',{value:this.valid})
+    
+    let reason = null;
+    if (!this.valid){
+      reason = this.form.value.noAccept;
+    }
 
-    this._checkSvr.fileCheck(this.fireCheckTask.check.id,this.itemForm.value.filter(item => item.pass !== null)).pipe(
+    this._checkSvr.fileCheck(
+      this.fireCheckTask.check.id,
+      this.itemForm.value.filter(item => item.pass !== null)
+      ,reason).pipe(
       switchMap(() => this._camundaSvr.postCompleteTask(this.fireCheckTask.task.id,variables))
     ).subscribe(() => {
       this._router.navigate(['/task/fire/completed',this.fireCheckTask.check.id])
@@ -185,6 +195,7 @@ export class FireOpinionTaskComponent implements OnInit{
   complete(){
     let variables = new Variables();
     variables.putVariable('approved',{value:this.valid})
+
 
     this._checkSvr.buildOpinion(this.fireCheckTask.check.id,this.opinionForm.value).pipe(
       switchMap(() => this._camundaSvr.postCompleteTask(this.fireCheckTask.task.id,variables))

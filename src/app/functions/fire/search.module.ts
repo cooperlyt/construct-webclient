@@ -106,10 +106,14 @@ export class FireCheckDetailsComponent implements OnInit{
   reportUrl = `${environment.fileUrl}/pdf/`;
   
   constructor(public dataService: FireCheckDataService,
-    private route: ActivatedRoute){}
+    private route: ActivatedRoute,
+    private _func: FunctionPageBar){}
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => this.dataService.fireCheck = data.check);
+    this.route.data.subscribe(data => {
+      this.dataService.fireCheck = data.check;
+      this._func.loadTitle(data.check.info.special ? '特殊建设工程消防验收' : '建设工程消防验收备案')
+    });
   }
 
 }

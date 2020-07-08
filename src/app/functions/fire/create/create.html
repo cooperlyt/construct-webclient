@@ -27,68 +27,54 @@
             请选择申请单位
         </mat-error>
       </mat-form-field>
-
-      </div>
-      <div formGroupName="info">
-   
- 
-      <div class="row">
-      <mat-form-field class="col-sm-4">
+      <mat-form-field formGroupName="info" class="col-sm-4">
         <mat-label>类型</mat-label>
         <mat-select formControlName="special" required>
           <mat-option>---</mat-option>
           
-          <mat-option  [value]="false">普通工程-备案</mat-option>
-          <mat-option  [value]="true">特殊工程-验收</mat-option>
+          <mat-option  [value]="false">建设工程消防验收备案</mat-option>
+          <mat-option  [value]="true">特殊建设工程消防验收</mat-option>
         </mat-select>
         <mat-error *ngIf="businessForm.get('special').hasError('required')">
             请选择类型
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="col-sm-4">
-        <mat-label>使用性质</mat-label>
-        <mat-select formControlName="property">
-          <mat-option>---</mat-option>
-          
-          <mat-option *ngFor="let property of dataDefine.userProperty" [value]="property.key">{{property.label}}</mat-option>
-        </mat-select>
-        <!-- <mat-error *ngIf="businessForm.get('property').hasError('required')">
-            请选择使用性质
-        </mat-error> -->
-      </mat-form-field>
+      </div>
+      <div formGroupName="info">
+   
+ 
+      <div class="row">
 
 
-      <mat-form-field class="col-sm-4">
-        <mat-label>原有用途</mat-label>
-        <input matInput formControlName="oldUse">
-            
-        <mat-error *ngIf="businessForm.get('oldUse').hasError('maxlength')">
-          最大长度不能超过<strong>16</strong>
-      </mat-error>
-      </mat-form-field>
 
       
         <mat-form-field class="col-sm-8">
-          <mat-label>施工图审查机构出具的综合审查合格书、技术咨询报告等审查意见文号</mat-label>
-          <input matInput formControlName="designFile">
+          <mat-label>《特殊建设工程消防设计审查意见书》文号</mat-label>
+          <input matInput formControlName="designFile" required>
           <mat-error *ngIf="businessForm.get('designFile').hasError('maxlength')">
             最大长度不能超过<strong>32</strong>
+          </mat-error>
+          <mat-error *ngIf="businessForm.get('designFile').hasError('required')">
+            请填写《特殊建设工程消防设计审查意见书》文号
           </mat-error>
         </mat-form-field>
         
   
         <mat-form-field class="col-sm-4">
-          <mat-label>审核日期</mat-label>
-          <input matInput  [matDatepicker]="designFileDatepicker" formControlName="designFileDate">
+          <mat-label>审查合格日期</mat-label>
+          <input matInput  [matDatepicker]="designFileDatepicker" formControlName="designFileDate" required>
           <mat-datepicker-toggle matSuffix [for]="designFileDatepicker"></mat-datepicker-toggle>
           <mat-datepicker  #designFileDatepicker></mat-datepicker>
+          <mat-error *ngIf="businessForm.get('designFileDate').hasError('required')">
+            请填写审查合格日期
+          </mat-error>
         </mat-form-field>  
       </div>
       
       <div class="row">
         <mat-form-field class="col-sm-8">
-          <mat-label>建筑工程施工许可证明文件编号</mat-label>
+          <mat-label>建筑工程施工许可证号、批准开工报告 编号或证明文件编号</mat-label>
           <input matInput formControlName="constructFile">
           <mat-error *ngIf="businessForm.get('constructFile').hasError('maxlength')">
             最大长度不能超过<strong>32</strong>
@@ -96,7 +82,7 @@
         </mat-form-field>
   
         <mat-form-field class="col-sm-4">
-          <mat-label>审核日期</mat-label>
+          <mat-label>制证日期</mat-label>
           <input matInput  [matDatepicker]="constructFileDatepicker" formControlName="constructFileDate">
           <mat-datepicker-toggle matSuffix [for]="constructFileDatepicker"></mat-datepicker-toggle>
           <mat-datepicker  #constructFileDatepicker></mat-datepicker>
@@ -107,58 +93,90 @@
 
       <div class="row">
 
-      <mat-form-field class="col-sm-4">
-        <mat-label>消防设计备案凭证文号</mat-label>
-        <input matInput formControlName="fireFile">
-        <mat-error *ngIf="businessForm.get('fireFile').hasError('maxlength')">
-          最大长度不能超过<strong>32</strong>
-        </mat-error>
-      </mat-form-field>
-
-
         <mat-form-field class="col-sm-4">
           <mat-label>联系人</mat-label>
-          <input matInput formControlName="contracts">
+          <input matInput formControlName="contracts" required>
           <mat-error *ngIf="businessForm.get('contracts').hasError('maxlength')">
             最大长度不能超过<strong>64</strong>
+          </mat-error>
+          <mat-error *ngIf="businessForm.get('contracts').hasError('required')">
+            请填写联系人
           </mat-error>
         </mat-form-field>
 
 
         <mat-form-field class="col-sm-4">
           <mat-label>联系电话</mat-label>
-          <input matInput formControlName="tel">
+          <input matInput formControlName="tel" required>
           <mat-error *ngIf="businessForm.get('tel').hasError('maxlength')">
             最大长度不能超过<strong>16</strong>
+          </mat-error>
+          <mat-error *ngIf="businessForm.get('tel').hasError('required')">
+            请填写联系电话
           </mat-error>
         </mat-form-field>
 
       </div>
 
 
-      <h3 *ngIf="project.info.modifyFit" class="docs-api-h3">装修工程</h3>
+      <h3 *ngIf="project.info.modifyFit" class="docs-api-h3">装饰装修</h3>
       <div *ngIf="project.info.modifyFit" formGroupName="fit" class="row">
   
-        <mat-form-field class="col-sm-4">
+        <mat-form-field class="col-sm-6">
           <mat-label>部位</mat-label>
-          <mat-select formControlName="part" required>
-            <mat-option>---</mat-option>
+          <mat-select formControlName="part" required multiple>
             <mat-option *ngFor="let part of dataDefine.fireFitPart" [value]="part.key">{{part.label}}</mat-option>
           </mat-select>
           <mat-error *ngIf="businessForm.get('fit').get('part').hasError('required')">
             请选择部位
           </mat-error>
         </mat-form-field>
-        <mat-form-field class="col-sm-4">
-          <mat-label>面积</mat-label>
-          <input type="number" matInput formControlName="area">
+        <mat-form-field class="col-sm-3">
+          <mat-label>面积(m<sup>2</sup>)</mat-label>
+          <input type="number" matInput formControlName="area" required>
+          <mat-error *ngIf="businessForm.get('fit').get('area').hasError('required')">
+            请填写面积
+          </mat-error>
         </mat-form-field>
-        <mat-form-field class="col-sm-4">
-          <mat-label>层数</mat-label>
-          <input matInput type="number" formControlName="layers">
+        <mat-form-field class="col-sm-3">
+          <mat-label>所在层数</mat-label>
+          <input matInput formControlName="layers" required>
+          <mat-error *ngIf="businessForm.get('fit').get('layers').hasError('maxlength')">
+            最大长度不能超过<strong>16</strong>
+          </mat-error>
+          <mat-error *ngIf="businessForm.get('fit').get('layers').hasError('required')">
+            请填写所在层数
+          </mat-error>
         </mat-form-field>
       </div>
 
+
+      <h3 *ngIf="project.info.modifyWarm" class="docs-api-h3">改变用途</h3>
+      <div *ngIf="project.info.modifyUse" formGroupName="useChange" class="row">
+        <mat-form-field class="col-sm-4">
+          <mat-label>使用性质</mat-label>
+          <mat-select formControlName="property">
+            <mat-option>---</mat-option>
+            
+            <mat-option *ngFor="let property of dataDefine.userProperty" [value]="property.key">{{property.label}}</mat-option>
+          </mat-select>
+          <!-- <mat-error *ngIf="businessForm.get('property').hasError('required')">
+              请选择使用性质
+          </mat-error> -->
+        </mat-form-field>
+  
+  
+        <mat-form-field class="col-sm-4">
+          <mat-label>原有用途</mat-label>
+          <input matInput formControlName="oldUse">
+              
+          <mat-error *ngIf="businessForm.get('useChange').get('oldUse').hasError('maxlength')">
+            最大长度不能超过<strong>16</strong>
+        </mat-error>
+        </mat-form-field>
+
+
+      </div>
 
       <h3 *ngIf="project.info.modifyWarm" class="docs-api-h3">建筑保温</h3>
       <div *ngIf="project.info.modifyWarm" formGroupName="warm" class="row">
@@ -175,8 +193,37 @@
         </mat-form-field>
 
         <mat-form-field class="col-sm-4">
-          <mat-label>层数</mat-label>
-          <input type="number" matInput formControlName="layers">
+          <mat-label>所在层数</mat-label>
+          <input matInput formControlName="layers" required>
+          <mat-error *ngIf="businessForm.get('warm').get('layers').hasError('maxlength')">
+            最大长度不能超过<strong>16</strong>
+          </mat-error>
+          <mat-error *ngIf="businessForm.get('warm').get('layers').hasError('required')">
+            请填写所在层数
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field class="col-sm-4">
+          <mat-label>保温部位</mat-label>
+          <input matInput formControlName="part" required>
+          <mat-error *ngIf="businessForm.get('warm').get('part').hasError('maxlength')">
+            最大长度不能超过<strong>32</strong>
+          </mat-error>
+          <mat-error *ngIf="businessForm.get('warm').get('part').hasError('required')">
+            请填写保温部位
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="col-sm-4">
+          <mat-label>保温材料</mat-label>
+          <input matInput formControlName="material" required>
+          <mat-error *ngIf="businessForm.get('warm').get('material').hasError('maxlength')">
+            最大长度不能超过<strong>32</strong>
+          </mat-error>
+          <mat-error *ngIf="businessForm.get('warm').get('material').hasError('required')">
+            请填写保温材料
+          </mat-error>         
         </mat-form-field>
       </div>
 
@@ -194,7 +241,7 @@
         </mat-form-field>
       </div>
 
-      <h3 [class.border-bottom-0]="!tinCheck.checked" class="docs-api-h3">
+      <!-- <h3 [class.border-bottom-0]="!tinCheck.checked" class="docs-api-h3">
         <mat-checkbox #tinCheck (change)="tinChange($event)">储罐</mat-checkbox>
       </h3>
       <div class="row">
@@ -246,12 +293,12 @@
           </mat-form-field>
           
         </ng-container>
-      </div>
+      </div> -->
 
 
 
 
-      <h3 class="docs-api-h3" [class.border-bottom-0]="!squareCheck.checked"><mat-checkbox #squareCheck (change)="squareChange($event)">堆场</mat-checkbox></h3>
+      <!-- <h3 class="docs-api-h3" [class.border-bottom-0]="!squareCheck.checked"><mat-checkbox #squareCheck (change)="squareChange($event)">堆场</mat-checkbox></h3>
           
       <div class="row">
 
@@ -273,7 +320,7 @@
           </mat-form-field>
           
         </ng-container>
-      </div>
+      </div> -->
 
       <h3 class="docs-api-h3 border-bottom-0">
         建筑物
@@ -323,6 +370,24 @@
             <ng-container matColumnDef="height">
               <th mat-header-cell *matHeaderCellDef>建筑高度</th>
               <td mat-cell *matCellDef="let element"><span *ngIf="!element.height">-</span>{{element.height | number}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="length">
+              <th mat-header-cell *matHeaderCellDef>建筑长度</th>
+              <td mat-cell *matCellDef="let element"><span *ngIf="!element.length">-</span>{{element.length | number}}</td>             
+            </ng-container>
+
+            <ng-container matColumnDef="property">
+              <th mat-header-cell *matHeaderCellDef>使用性质</th>
+              <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                <mat-form-field *ngIf="buildForm.controls[i].value.selected" style="width: 70px;">
+                  <mat-select formControlName="property">
+                    <mat-option>---</mat-option>
+                    <mat-option *ngFor="let property of dataDefine.userProperty" [value]="property.key">{{property.label}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+  
+              </td>
             </ng-container>
   
             <ng-container matColumnDef="rating">
