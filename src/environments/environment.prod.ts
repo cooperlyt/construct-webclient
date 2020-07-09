@@ -1,7 +1,7 @@
 import { KeycloakConfig } from 'keycloak-angular';
 
 const keycloakConfig: KeycloakConfig = {
-  url: 'http://192.168.1.21:8901/auth',
+  url: window["env"]["authUrl"] || 'http://192.168.1.21:8901/auth', 
   realm: 'construction',
   clientId: 'master'
 };
