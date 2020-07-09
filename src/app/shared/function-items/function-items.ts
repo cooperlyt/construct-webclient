@@ -51,26 +51,43 @@ const FUNCTIONS:  FunctionCategory[] =
         },
         {
           id: 'corp',
-          name: '参建单位',
+          name: '责任主体',
           summary: '参建单位.'
+        },
+        {
+          id: 'corp-cer',
+          name: '信用管理',
+          summary: '信用管理.'
         }
       ]
     },
     {
       id: 'fire',
-      name: '消防质检',
-      summary: '消防质检.',
+      name: '工程消防',
+      summary: '工程消防.',
       items: [
-        // {
-        //   id: 'fire-templete',
-        //   name: '质检模版',
-        //   summary: '质检模版.'
-        // },
+        {
+          id: 'fire-business-design',
+          name: '设计审查',
+          summary: '设计审查.',
+        },
         {
           id: 'fire-business',
-          name: '检测业务',
-          summary: '检测业务.',
+          name: '特殊建设工程消防验收',
+          summary: '特殊建设工程消防验收'
+        },
+        {
+          id: 'fire-business-record',
+          name: '建设工程消防验收备案',
+          summary: '特殊建设工程消防验收'
+        },
+        {
+          id: 'fire-business-radom',
+          name: '建设工程消防备案抽查',
+          summary: '建设工程消防备案抽查'
         }
+
+        
       ]
     },
     // {
@@ -120,6 +137,19 @@ const FUNCTIONS:  FunctionCategory[] =
         //   name: '系统设置',
         //   summary: '系统设置.'
         // }
+      ]
+    }
+    ,
+    {
+      id: 'cms',
+      name: '信息发布',
+      summary: '信息发布.',
+      items: [
+        {
+          id: 'gov-fie',
+          name: '政策法规',
+          summary: '政策法规.'
+        },
       ]
     }
   ];

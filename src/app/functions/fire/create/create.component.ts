@@ -115,7 +115,7 @@ export class FireCheckCreateComponent implements OnInit{
       value.info.fit.part = value.info.fit.part.join(',')
     }
     console.log(value);
-    value.info.builds = value.info.builds.filter(build => build.selected).map(build => {return {code: build.code, rating: build.rating, danger: build.danger}});
+    value.info.builds = value.info.builds.filter(build => build.selected).map(build => {return {property:build.property ,code: build.code, rating: build.rating, danger: build.danger}});
 
     this._fireCheckService.create(value).subscribe(
       val => {

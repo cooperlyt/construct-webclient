@@ -100,7 +100,7 @@
             <strong>{{project.info.importantType | improtantTypeLabel}}</strong> [{{project.info.importantFile}}]
           </li>
           <li>
-            <strong>工程性质</strong>{{project.info.property | projectPropertyLabel}}  <span *ngIf="project.info.property == 'MODIFY'"> - <span *ngIf="project.info.modifyFit">装修</span>/<span *ngIf="project.info.modifyWarm">保温</span>/<span *ngIf="project.info.modifyUse">改变用途</span> </span>
+            <strong>工程性质:</strong>{{project.info.property | projectPropertyLabel}}  <span *ngIf="project.info.property == 'MODIFY'"> - <span *ngIf="project.info.modifyFit">装修</span>/<span *ngIf="project.info.modifyWarm">保温</span>/<span *ngIf="project.info.modifyUse">改变用途</span> </span>
           </li>
           <li>
             <strong>工程类别:</strong>{{project.info.type | projectTypeLabel}}  {{project.info.typeLevel | projectTypeLevelLabel}}
@@ -113,7 +113,7 @@
           </li>
 
           <li>
-            <strong>占地面积</strong> <ng-container *ngIf="!project.info.landArea"> - </ng-container> {{project.info.landArea | number}}平方米
+            <strong>占地面积:</strong> <ng-container *ngIf="!project.info.landArea"> - </ng-container> {{project.info.landArea | number}}平方米
           </li>
 
           <li>
@@ -125,10 +125,10 @@
           </li>
 
           <li>
-            <strong>招标情况</strong> {{project.info.tender}}
+            <strong>招标情况:</strong> {{project.info.tender}}
           </li>
           <li>
-            <strong>备案时间</strong> {{project.regTime | date:'yyyy年MM月dd日'}}
+            <strong>备案时间:</strong> {{project.regTime | date:'yyyy年MM月dd日'}}
           </li>
           <li>
             <strong>地址:</strong>{{project.info.address}}
