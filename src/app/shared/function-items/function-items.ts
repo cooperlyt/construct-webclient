@@ -73,6 +73,11 @@ const FUNCTIONS:  FunctionCategory[] =
         },
         {
           id: 'fire-business',
+          name: '建设工程消防验收',
+          summary: '建设工程消防验收'
+        },
+        {
+          id: 'fire-business-special',
           name: '特殊建设工程消防验收',
           summary: '特殊建设工程消防验收'
         },

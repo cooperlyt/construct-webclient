@@ -59,7 +59,11 @@ const routes: Routes = [
               {
                 path: 'fire-business',
                 loadChildren: () => import('./functions/fire/search.module').then(m => m.FireCheckModule)
-              }
+              },
+              {path: 'fire-business-special' , redirectTo: '/function/fire-business?filter=special'},
+              {path: 'fire-business-record' , redirectTo: '/function/fire-business?filter=record'},
+              {path: 'fire-business-radom' , redirectTo: '/function/fire-business?filter=inRomand'}
+
             ]
           }
         ]

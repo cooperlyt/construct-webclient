@@ -23,7 +23,7 @@ export class FireCheckService{
     return this._http.get<FireCheck>(`${environment.apiUrl}/construct-fire/manager/check/${id}`)
   }
 
-  search(page?:number, key?: string, status?: string,  sort?:string, dir?:string): Observable<PageResult<FireCheck>>{
+  search(page?:number, key?: string, status?: string , filter?: string,  sort?:string, dir?:string): Observable<PageResult<FireCheck>>{
     let params = new HttpParams({encoder: new CustomEncoder()}).set("page",page ? page.toString() : '0');
     if (status){
       params = params.append('status',status);
@@ -37,6 +37,19 @@ export class FireCheckService{
     if (dir){
       params = params.append('dir',dir);
     }
+    if (filter){
+      if (filter == 'special'){
+        params = params.append('special','true');
+      }else {
+        params = params.append('special','false');
+        if (filter == 'sample'){
+          params = params.append('inRandom','false');
+        }else if (filter == 'inRomand'){
+          params = params.append('inRandom','true');
+        }
+      }
+    }
+
     console.log(params);
     return this._http.get<PageResult<FireCheck>>(`${environment.apiUrl}/construct-fire/manager/search`,{params: params});
   }

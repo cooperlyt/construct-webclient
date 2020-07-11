@@ -1,3 +1,31 @@
+.head-tab-items{
+
+  display: none;
+
+  @media (min-width: 496px) {
+    display: block;
+
+  }
+}
+
+
+.property-filter-bar{
+
+  display: flex;
+  @media (min-width: 496px) {
+    display: none;
+
+  }
+}
+
+@media (max-width: 496px){
+
+  .head-tab-menu{
+    display: flex;
+  }
+
+}
+
 .corp-badges .badge{
   line-height: 1.5;
   margin-bottom: 6px;

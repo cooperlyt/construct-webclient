@@ -116,7 +116,7 @@ export class FireCheckCreateComponent implements OnInit{
     }
     console.log(value);
     value.info.builds = value.info.builds.filter(build => build.selected).map(build => {return {property:build.property ,code: build.code, rating: build.rating, danger: build.danger}});
-
+    value.memo = value.info.memo;
     this._fireCheckService.create(value).subscribe(
       val => {
         this._router.navigate(['../../','created',val.id],{relativeTo: this._route});
