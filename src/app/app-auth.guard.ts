@@ -9,7 +9,11 @@ export class AppAuthGuard extends KeycloakAuthGuard implements CanActivate{
   }
 
   isAccessAllowed(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+    console.log('auth allow is call');
     return new Promise(async (resolve, reject) => {
+      console.log('auth guard');
+      console.log(this.authenticated);
+      console.log(this.keycloakAngular.isTokenExpired());
       if (!this.authenticated) {
         this.keycloakAngular.login();
         return;

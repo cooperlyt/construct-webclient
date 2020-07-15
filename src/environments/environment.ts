@@ -14,6 +14,7 @@ export const environment = {
   production: false,
   apiUrl: 'http://192.168.1.21:5555',
   fileUrl: 'http://192.168.1.21:6699',
+  userAdminUrl: 'http://192.168.1.21:8901',
   keycloakConfig,
   title: '建设工程审批系统'
 };

@@ -49,6 +49,10 @@ const routes: Routes = [
                 loadChildren: () => import('./functions/corp/corp.module').then(m => m.CorpModule)
               },
               {
+                path: 'corp-cer',
+                loadChildren: () => import('./functions/corp/cer/credit-add.module').then(m=> m.AddCorpCreditModule)
+              },
+              {
                 path: 'project',
                 loadChildren: () => import('./functions/project/project.module').then(m => m.ProjectModule)
               },
@@ -66,6 +70,10 @@ const routes: Routes = [
               {
                 path: 'article/:category',
                 loadChildren: () => import('./cms/cms.module').then(m => m.CmsModule)
+              },
+              {
+                path: 'fire-business-design' , 
+                loadChildren: () => import('./functions/fire-design/fire-design.module').then(m => m.FireDesignModule)
               }
 
             ]

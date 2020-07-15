@@ -135,10 +135,10 @@ export class AppModule implements DoBootstrap {
     try {
       await keycloakService.init({ 
         config: keycloakConfig ,
-        // initOptions: {
-        //   onLoad: 'login-required',
-        //   checkLoginIframe: false,
-        // },
+        initOptions: {
+          onLoad: 'login-required',
+          checkLoginIframe: false,
+        },
         enableBearerInterceptor: true
       });
       app.bootstrap(AppComponent);
