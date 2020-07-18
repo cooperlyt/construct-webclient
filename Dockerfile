@@ -8,10 +8,10 @@ COPY package.json yarn.lock ./
 RUN apk add --no-cache --update \
     yarn 
 
-RUN yarn config set registry https://registry.npm.taobao.org && \
-    yarn install
+RUN yarn config set registry https://registry.npm.taobao.org --global && \
+    yarn config set disturl https://npm.taobao.org/dist --global && \
+    yarn install --network-timeout 1000000000
 
-    
 # RUN npm install
 COPY . .
 

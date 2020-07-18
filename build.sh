@@ -9,6 +9,6 @@ echo "********************************************************"
 #docker rm -f ng-app-build
 
 
-docker build -t coopersoft/construct-webclient:latest .
+docker build -t coopersoft/construct-webclient:1.0.1 .
 docker login
-docker push coopersoft/construct-webclient:latest
+docker push coopersoft/construct-webclient:1.0.1
