@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { takeUntil, map } from 'rxjs/operators';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { TableOfContents } from '../table-of-contents/table-of-contents';
+import { CmsService } from 'src/app/cms/cms.service';
 
 export interface FunctionItem {
   /** Id of the doc item. Used in the URL for linking to the doc. */
@@ -51,26 +52,48 @@ const FUNCTIONS:  FunctionCategory[] =
         },
         {
           id: 'corp',
-          name: '参建单位',
+          name: '责任主体',
           summary: '参建单位.'
+        },
+        {
+          id: 'corp-cer',
+          name: '信用管理',
+          summary: '信用管理.'
         }
       ]
     },
     {
       id: 'fire',
-      name: '消防质检',
-      summary: '消防质检.',
+      name: '工程消防',
+      summary: '工程消防.',
       items: [
-        // {
-        //   id: 'fire-templete',
-        //   name: '质检模版',
-        //   summary: '质检模版.'
-        // },
+        {
+          id: 'fire-business-design',
+          name: '设计审查',
+          summary: '设计审查.',
+        },
         {
           id: 'fire-business',
-          name: '检测业务',
-          summary: '检测业务.',
+          name: '建设工程消防验收',
+          summary: '建设工程消防验收'
+        },
+        {
+          id: 'fire-business-special',
+          name: '特殊建设工程消防验收',
+          summary: '特殊建设工程消防验收'
+        },
+        {
+          id: 'fire-business-record',
+          name: '建设工程消防验收备案',
+          summary: '特殊建设工程消防验收'
+        },
+        {
+          id: 'fire-business-radom',
+          name: '建设工程消防备案抽查',
+          summary: '建设工程消防备案抽查'
         }
+
+        
       ]
     },
     // {
@@ -127,24 +150,6 @@ const FUNCTIONS:  FunctionCategory[] =
 const ALL_FUNCTIONS_ITEM = FUNCTIONS.reduce(
     (result: FunctionItem[], category: FunctionCategory) => result.concat(category.items), []);
 
-@Injectable({providedIn: 'root'})
-export class FunctionItems {
-  getCategories(): FunctionCategory[] {
-    return FUNCTIONS;
-  }
-
-  getItems(): FunctionItem[] {
-    return ALL_FUNCTIONS_ITEM;
-  }
-
-  getItemById(id: string): FunctionItem | undefined {
-    return ALL_FUNCTIONS_ITEM.find(f => f.id === id);
-  }
-
-  getCategoryById(id: string): FunctionCategory | undefined {
-    return FUNCTIONS.find(c => c.id === id);
-  }
-}
 
 export class SearchCondition{
   key: string;
@@ -172,7 +177,7 @@ export class FunctionPageBar {
   } 
 
   loadTitleFunction(id: string){
-    return this.loadTitle(this._functionItems.getItemById(id).name);
+    return this.loadTitle(this.getItemById(id).name);
   }
 
   loadSearch(info: FunctionHeaderInfo): Observable<SearchCondition>{
@@ -182,7 +187,7 @@ export class FunctionPageBar {
   }
 
   loadSearchFunction(id: string): Observable<SearchCondition>{
-    return this.loadSearch({title: this._functionItems.getItemById(id).name, search: true});
+    return this.loadSearch({title: this.getItemById(id).name, search: true});
   }
 
   get info(): FunctionHeaderInfo { 
@@ -206,7 +211,43 @@ export class FunctionPageBar {
     this.bodyTitle.setTitle(_title);
   }
 
-  constructor(private bodyTitle: Title, private _functionItems: FunctionItems) {}
+  constructor(private bodyTitle: Title,private _cmsSvr: CmsService){
+    this._cmsSvr.categorys().pipe(
+      map(c => c
+        .map((c) :FunctionCategory  => ({id: c.id.toString(), name: c.name, summary: c.description, items: c.children.map((ci):FunctionItem => ({id: `article/${ci.id}`, name:ci.name,summary: ci.description }))})
+        
+        )
+      )
+    ).subscribe(cms => {
+
+      this.functions = FUNCTIONS.concat(cms);
+      this.allFunctionItem = this.functions.reduce(
+        (result: FunctionItem[], category: FunctionCategory) => result.concat(category.items), []
+      )
+    })
+  }
+
+  functions:FunctionCategory[];
+
+  allFunctionItem: FunctionItem[];
+
+  getCategories(): FunctionCategory[] {
+    return this.functions;
+  }
+
+  getItems(): FunctionItem[] {
+    return this.allFunctionItem;
+  }
+
+  getItemById(id: string): FunctionItem | undefined {
+    return this.allFunctionItem.find(f => f.id === id);
+  }
+
+  getCategoryById(id: string): FunctionCategory | undefined {
+    return this.functions.find(c => c.id === id);
+  }
+
+
 }
 
 export abstract class PageFunctionBase implements OnDestroy{

@@ -18,6 +18,7 @@ export declare class JoinCorp{
     outLevelFile:string;
     code:number;
     contacts:string;
+    contactsId:string;
     tel:string;
     info:JoinCorpInfo;
 
@@ -107,6 +108,7 @@ export declare class ProjectRegInfo{
     completeDate:Date;
     tender:string;
     costs:number;
+    putMoney:number;
     importantType:string;
     importantFile:string;
 }

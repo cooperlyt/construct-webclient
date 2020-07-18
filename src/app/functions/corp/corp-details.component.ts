@@ -10,6 +10,8 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { empty } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -88,6 +90,27 @@ export class CorpProjectsComponent implements OnInit{
     ngOnInit(): void {
 
     }
+}
+
+@Component({
+  selector: 'corp-credit-list',
+  templateUrl: './cer/credit-list.html'
+})
+export class CorpCreditComponent implements OnInit{
+
+  corpId: number;
+  credits: {type:string, description:string}[];
+
+  constructor(private _route: ActivatedRoute, private _http: HttpClient){}
+
+  ngOnInit(): void {
+    this._route.parent.params.pipe(
+      switchMap(params => this._http.get<{type:string, description:string}[]>(`${environment.apiUrl}/construct-attach-corp/view/corp/${params['cid']}/credits`)),
+    )
+    
+    .subscribe(res => this.credits = res);
+  }
+
 }
 
 @Component({

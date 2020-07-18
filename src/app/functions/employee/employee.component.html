@@ -1,77 +1,31 @@
 
-<div class="d-flex" style="padding: 0 5px;">
 
-   
-    <h2>共找到 {{list.length}} 个用户</h2>
-    <div class="flex-auto flex-right-center">
-        <button (click)="add()" mat-raised-button color="primary">添加用户</button>
-    </div>
-
-  
-</div>
-
-
-<mat-card class="flex-auto">
-<table mat-table [dataSource]="list">
-
-    <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>登录名</th>
-        <td mat-cell *matCellDef="let element">
-            <span [class.line-through]="!element.enabled">
-                {{element.username}}
-            </span>
-            
-        </td>
-    </ng-container>
-
-    <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>姓名</th>
-        <td mat-cell *matCellDef="let element">{{element.name}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef>电话</th>
-        <td mat-cell *matCellDef="let element">{{element.phone}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef>邮件</th>
-        <td mat-cell *matCellDef="let element">{{element.email}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef>   
-            <div class="flex-right-center">
-                <mat-slide-toggle (change)="showChange($event)" [checked]="showAll"></mat-slide-toggle>
-            </div>
-           </th>
-        <td mat-cell *matCellDef="let element; let i=index">
-            <div class="flex-right-center">
-                <button (click)="del(i)" mat-icon-button color="warn" aria-label="删除">
-                    <mat-icon>delete</mat-icon>
-                  </button>
+<div class="mdb card blue-gradient">
+    <div class="mdb card-body white-text rgba-black-light text-center">
     
-                  <button mat-icon-button color="accent" (click)="enable(i)" aria-label="禁用/启用">
-                    <mat-icon *ngIf="element.enabled">lock</mat-icon>
-                    <mat-icon *ngIf="!element.enabled">lock_open</mat-icon>
-                  </button>
-                  <button (click)="resetPassword(i)" mat-icon-button color="accent" aria-label="重置密码">
-                    <mat-icon>vpn_key</mat-icon>
-                  </button>
-                  <button (click)="roleChange(i)" mat-icon-button color="primary" aria-label="权限设置">
-                    <mat-icon>menu</mat-icon>
-                  </button>
-            </div>
-        </td>
-    </ng-container>
+      <!--Grid row-->
+      <div class="row d-flex justify-content-center">
+    
+        <!--Grid column-->
+        <div class="col-md-6 fadeIn" style="visibility: visible; animation-name: fadeIn; animation-iteration-count: 1;">
+    
+          <h1 class="font-weight-bold mb-3 h2">统一认证</h1>
+    
+          <h4 class="mb-2 h5">系统使用统一认证系统实现单点登录.</h4>
+    
+        </div>
+        <!--Grid column-->
+    
+      </div>
+      <!--Grid row-->
+    
+    </div>
+    </div>
+    
 
-    <tr mat-header-row *matHeaderRowDef="['id','name','phone','email','action']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['id','name','phone','email','action']"></tr>
+    <div style="margin-top: 50px; display: flex; justify-content:center">
+        <div>
+            <a mat-flat-button [href]="url" target="_blank" color="primary">进入统一认证单点登录用户管理</a>
+        </div>
 
-</table>
-
-</mat-card>
-
-<div style="position: relative">
-    <ngx-ui-loader [loaderId]="'loader-01'"></ngx-ui-loader>
-</div>
+    </div>

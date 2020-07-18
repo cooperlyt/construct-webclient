@@ -34,6 +34,14 @@ import { environment } from 'src/environments/environment';
 import { BusinessModule } from 'src/app/business/business.module';
 import { BusinessOperationModule } from 'src/app/business/operation/operation-list.component';
 
+
+enum FilterType{
+  special =  '特殊工程消防验收',
+  record = '消防验收备案',
+  sample = '备案未抽中',
+  inRomand = '备案抽查'
+}
+
 @Injectable({providedIn: 'root'})
 export class FireCheckSearchResolver implements Resolve<PageResult<FireCheck>>{
 
@@ -43,7 +51,8 @@ export class FireCheckSearchResolver implements Resolve<PageResult<FireCheck>>{
         const page = route.queryParams["page"] || 0;
         const key = route.queryParams['key'] || '';
         const status = route.queryParams['status'];
-        return this._service.search(page,key,status);
+        const filter = route.queryParams['filter'];
+        return this._service.search(page,key,status,filter);
     }
     
 }
@@ -51,6 +60,7 @@ export class FireCheckSearchResolver implements Resolve<PageResult<FireCheck>>{
 @Component({templateUrl:'./search.html', styleUrls:['./search.scss']})
 export class FireCheckSearchComponent extends SearchFunctionBase implements OnInit{
 
+  filterTypes = Object.keys(FilterType).map(key => ({key: key, label: FilterType[key]}));
 
   doSearch(key: import("../../shared/function-items/function-items").SearchCondition): void {
     if (key.now){
@@ -61,7 +71,21 @@ export class FireCheckSearchComponent extends SearchFunctionBase implements OnIn
     }
   }
 
-  constructor(public dataDefine: DataDefine,  private _router: Router,  private _route: ActivatedRoute, _func: FunctionPageBar){
+  get filterLabel():string{
+    return FilterType[this._route.snapshot.queryParams['filter']];
+  }
+
+  onFilterChange(type: string){
+   
+    if (!type || type === '' ){
+
+      this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,filter: null}, queryParamsHandling: 'merge'})
+    }else {
+      this._router.navigate([],{relativeTo: this._route,queryParams: {page:0,filter: type}, queryParamsHandling: 'merge'})
+    }
+}
+
+  constructor(public dataDefine: DataDefine,  private _router: Router,  public _route: ActivatedRoute, _func: FunctionPageBar){
     super(_route,_func);
   }
 
@@ -106,10 +130,14 @@ export class FireCheckDetailsComponent implements OnInit{
   reportUrl = `${environment.fileUrl}/pdf/`;
   
   constructor(public dataService: FireCheckDataService,
-    private route: ActivatedRoute){}
+    private route: ActivatedRoute,
+    private _func: FunctionPageBar){}
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => this.dataService.fireCheck = data.check);
+    this.route.data.subscribe(data => {
+      this.dataService.fireCheck = data.check;
+      this._func.loadTitle(data.check.info.special ? '特殊建设工程消防验收' : '建设工程消防验收备案')
+    });
   }
 
 }

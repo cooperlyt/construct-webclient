@@ -48,7 +48,7 @@ export class FireCheckCreatedComponent implements OnInit{
   }
 }
 
-const fullBuildColumns = ['count','area' ,'height'];
+const fullBuildColumns = ['count','area' ,'height', 'length'];
 
 @Component({
   selector:"fire-check-create",
@@ -65,7 +65,7 @@ export class FireCheckCreateComponent implements OnInit{
 
   builds: BuildInfo[];
 
-  buildColumns: string[] = ['name','rating','danger'];
+  buildColumns: string[] = ['name','property','rating','danger'];
 
 
   get buildForm(): FormArray{
@@ -108,10 +108,15 @@ export class FireCheckCreateComponent implements OnInit{
 
   onSubmit(){
     this._uiLoader.start();
-    let value = this.checkForm.value;
-
-    value.info.builds = value.info.builds.filter(build => build.selected).map(build => {return {code: build.code, rating: build.rating, danger: build.danger}});
-
+  
+    let value = JSON.parse(JSON.stringify(this.checkForm.value))
+    if (value.info.fit && value.info.fit.part){
+      console.log(value);
+      value.info.fit.part = value.info.fit.part.join(',')
+    }
+    console.log(value);
+    value.info.builds = value.info.builds.filter(build => build.selected).map(build => {return {property:build.property ,code: build.code, rating: build.rating, danger: build.danger}});
+    value.memo = value.info.memo;
     this._fireCheckService.create(value).subscribe(
       val => {
         this._router.navigate(['../../','created',val.id],{relativeTo: this._route});
@@ -157,20 +162,18 @@ export class FireCheckCreateComponent implements OnInit{
 
 
       this.businessForm = this._fb.group({
-          property:[],
+
           projectCode: [this.project.code],
-          contracts:[, Validators.maxLength(64)],
-          tel:[,Validators.maxLength(16)],
+          contracts:[, [Validators.maxLength(64),Validators.required]],
+          tel:[,[Validators.maxLength(16),Validators.required]],
           special:[,Validators.required],
-          applyFile:[,Validators.maxLength(32)],
-          fireFile:[,Validators.maxLength(32)],
           constructFile:[,Validators.maxLength(32)],
           constructFileDate:[],
           designFile:[{value: null, disabled: true},Validators.maxLength(32)],
           designFileDate:[{value: null, disabled: true}],
           part:[false],
           memo:[,Validators.maxLength(1024)],
-          oldUse:[,Validators.maxLength(16)],
+
           builds:this._fb.array([])
 
       });
@@ -183,12 +186,21 @@ export class FireCheckCreateComponent implements OnInit{
       this.businessForm.get("special").valueChanges.subscribe(value => {
         if (value){
           this.businessForm.get("designFile").enable();
+          this.businessForm.get("designFile").setValidators(Validators.required);
+          this.businessForm.get("designFile").updateValueAndValidity();
           this.businessForm.get("designFileDate").enable(); 
+          this.businessForm.get("designFileDate").setValidators(Validators.required);
+          this.businessForm.get("designFileDate").updateValueAndValidity();
+
         }else{
           this.businessForm.get("designFile").disable();
           this.businessForm.get("designFile").setValue(null);
+          this.businessForm.get("designFile").clearValidators();
+          this.businessForm.get("designFile").updateValueAndValidity();
           this.businessForm.get("designFileDate").disable();   
           this.businessForm.get("designFileDate").setValue(null);
+          this.businessForm.get("designFileDate").clearValidators();
+          this.businessForm.get("designFileDate").updateValueAndValidity();
         }
       });
 
@@ -214,7 +226,8 @@ export class FireCheckCreateComponent implements OnInit{
           code:[build.code],
           selected: [true],
           rating:[, Validators.required],
-          danger:[, Validators.required]
+          danger:[, Validators.required],
+          property:[]
         })
 
         buildItem.valueChanges
@@ -248,17 +261,28 @@ export class FireCheckCreateComponent implements OnInit{
       if (this.project.info.modifyFit){
         this.businessForm.addControl('fit', this._fb.group({
           part: [,Validators.required],
-          area: [],
-          layers: []
+          area: [,Validators.required],
+          layers: [,[Validators.maxLength(16), Validators.required]]
         }));
       }
 
       if (this.project.info.modifyWarm){
         this.businessForm.addControl('warm', this._fb.group({
           type: [,Validators.required],
-          layers: []
+          layers: [,[Validators.maxLength(16), Validators.required]],
+          part: [,[Validators.maxLength(32), Validators.required]],
+          material: [,[Validators.maxLength(32), Validators.required]]
         }))
       }
+
+      if (this.project.info.modifyUse){
+        this.businessForm.addControl('useChange', this._fb.group({
+          oldUse:[,Validators.maxLength(16)],
+          property:[]
+        }))
+      }
+
+
 
       
 

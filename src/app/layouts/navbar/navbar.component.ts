@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { AuthenticationService } from '../../auth/authentication.service';
 import { Router, ActivatedRoute, Params, RoutesRecognized } from '@angular/router'
 import { FormGroup, FormControl, FormGroupDirective, NgForm, Validators, FormBuilder } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -7,6 +6,8 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { KeycloakService } from 'keycloak-angular';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -14,6 +15,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+
+  accountUrl = `${environment.keycloakConfig.url}/realms/construction/account`
 
   isCollapsed = true;
 
@@ -33,15 +36,14 @@ export class NavbarComponent implements OnInit {
   }
 
   constructor(
+    private keycloakService: KeycloakService,
     public dialog: MatDialog,
-    private _service: AuthenticationService, 
     private _router: Router,
     private _tostSvr: ToastrService,
     private _route: ActivatedRoute) { }
 
   ngOnInit() {
-      this._service.getUserInfo().subscribe(data => this.user = data);
-
+      this.keycloakService.loadUserProfile().then(user => this.user = user);
       this._route.queryParams.subscribe(params => {
         if (params.hasOwnProperty('key')){
           this.searchKey = params['key'];
@@ -60,7 +62,7 @@ export class NavbarComponent implements OnInit {
     }).afterClosed().pipe(
       switchMap(result => {
         if (result){
-          return this._service.changePassword(result.old,result.password)
+          // return this._service.changePassword(result.old,result.password)
         }else{
           return of(result);
         }
@@ -73,8 +75,7 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.user = null;
-    this._service.logout();
-    this._router.navigate(['/login'])
+    this.keycloakService.logout();
   }
 }
 

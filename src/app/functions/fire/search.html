@@ -16,18 +16,45 @@
           </div>
       </div>
 
-      <mat-menu #typeMenu="matMenu">
-          <button mat-menu-item (click)="onStatusChange()" >全部</button>
-          <button [class.mat-selected] ="s.key == status" *ngFor="let s of dataDefine.checkStatus" mat-menu-item  (click)="onStatusChange(s.key)">{{s.label}}</button>
-      </mat-menu>
-      <div class="head-filter-bar">
-          <a [matMenuTriggerFor]="typeMenu" class="filter-menu" 
-              [class.filtered]="!!status">
-              <span *ngIf="status">{{status | fireCheckStatus}}</span>
-              <span *ngIf="!status">全部类型</span>
-          </a>
 
+      <mat-menu #typeMenu="matMenu">
+        <button mat-menu-item (click)="onStatusChange()" >全部状态</button>
+        <button [class.mat-selected] ="s.key == status" *ngFor="let s of dataDefine.checkStatus" mat-menu-item  (click)="onStatusChange(s.key)">{{s.label}}</button>
+    </mat-menu>
+
+    <mat-menu #propertyMenu="matMenu">
+        <button mat-menu-item (click)="onFilterChange(null)" >全部</button>
+        <button mat-menu-item *ngFor="let type of filterTypes" (click)="onFilterChange(type.key)" [class.mat-selected] ="type.key == _route.snapshot.queryParams['filter']  " >{{type.label}}</button>
+    </mat-menu>
+
+      <div class="head-tab-menu">
+        <div class="head-tab-items">
+            <a class="head-tab-item" (click)="onFilterChange(null)"   [class.selected]="!_route.snapshot.queryParams['filter']">
+                全部
+            </a>
+
+            <a class="head-tab-item"  *ngFor="let type of filterTypes" (click)="onFilterChange(type.key)" [class.selected] ="type.key == _route.snapshot.queryParams['filter']  " >{{type.label}}</a>
+        </div>
+
+        <div class="head-filter-bar property-filter-bar">
+            <a [matMenuTriggerFor]="propertyMenu" class="filter-menu" 
+            [class.filtered]="!!_route.snapshot.queryParams['filter']">
+            <span *ngIf="!!_route.snapshot.queryParams['filter']">{{filterLabel}}</span>
+            <span *ngIf="!_route.snapshot.queryParams['filter']">全部</span>
+            </a>
+        </div>
+        
+        <div class="head-filter-bar">
+            <a [matMenuTriggerFor]="typeMenu" class="filter-menu" 
+                [class.filtered]="!!status">
+                <span *ngIf="status">{{status | fireCheckStatus}}</span>
+                <span *ngIf="!status">全部状态</span>
+            </a>
+  
+        </div>
       </div>
+
+
 
   </div>
 
@@ -51,7 +78,7 @@
        
               </div>
               <p class="mb-1">
-                {{item.info.part ? '部分验收' :  ''}}    {{item.info.property | fireUseProperty}}   {{item.info.project.address}}
+                {{item.info.part ? '部分验收' :  ''}}      {{item.info.project.address}}
               </p>
               <div>
 

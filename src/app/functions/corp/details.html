@@ -9,8 +9,14 @@
     <a mat-tab-link routerLink="business" disabled="true" routerLinkActive #rlc="routerLinkActive" [active]="rlc.isActive">
         相关业务
     </a>
+
     <a mat-tab-link routerLink="projects" disabled="true" routerLinkActive #rld="routerLinkActive" [active]="rld.isActive">
         参建项目
     </a>
+
+    <a mat-tab-link routerLink="credit"  routerLinkActive #rle="routerLinkActive" [active]="rle.isActive">
+        信息记录
+    </a>
+
 </nav>
 <router-outlet></router-outlet>

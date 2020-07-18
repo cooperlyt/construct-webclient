@@ -1,4 +1,4 @@
-import { NgModule, Injectable } from '@angular/core';
+import { NgModule, Injectable, Pipe, PipeTransform } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule, CanActivate, Router, ActivatedRoute, Resolve } from '@angular/router';
@@ -25,7 +25,7 @@ import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 import { ConfirmDialogModule } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 
 
-import { CorpProjectsComponent, CorpBusinessComponent, CorpInfoComponent, CorpDetailsComponent, CorpEmployeeComponent, CorpEmployeeEditorDialogComponent } from './corp-details.component';
+import { CorpProjectsComponent, CorpBusinessComponent, CorpInfoComponent, CorpDetailsComponent, CorpEmployeeComponent, CorpEmployeeEditorDialogComponent, CorpCreditComponent } from './corp-details.component';
 import { CorpListResolver } from './corp-list.resolver';
 import { CorpComponent, CorpEditComponent } from './corp.component';
 import { SharedDataModule } from 'src/app/shared/schemas/data.module';
@@ -36,6 +36,18 @@ import { ToastrService } from 'ngx-toastr';
 import { CorpResolver } from 'src/app/shared/resolver/corp.resolver';
 import { CorpEmployee } from 'src/app/shared/schemas/corp';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatListModule} from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { CerType } from './cer/credit-add.module';
+
+
+@Pipe({name: 'corpCreditTypeLabel'})
+export class CorpCreditTypePipe implements PipeTransform{
+  transform(value: string) {
+    return CerType[value]
+  }
+
+}
 
 @Injectable({
   providedIn: 'root'
@@ -86,6 +98,7 @@ const routes: Routes =[
         {path: 'info', component: CorpInfoComponent, resolve: {corp: CorpResolver}},
         {path: 'business', component: CorpBusinessComponent},
         {path: 'projects' , component: CorpProjectsComponent},
+        {path: 'credit', component: CorpCreditComponent},
         {path: 'employee', component: CorpEmployeeComponent, resolve: {employees: CorpEmployeeListResolver}}
       ]
     }
@@ -100,7 +113,9 @@ const routes: Routes =[
       CorpBusinessComponent,
       CorpInfoComponent,
       CorpEmployeeComponent,
+      CorpCreditComponent,
       CorpEmployeeEditorDialogComponent,
+      CorpCreditTypePipe
       ],
     imports: [
       CommonModule,
@@ -124,13 +139,16 @@ const routes: Routes =[
       ConfirmDialogModule,
       MatSlideToggleModule,
       OcticonModule,
+      MatListModule,
+      MatDividerModule,
       RouterModule.forChild(routes),
       SharedDataModule,
       MatDialogModule
     ],
     entryComponents:[
       CorpEmployeeEditorDialogComponent
-    ]
+    ],
+    exports:[CorpCreditTypePipe]
   
   })
   export class CorpModule { }

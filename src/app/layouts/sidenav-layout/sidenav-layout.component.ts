@@ -20,7 +20,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 import {MatDrawerToggleResult} from '@angular/material/sidenav/drawer';
 
 
-import {FunctionItems, FunctionPageBar} from '../../shared/function-items/function-items';
+import { FunctionPageBar} from '../../shared/function-items/function-items';
 
 
 const EXTRA_SMALL_WIDTH_BREAKPOINT = 768;
@@ -42,7 +42,7 @@ export class SidenavLayoutComponent implements OnInit {
 
   padding: number = 0;
 
-  constructor(public docItems: FunctionItems,
+  constructor(public docItems: FunctionPageBar,
               private _route: ActivatedRoute,
               private _router: Router,
               zone: NgZone,
@@ -101,7 +101,7 @@ export class ComponentNav implements OnInit, OnDestroy {
   currentItemId: string;
   private _onDestroy = new Subject<void>();
 
-  constructor(public docItems: FunctionItems, private _router: Router) {}
+  constructor(public docItems: FunctionPageBar, private _router: Router) {}
 
   ngOnInit() {
     this._router.events.pipe(

@@ -1,5 +1,5 @@
 import { Title } from '@angular/platform-browser';
-import { NgModule} from '@angular/core';
+import { NgModule, DoBootstrap, ApplicationRef} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,9 +31,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { GeneralErrorInterceptor } from './shared/general-error.interceptor';
-import { AuthInterceptor } from "./auth/interceptors/auth.interceptor";
 
-import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { MasterLayoutComponent } from './layouts/master-layout/master-layout.component';
 import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
@@ -49,11 +47,14 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/mat
 import { paginatorCN } from './tools/paginator-cn/paginator-cn';
 import { DragulaModule } from 'ng2-dragula';
 import { MatMenuModule } from '@angular/material/menu';
+import { environment } from 'src/environments/environment';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+
+const keycloakService = new KeycloakService();
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
     HomeComponent,
     MasterLayoutComponent,
     PublicLayoutComponent,
@@ -66,6 +67,7 @@ import { MatMenuModule } from '@angular/material/menu';
     ChangePwdDialog
   ],
   imports: [
+    KeycloakAngularModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -105,10 +107,14 @@ import { MatMenuModule } from '@angular/material/menu';
     AppRoutingModule,
   ],
   entryComponents:[
-    ChangePwdDialog
+    ChangePwdDialog,
+    AppComponent
   ],
   providers: [Title,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {
+      provide: KeycloakService,
+      useValue: keycloakService,
+    },
     { provide: HTTP_INTERCEPTORS, useClass: GeneralErrorInterceptor, multi: true},
     { provide: MAT_DATE_LOCALE, useValue: "zh-cn" },
     {
@@ -117,8 +123,28 @@ import { MatMenuModule } from '@angular/material/menu';
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
     },
     { provide: MatPaginatorIntl , useValue: paginatorCN() },
-    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
-    JwtHelperService],
-  bootstrap: [AppComponent]
+    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
+  ],
+  bootstrap: []
 })
-export class AppModule { }
+export class AppModule implements DoBootstrap { 
+
+  async ngDoBootstrap(app:ApplicationRef) {
+    const { keycloakConfig } = environment;
+
+    try {
+      await keycloakService.init({ 
+        config: keycloakConfig ,
+        initOptions: {
+          onLoad: 'login-required',
+          checkLoginIframe: false,
+        },
+        enableBearerInterceptor: true
+      });
+      app.bootstrap(AppComponent);
+    } catch (error) {
+      console.error('Keycloak init failed', error);
+    }
+  }
+
+}

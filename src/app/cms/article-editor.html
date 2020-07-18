@@ -1,0 +1,61 @@
+<!-- 
+<form>
+
+</form> -->
+<form [formGroup]="form" >
+
+  <div style="width: 100%; display: flex;  align-items: baseline">
+
+    <!-- <mat-form-field style="width: 100px; flex-shrink: 0;">
+      <mat-label>分类</mat-label>
+      <mat-select required>
+        <mat-option>--</mat-option>
+        <mat-optgroup *ngFor="let top of categories" [label]="top.name">
+          <mat-option *ngFor="let category of top.children" [value]="category.id">
+            {{category.name}}
+          </mat-option>
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field> -->
+
+    <mat-form-field style="flex-shrink: 1; margin-right: 10px; margin-left: 10px;" class="flex-auto">
+      <mat-label>标题</mat-label>
+      <input matInput placeholder="标题" required formControlName="title">
+      <mat-error *ngIf="form.get('title').hasError('required')">
+        标题 <strong>不能为空</strong>
+      </mat-error>
+      <mat-error *ngIf="form.get('title').hasError('maxlength')">
+        标题长度不能超过 <strong>256</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <div style="flex-shrink: 0;">
+      <button mat-stroked-button color="primary" (click)="onSubmit()">发布</button>
+    </div>
+
+  </div>
+
+
+
+<editor formControlName="content"
+  apiKey="biwuzffrgvot2hx3az2xshpyajbt2i4dtob16y9ccoluerfb"
+  [init]="{
+    height: 500,
+    menubar: false,
+    language_url: '/assets/tinymce/zh_CN.js',
+    language: 'zh_CN',
+    plugins: [
+      'advlist autolink lists link image charmap print',
+      'preview anchor searchreplace visualblocks code',
+      'fullscreen insertdatetime media table paste',
+      'help wordcount'
+    ],
+    toolbar:
+      'undo redo | formatselect | bold italic | \
+      alignleft aligncenter alignright alignjustify | \
+      bullist numlist outdent indent | help'
+  }">
+
+</editor>
+
+</form>

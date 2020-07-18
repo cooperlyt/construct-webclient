@@ -62,40 +62,64 @@
               <mat-label>
                 地上层数
               </mat-label>
-              <input matInput type="number" min="0" step="1" formControlName="onCount">
+              <input matInput type="number" min="0" step="1" formControlName="onCount" required>
+              <mat-error *ngIf="buildForm.controls[i].get('info').get('onCount').hasError('required')">
+                请填写地上层数
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="col-sm-3">
               <mat-label>
                 地下层数
               </mat-label>
-              <input matInput type="number" min="0" step="1" formControlName="underCount">
+              <input matInput type="number" min="0" step="1" formControlName="underCount" required>
+              <mat-error *ngIf="buildForm.controls[i].get('info').get('underCount').hasError('required')">
+                请填写地下层数
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="col-sm-3">
               <mat-label>
                 地上面积
               </mat-label>
-              <input matInput type="number" formControlName="onArea">
+              <input matInput type="number" formControlName="onArea" required>
+              <mat-error *ngIf="buildForm.controls[i].get('info').get('onArea').hasError('required')">
+                请填写地上面积
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="col-sm-3">
               <mat-label>
                 地下面积
               </mat-label>
-              <input matInput type="number" formControlName="underArea">
+              <input matInput type="number" formControlName="underArea" required>
+              <mat-error *ngIf="buildForm.controls[i].get('info').get('underArea').hasError('required')">
+                请填写地下面积
+              </mat-error>
             </mat-form-field>
 
             <mat-form-field class="col-sm-3">
               <mat-label>
                 占地面积
               </mat-label>
-              <input matInput type="number" formControlName="landArea">
+              <input matInput type="number" formControlName="landArea" required>
+              <mat-error *ngIf="buildForm.controls[i].get('info').get('landArea').hasError('required')">
+                请填写地下面积
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="col-sm-3">
               <mat-label>
                 建设高度
               </mat-label>
-              <input matInput type="number" formControlName="height">
+              <input matInput type="number" formControlName="height" required>
+              <mat-error *ngIf="buildForm.controls[i].get('info').get('height').hasError('required')">
+                请填写地下面积
+              </mat-error>
             </mat-form-field>
-
+            <mat-form-field class="col-sm-3">
+              <mat-label>
+                建设长度
+              </mat-label>
+              <input matInput type="number" formControlName="length">
+            </mat-form-field>
+            
 
           </div>
         </div>

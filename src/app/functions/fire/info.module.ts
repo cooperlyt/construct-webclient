@@ -25,13 +25,14 @@ import { OcticonModule } from 'src/app/tools/octicon/octicon.directive';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedDataModule } from 'src/app/shared/schemas/data.module';
 import { BusinessDocumentModule } from 'src/app/business/document/document-files.component';
-import { faUserTie, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faUserTie, faPhone, faIdCard } from '@fortawesome/free-solid-svg-icons';
 
 @Component({selector:'fire-check-info',templateUrl:'./fire-check-info.html'})
-export class FireCheckInfoComponent{
+export class FireCheckInfoComponent {
 
   faUserTie = faUserTie;
   faPhone = faPhone;
+  faIdCard = faIdCard;
   
   @Input()
   fireCheck: FireCheck;

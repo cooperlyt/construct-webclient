@@ -35,9 +35,13 @@
             <td mat-cell *matCellDef="let element"><span *ngIf="!element.info.height">-</span>{{element.info.height | number}}</td>
           </ng-container>
 
+          <ng-container matColumnDef="length">
+            <th mat-header-cell *matHeaderCellDef>建筑长度</th>
+            <td mat-cell *matCellDef="let element"><span *ngIf="!element.info.length">-</span>{{element.info.length | number}}</td>
+          </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="['name','structure','count','area','loadArea','height']"></tr>
-          <tr mat-row *matRowDef="let row; columns: ['name','structure','count','area','loadArea','height']"></tr>
+          <tr mat-header-row *matHeaderRowDef="['name','structure','count','area','loadArea','height','length']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['name','structure','count','area','loadArea','height','length']"></tr>
         </table>
 
       </mat-card-content>
@@ -50,9 +54,9 @@
           <mat-panel-title>
             {{corp.property | joinTypeLabel}} - {{corp.info.name}}
           </mat-panel-title>
-          <mat-panel-description>
+          <!-- <mat-panel-description>
             {{corp.code}}
-          </mat-panel-description>
+          </mat-panel-description> -->
         </mat-expansion-panel-header>
 
         <ul class="striped list-unstyled field-info-list">
@@ -70,7 +74,7 @@
             <strong>法人:</strong>{{corp.info.ownerName}} <strong>{{corp.info.ownerIdType | personCardLabel}}编号:</strong> {{corp.info.ownerId}}
           </li>
           <li>
-            <strong>联系方式:</strong> <fa-icon *ngIf="corp.contacts" [icon]="faUserTie"></fa-icon> {{corp.contacts}} <fa-icon *ngIf="corp.tel" [icon]="faPhone"></fa-icon> {{corp.tel}}
+            <strong>负责人:</strong> <fa-icon *ngIf="corp.contacts" [icon]="faUserTie"></fa-icon> {{corp.contacts}} <fa-icon *ngIf="corp.contactsId" [icon]="faIdCard"></fa-icon> {{corp.contactsId}} <fa-icon *ngIf="corp.tel" [icon]="faPhone"></fa-icon> {{corp.tel}}
           </li>
         </ul>
 
@@ -96,7 +100,7 @@
             <strong>{{project.info.importantType | improtantTypeLabel}}</strong> [{{project.info.importantFile}}]
           </li>
           <li>
-            <strong>工程性质</strong>{{project.info.property | projectPropertyLabel}}  <span *ngIf="project.info.property == 'MODIFY'"> - <span *ngIf="project.info.modifyFit">装修</span>/<span *ngIf="project.info.modifyWarm">保温</span>/<span *ngIf="project.info.modifyUse">改变用途</span> </span>
+            <strong>工程性质:</strong>{{project.info.property | projectPropertyLabel}}  <span *ngIf="project.info.property == 'MODIFY'"> - <span *ngIf="project.info.modifyFit">装修</span>/<span *ngIf="project.info.modifyWarm">保温</span>/<span *ngIf="project.info.modifyUse">改变用途</span> </span>
           </li>
           <li>
             <strong>工程类别:</strong>{{project.info.type | projectTypeLabel}}  {{project.info.typeLevel | projectTypeLevelLabel}}
@@ -109,18 +113,22 @@
           </li>
 
           <li>
-            <strong>工程造价:</strong> <ng-container *ngIf="!project.info.costs"> - </ng-container>{{project.info.costs | number}}万元 <ng-container *ngIf="project.info.tender"> <strong>招标情况:</strong> {{project.info.tender}} </ng-container>
+            <strong>占地面积:</strong> <ng-container *ngIf="!project.info.landArea"> - </ng-container> {{project.info.landArea | number}}平方米
           </li>
 
           <li>
-            <strong>占地面积</strong> <ng-container *ngIf="!project.info.landArea"> - </ng-container> {{project.info.landArea | number}}平方米
+            <strong>工程造价:</strong> <ng-container *ngIf="!project.info.costs"> - </ng-container>{{project.info.costs | number}}万元 
           </li>
 
           <li>
-            <strong>招标情况</strong> {{project.info.tender}}
+            <strong>工程投资额:</strong> <ng-container *ngIf="!project.info.putMoney"> - </ng-container>{{project.info.putMoney | number}}万元
+          </li>
+
+          <li>
+            <strong>招标情况:</strong> {{project.info.tender}}
           </li>
           <li>
-            <strong>备案时间</strong> {{project.regTime | date:'yyyy年MM月dd日'}}
+            <strong>备案时间:</strong> {{project.regTime | date:'yyyy年MM月dd日'}}
           </li>
           <li>
             <strong>地址:</strong>{{project.info.address}}

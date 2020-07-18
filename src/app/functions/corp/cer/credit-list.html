@@ -1,0 +1,7 @@
+<mat-list>
+  <ng-container *ngFor="let credit of credits">
+    <mat-list-item>{{credit.description}} <span style="margin-left: 10px;" class="badge cyan">{{credit.type | corpCreditTypeLabel}}</span> </mat-list-item>
+    <mat-divider></mat-divider>
+  </ng-container>
+
+</mat-list>

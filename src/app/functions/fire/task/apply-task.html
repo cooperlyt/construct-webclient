@@ -33,7 +33,17 @@
   </mat-list>
 
 
+  <mat-form-field appearance="fill" *ngIf="!valid"  style="width: 400px; ">
+    <mat-select formControlName="noAccept" required>
+      <mat-option *ngFor="let reason of schemasDefine.noAcceptReason" [value]="reason.key">
+        {{reason.label}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <hr>
+
+
 
   <button mat-raised-button (click)="complete()" [color]="valid ? 'primary' : 'warn'"> {{valid ? '' : '不予'}}受理</button>
 
